@@ -35,16 +35,13 @@ function specialPage(slug: string, label: string): GlobalConfig {
       },
       {
         name: 'gallery',
-        type: 'array',
-        labels: { singular: 'Photo', plural: 'Photos' },
+        type: 'upload',
+        relationTo: 'media',
+        hasMany: true,
         admin: {
           description:
-            'Event photos — visitors can open them in a zoomable gallery. Section stays hidden while empty.',
+            'Event photos — visitors can open them in a zoomable gallery. Drag several files in at once to bulk upload. Captions come from each image’s Alt text. Section stays hidden while empty.',
         },
-        fields: [
-          { name: 'image', type: 'upload', relationTo: 'media', required: true },
-          { name: 'caption', type: 'text', localized: true },
-        ],
       },
     ],
   }

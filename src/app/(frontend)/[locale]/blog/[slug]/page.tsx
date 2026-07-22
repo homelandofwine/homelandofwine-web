@@ -22,7 +22,7 @@ import {
   getSettings,
 } from '@/lib/api'
 import { formatDate } from '@/lib/format'
-import { absoluteUrl, localePath, ogLocale, pageAlternates, SITE_URL } from '@/lib/seo'
+import { absoluteUrl, localePath, ogLocale, pageAlternates, SITE_URL, categoryPath } from '@/lib/seo'
 import type { Category, Media, User } from '@/payload-types'
 
 export async function generateMetadata({
@@ -208,7 +208,7 @@ export default async function ArticlePage({
                     '@type': 'ListItem',
                     position: 3,
                     name: category.name,
-                    item: absoluteUrl(locale, `/blog/category/${category.slug}`),
+                    item: absoluteUrl(locale, categoryPath(category.slug ?? '')),
                   },
                 ]
               : []),
@@ -228,7 +228,7 @@ export default async function ArticlePage({
             <div className="anim-rise flex items-center justify-center gap-4 text-sm">
               {category && typeof category === 'object' && (
                 <Link
-                  href={`/blog/category/${category.slug}`}
+                  href={categoryPath(category.slug ?? '')}
                   className="rounded bg-stone px-2.5 py-1 font-medium text-ink transition-colors hover:bg-ink hover:text-shell-fg"
                 >
                   {category.name}

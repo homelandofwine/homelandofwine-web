@@ -23,17 +23,16 @@ export async function SpecialPage({
     : []
 
   const photos = (page.gallery ?? [])
-    .filter((g) => g.image && typeof g.image === 'object' && g.image.url)
-    .map((g) => {
-      const img = g.image as Exclude<typeof g.image, string | number>
-      return {
-        src: `${img.sizes?.hero?.url ?? img.url}`,
-        width: img.sizes?.hero?.width ?? img.width ?? undefined,
-        height: img.sizes?.hero?.height ?? img.height ?? undefined,
-        alt: g.caption || img.alt || '',
-        thumb: `${img.sizes?.card?.url ?? img.url}`,
-      }
-    })
+    .filter((img): img is Exclude<typeof img, string | number> =>
+      Boolean(img && typeof img === 'object' && img.url),
+    )
+    .map((img) => ({
+      src: `${img.sizes?.hero?.url ?? img.url}`,
+      width: img.sizes?.hero?.width ?? img.width ?? undefined,
+      height: img.sizes?.hero?.height ?? img.height ?? undefined,
+      alt: img.alt || '',
+      thumb: `${img.sizes?.card?.url ?? img.url}`,
+    }))
 
   return (
     <main>

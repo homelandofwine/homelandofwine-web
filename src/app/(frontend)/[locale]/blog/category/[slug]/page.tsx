@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 
 import { ArticleCard } from '@/components/article/ArticleCard'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -8,7 +8,7 @@ import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getArticles, getCategories, getCategoryBySlug, getSettings } from '@/lib/api'
-import { absoluteUrl, ogLocale, pageAlternates } from '@/lib/seo'
+import { absoluteUrl, categoryPath, localePath, ogLocale, pageAlternates } from '@/lib/seo'
 
 export async function generateMetadata({
   params,
@@ -17,6 +17,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: l, slug } = await params
   const locale = l as Locale
+  if (categoryPath(slug) !== `/blog/category/${slug}`) {
+    permanentRedirect(localePath(locale, categoryPath(slug)))
+  }
   const [category, settings] = await Promise.all([
     getCategoryBySlug(locale, slug),
     getSettings(locale),
@@ -41,7 +44,9 @@ export const dynamicParams = true
 
 export async function generateStaticParams() {
   const { docs } = await getCategories('en')
-  return docs.filter((c) => c.slug).map((c) => ({ slug: c.slug as string }))
+  return docs
+    .filter((c) => c.slug && categoryPath(c.slug) === `/blog/category/${c.slug}`)
+    .map((c) => ({ slug: c.slug as string }))
 }
 
 export default async function CategoryPage({
@@ -50,6 +55,9 @@ export default async function CategoryPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale: l, slug } = await params
+  if (categoryPath(slug) !== `/blog/category/${slug}`) {
+    permanentRedirect(localePath(l as Locale, categoryPath(slug)))
+  }
   const locale = l as Locale
   setRequestLocale(locale)
 

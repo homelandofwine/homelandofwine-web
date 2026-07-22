@@ -8,7 +8,7 @@ import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { Img } from '@/components/media/Img'
 import { getArticles, getArticlesPage, getCategories, getSettings } from '@/lib/api'
-import { absoluteUrl, ogLocale, pageAlternates } from '@/lib/seo'
+import { absoluteUrl, ogLocale, pageAlternates, categoryPath } from '@/lib/seo'
 
 export async function generateMetadata({
   params,
@@ -103,7 +103,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
             {categories.map((c) => (
               <Link
                 key={c.id}
-                href={`/blog/category/${c.slug}`}
+                href={categoryPath(c.slug ?? '')}
                 className="rounded-md border border-line bg-paper px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
               >
                 {c.name}

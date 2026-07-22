@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { getAllArticleSlugs, getCategories } from '@/lib/api'
-import { absoluteUrl, languageAlternates } from '@/lib/seo'
+import { absoluteUrl, languageAlternates, categoryPath } from '@/lib/seo'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [articles, { docs: categories }] = await Promise.all([
@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   const categoryEntries: MetadataRoute.Sitemap = categories
-    .filter((c) => c.slug)
+    .filter((c) => c.slug && categoryPath(c.slug) === `/blog/category/${c.slug}`)
     .map((c) => {
       const path = `/blog/category/${c.slug}`
       return {

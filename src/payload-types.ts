@@ -934,15 +934,9 @@ export interface AmbassadorPage {
    */
   logo?: (number | null) | Media;
   /**
-   * Event photos — visitors can open them in a zoomable gallery. Section stays hidden while empty.
+   * Event photos — visitors can open them in a zoomable gallery. Drag several files in at once to bulk upload. Captions come from each image’s Alt text. Section stays hidden while empty.
    */
-  gallery?:
-    | {
-        image: number | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  gallery?: (number | Media)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -959,15 +953,9 @@ export interface NLinePrintPage {
    */
   logo?: (number | null) | Media;
   /**
-   * Event photos — visitors can open them in a zoomable gallery. Section stays hidden while empty.
+   * Event photos — visitors can open them in a zoomable gallery. Drag several files in at once to bulk upload. Captions come from each image’s Alt text. Section stays hidden while empty.
    */
-  gallery?:
-    | {
-        image: number | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  gallery?: (number | Media)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1231,13 +1219,7 @@ export interface AmbassadorPageSelect<T extends boolean = true> {
   title?: T;
   intro?: T;
   logo?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
+  gallery?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1250,13 +1232,7 @@ export interface NLinePrintPageSelect<T extends boolean = true> {
   title?: T;
   intro?: T;
   logo?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
+  gallery?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

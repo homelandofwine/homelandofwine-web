@@ -33,6 +33,15 @@ export function pageAlternates(locale: Locale, path: string, paths?: { ka?: stri
   }
 }
 
+const SPECIAL_CATEGORY_PATHS: Record<string, string> = {
+  ambassador: '/ambassador',
+  'n-line-print': '/n-line-print',
+}
+
+export function categoryPath(slug: string): string {
+  return SPECIAL_CATEGORY_PATHS[slug] ?? `/blog/category/${slug}`
+}
+
 export function ogLocale(locale: Locale): string {
   return locale === 'ka' ? 'ka_GE' : 'en_US'
 }
