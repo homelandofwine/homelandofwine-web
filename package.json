@@ -1,7 +1,7 @@
 {
   "name": "homelandofwine-web",
   "version": "0.1.0",
-  "description": "Homeland of Wine \u2014 bilingual (ka/en) Georgian wine blog with self-hosted Payload admin",
+  "description": "Homeland of Wine — bilingual (ka/en) Georgian wine blog with self-hosted Payload admin",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -28,6 +28,7 @@
     "@payloadcms/ui": "3.85.2",
     "@react-email/components": "^1.0.12",
     "@tailwindcss/postcss": "^4.3.2",
+    "@vercel/analytics": "^2.0.1",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "feed": "^6.0.0",

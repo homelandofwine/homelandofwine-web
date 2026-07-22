@@ -82,6 +82,12 @@ body {
   animation-delay: var(--anim-delay, 0s);
 }
 
+button:not(:disabled),
+[role='button'],
+summary {
+  cursor: pointer;
+}
+
 html.motion-ready [data-reveal]:not(.is-revealed) {
   opacity: 0;
   transition: none;

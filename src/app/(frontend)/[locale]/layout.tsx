@@ -7,6 +7,8 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { AlternateLinksProvider } from '@/components/layout/AlternateLinks'
+import { Analytics } from '@vercel/analytics/next'
+
 import { CookieConsent } from '@/components/layout/CookieConsent'
 import { NewsletterModal } from '@/components/newsletter/NewsletterModal'
 import { Footer } from '@/components/layout/Footer'
@@ -173,6 +175,7 @@ export default async function FrontendLayout({
             <Footer locale={locale as Locale} settings={settings} />
             <CookieConsent />
             <NewsletterModal />
+            <Analytics />
           </AlternateLinksProvider>
         </NextIntlClientProvider>
       </body>
