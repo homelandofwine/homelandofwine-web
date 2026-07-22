@@ -1,7 +1,7 @@
 import { Resend } from 'resend'
 
 export const EMAIL_FROM = process.env.EMAIL_FROM ?? 'Homeland of Wine <onboarding@resend.dev>'
-export const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? ''
+const EMAIL_REPLY_TO = process.env.EMAIL_REPLY_TO || undefined
 
 export type OutgoingEmail = {
   from: string
@@ -21,7 +21,7 @@ export const mailer = {
       return
     }
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const { error } = await resend.emails.send(email)
+    const { error } = await resend.emails.send({ replyTo: EMAIL_REPLY_TO, ...email })
     if (error) throw new Error(`Resend send failed: ${error.message}`)
   },
 
@@ -33,8 +33,9 @@ export const mailer = {
       return
     }
     const resend = new Resend(process.env.RESEND_API_KEY)
-    for (let i = 0; i < emails.length; i += 100) {
-      const chunk = emails.slice(i, i + 100)
+    const withReplyTo = emails.map((e) => ({ replyTo: EMAIL_REPLY_TO, ...e }))
+    for (let i = 0; i < withReplyTo.length; i += 100) {
+      const chunk = withReplyTo.slice(i, i + 100)
       const { error } = await resend.batch.send(chunk)
       if (error) throw new Error(`Resend batch failed at offset ${i}: ${error.message}`)
       if (i + 100 < emails.length) await new Promise((r) => setTimeout(r, 600))
