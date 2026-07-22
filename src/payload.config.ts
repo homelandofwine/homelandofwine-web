@@ -67,7 +67,7 @@ export default buildConfig({
     ...(process.env.BLOB_READ_WRITE_TOKEN
       ? [
           vercelBlobStorage({
-            collections: { media: true },
+            collections: { media: { disablePayloadAccessControl: true } },
             token: process.env.BLOB_READ_WRITE_TOKEN,
           }),
         ]
