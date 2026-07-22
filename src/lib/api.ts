@@ -25,7 +25,7 @@ export const getSettings = (locale: Locale) =>
       return payload.findGlobal({ slug: 'site-settings', locale, depth: 1 })
     },
     ['settings', locale],
-    { tags: [TAGS.settings] },
+    { revalidate: 600, tags: [TAGS.settings] },
   )()
 
 export const getHomepage = (locale: Locale) =>
@@ -35,7 +35,7 @@ export const getHomepage = (locale: Locale) =>
       return payload.findGlobal({ slug: 'homepage', locale, depth: 1 })
     },
     ['homepage', locale],
-    { tags: [TAGS.homepage] },
+    { revalidate: 600, tags: [TAGS.homepage] },
   )()
 
 function globalGetter<S extends 'articles-page' | 'ambassador-page' | 'n-line-print-page' | 'privacy-page'>(
@@ -48,7 +48,7 @@ function globalGetter<S extends 'articles-page' | 'ambassador-page' | 'n-line-pr
         return payload.findGlobal({ slug, locale, depth: 1 })
       },
       [slug, locale],
-      { tags: [slug] },
+      { revalidate: 600, tags: [slug] },
     )()
 }
 
@@ -64,7 +64,7 @@ export const getAboutPage = (locale: Locale) =>
       return payload.findGlobal({ slug: 'about-page', locale, depth: 1 })
     },
     ['about-page', locale],
-    { tags: [TAGS.about] },
+    { revalidate: 600, tags: [TAGS.about] },
   )()
 
 export const getContactPage = (locale: Locale) =>
@@ -74,7 +74,7 @@ export const getContactPage = (locale: Locale) =>
       return payload.findGlobal({ slug: 'contact-page', locale, depth: 1 })
     },
     ['contact-page', locale],
-    { tags: [TAGS.contact] },
+    { revalidate: 600, tags: [TAGS.contact] },
   )()
 
 export const getArticles = (locale: Locale, opts?: { limit?: number; categoryId?: string | number }) =>
@@ -96,7 +96,7 @@ export const getArticles = (locale: Locale, opts?: { limit?: number; categoryId?
       return result
     },
     ['articles', locale, String(opts?.limit ?? 100), String(opts?.categoryId ?? 'all')],
-    { tags: [TAGS.articles] },
+    { revalidate: 600, tags: [TAGS.articles] },
   )()
 
 export const getArticleBySlug = (locale: Locale, slug: string) =>
@@ -147,7 +147,7 @@ export const getArticleBySlug = (locale: Locale, slug: string) =>
       return { article, alternateSlug: other?.slug ?? null, otherLocale, native }
     },
     ['article-by-slug', locale, slug],
-    { tags: [TAGS.articles] },
+    { revalidate: 600, tags: [TAGS.articles] },
   )()
 
 export async function getDraftArticleBySlug(locale: Locale, slug: string) {
@@ -204,7 +204,7 @@ export const getRecentArticlesForNews = () =>
       }>
     },
     ['news-articles'],
-    { tags: [TAGS.articles], revalidate: 1800 },
+    { revalidate: 1800, tags: [TAGS.articles] },
   )()
 
 export const getAllArticleSlugs = () =>
@@ -226,7 +226,7 @@ export const getAllArticleSlugs = () =>
       }>
     },
     ['article-slugs'],
-    { tags: [TAGS.articles] },
+    { revalidate: 600, tags: [TAGS.articles] },
   )()
 
 export const getCategories = (locale: Locale) =>
@@ -236,7 +236,7 @@ export const getCategories = (locale: Locale) =>
       return payload.find({ collection: 'categories', locale, limit: 100, sort: 'slug' })
     },
     ['categories', locale],
-    { tags: [TAGS.categories] },
+    { revalidate: 600, tags: [TAGS.categories] },
   )()
 
 export const getCategoryBySlug = (locale: Locale, slug: string) =>
@@ -252,5 +252,5 @@ export const getCategoryBySlug = (locale: Locale, slug: string) =>
       return docs[0] ?? null
     },
     ['category-by-slug', locale, slug],
-    { tags: [TAGS.categories] },
+    { revalidate: 600, tags: [TAGS.categories] },
   )()
