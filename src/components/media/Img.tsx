@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import type { Media } from '@/payload-types'
 
 export function Img({
@@ -16,30 +18,43 @@ export function Img({
   style?: React.CSSProperties
 }) {
   if (!media || typeof media === 'string' || typeof media === 'number') return null
+  if (!media.url) return null
 
-  const candidates = [
-    media.sizes?.thumbnail,
-    media.sizes?.card,
-    media.sizes?.hero,
-    { url: media.url, width: media.width },
-  ].filter((s): s is { url: string; width: number } => Boolean(s?.url && s?.width))
+  const isOptimizable =
+    Boolean(media.width && media.height) &&
+    Boolean(media.mimeType?.startsWith('image/')) &&
+    !media.mimeType?.includes('svg')
 
-  const srcSet = candidates.map((s) => `${s.url} ${s.width}w`).join(', ')
+  if (!isOptimizable) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={media.url}
+        alt={media.alt ?? ''}
+        width={media.width ?? undefined}
+        height={media.height ?? undefined}
+        className={className}
+        loading={loading}
+        style={style}
+        decoding="async"
+      />
+    )
+  }
+
+  const eager = loading === 'eager' || fetchPriority === 'high'
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={media.url ?? undefined}
-      srcSet={srcSet || undefined}
-      sizes={sizes}
+    <Image
+      src={media.url}
       alt={media.alt ?? ''}
-      width={media.width ?? undefined}
-      height={media.height ?? undefined}
+      width={media.width!}
+      height={media.height!}
+      sizes={sizes}
+      quality={70}
       className={className}
-      loading={loading}
-      fetchPriority={fetchPriority}
+      loading={eager ? undefined : 'lazy'}
+      priority={eager}
       style={style}
-      decoding="async"
     />
   )
 }
