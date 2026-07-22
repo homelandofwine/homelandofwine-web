@@ -1,0 +1,78 @@
+{
+  "nav": {
+    "home": "Home",
+    "blog": "Articles",
+    "about": "About",
+    "contact": "Contact",
+    "ambassador": "Ambassador",
+    "nlineprint": "N Line Print",
+    "privacy": "Privacy Policy"
+  },
+  "common": {
+    "readArticle": "Read article",
+    "readMore": "Read more",
+    "latest": "Latest",
+    "allArticles": "All articles",
+    "backToBlog": "Back to blog",
+    "category": "Category",
+    "publishedOn": "Published on",
+    "author": "Author",
+    "gallery": "Gallery"
+  },
+  "home": {
+    "heroKicker": "From the homeland of wine",
+    "articlesTitle": "Articles",
+    "partnersTitle": "Partners",
+    "moreFromBlog": "More from the blog",
+    "aboutHeading": "Writing from the homeland of wine — Georgia",
+    "aboutButton": "More about us"
+  },
+  "newsletter": {
+    "title": "Subscribe to the newsletter",
+    "description": "New articles straight to your inbox. Never spam.",
+    "emailPlaceholder": "Your email",
+    "subscribe": "Subscribe",
+    "success": "Thank you! You are subscribed.",
+    "already": "This email is already subscribed.",
+    "error": "Something went wrong — please try again.",
+    "invalidEmail": "Please enter a valid email.",
+    "titleLine1": "Let's stay",
+    "titleLine2": "in touch",
+    "helperTitle": "New articles, straight to your inbox."
+  },
+  "unsubscribed": {
+    "title": "You are unsubscribed",
+    "description": "You will no longer receive our newsletter at this address. If you change your mind, you can subscribe again at any time."
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending…",
+    "success": "Your message has been sent. We will reply soon!",
+    "error": "Could not send — please try again."
+  },
+  "footer": {
+    "tagline": "A journal from the homeland of wine",
+    "rights": "All rights reserved",
+    "followUs": "Follow us",
+    "backToTop": "Back to top"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This page no longer exists, or the address was mistyped.",
+    "backHome": "Back to the homepage"
+  },
+  "localeSwitcher": {
+    "label": "Language",
+    "ka": "ქართული",
+    "en": "English"
+  },
+  "cookies": {
+    "message": "We use only the cookies this site needs to function — no tracking. Newsletter emails are stored solely to send you new articles.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "policy": "Privacy Policy"
+  }
+}
