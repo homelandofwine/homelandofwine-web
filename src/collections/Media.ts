@@ -23,7 +23,10 @@ export const Media: CollectionConfig = {
   ],
   upload: {
     mimeTypes: ['image/*', 'video/mp4', 'video/quicktime', 'video/webm'],
-    adminThumbnail: 'thumbnail',
+    adminThumbnail: ({ doc }) =>
+      ((doc?.sizes as Record<string, { url?: string }> | undefined)?.thumbnail?.url ??
+        (doc?.url as string | undefined)) ||
+      null,
     imageSizes: [
       {
         name: 'thumbnail',

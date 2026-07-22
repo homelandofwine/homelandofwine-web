@@ -37,18 +37,29 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <section className="sticky top-0 flex min-h-screen flex-col justify-end overflow-hidden bg-shell text-shell-fg">
           <div className="absolute inset-0" data-parallax>
             {heroVideo?.url ? (
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={heroPoster?.sizes?.hero?.url ?? heroPoster?.url ?? undefined}
-                className="anim-settle h-full w-full object-cover"
-                style={{ '--anim-opacity': '0.75' } as React.CSSProperties}
-              >
-                <source src={heroVideo.url} type={heroVideo.mimeType ?? 'video/mp4'} />
-              </video>
+              <>
+                <link rel="preload" as="video" href={heroVideo.url} type={heroVideo.mimeType ?? 'video/mp4'} />
+                {(heroPoster?.sizes?.hero?.url ?? heroPoster?.url) && (
+                  <link
+                    rel="preload"
+                    as="image"
+                    href={heroPoster?.sizes?.hero?.url ?? heroPoster?.url ?? undefined}
+                    fetchPriority="high"
+                  />
+                )}
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  poster={heroPoster?.sizes?.hero?.url ?? heroPoster?.url ?? undefined}
+                  className="anim-settle h-full w-full object-cover"
+                  style={{ '--anim-opacity': '0.75' } as React.CSSProperties}
+                >
+                  <source src={heroVideo.url} type={heroVideo.mimeType ?? 'video/mp4'} />
+                </video>
+              </>
             ) : (
               <Img
                 media={latest.coverImage}
