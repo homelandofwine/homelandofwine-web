@@ -1,7 +1,18 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, Validate } from 'payload'
 
 import { slugField } from '@/fields/slugField'
 import { revalidateArticles, revalidateArticlesDelete } from '@/hooks/revalidate'
+
+const requiredInEnglish: Validate = (value, { req }) => {
+  if (req?.locale && req.locale !== 'en') return true
+  const empty =
+    value == null ||
+    (typeof value === 'string' && value.trim() === '') ||
+    (typeof value === 'object' &&
+      'root' in (value as Record<string, unknown>) &&
+      !(value as { root?: { children?: unknown[] } }).root?.children?.length)
+  return empty ? 'Required in English — Georgian may stay empty and will fall back.' : true
+}
 
 export const Articles: CollectionConfig = {
   slug: 'articles',
@@ -34,14 +45,14 @@ export const Articles: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
-      required: true,
       localized: true,
+      validate: requiredInEnglish,
     },
     {
       name: 'excerpt',
       type: 'textarea',
-      required: true,
       localized: true,
+      validate: requiredInEnglish,
       admin: {
         description: 'Short summary shown on cards, in search results and in the newsletter email.',
       },
@@ -49,8 +60,8 @@ export const Articles: CollectionConfig = {
     {
       name: 'body',
       type: 'richText',
-      required: true,
       localized: true,
+      validate: requiredInEnglish,
     },
     {
       name: 'coverImage',
