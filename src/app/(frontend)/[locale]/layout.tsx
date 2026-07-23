@@ -8,6 +8,7 @@ import React from 'react'
 
 import { AlternateLinksProvider } from '@/components/layout/AlternateLinks'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import { CookieConsent } from '@/components/layout/CookieConsent'
 import { NewsletterModal } from '@/components/newsletter/NewsletterModal'
@@ -176,6 +177,7 @@ export default async function FrontendLayout({
             <CookieConsent />
             <NewsletterModal />
             <Analytics />
+            <SpeedInsights />
           </AlternateLinksProvider>
         </NextIntlClientProvider>
       </body>
