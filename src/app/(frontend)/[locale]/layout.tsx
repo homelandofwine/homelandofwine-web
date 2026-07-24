@@ -103,17 +103,21 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-        'max-video-preview': -1,
-      },
-    },
+    // SITE_NOINDEX (Vercel env var) hides the whole site from search engines
+    // until launch — remove the variable and redeploy to go public.
+    robots: process.env.SITE_NOINDEX
+      ? { index: false, follow: false, googleBot: { index: false, follow: false } }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+            'max-video-preview': -1,
+          },
+        },
   }
 }
 

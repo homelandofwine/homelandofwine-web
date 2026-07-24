@@ -32,6 +32,9 @@ export default buildConfig({
     meta: {
       titleSuffix: '— Homeland of Wine',
     },
+    components: {
+      afterNavLinks: ['/components/admin/AnalyticsLink#AnalyticsLink'],
+    },
   },
   localization: {
     locales: [
