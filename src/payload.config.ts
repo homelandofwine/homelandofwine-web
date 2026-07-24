@@ -64,13 +64,14 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    ...(process.env.BLOB_READ_WRITE_TOKEN
-      ? [
-          vercelBlobStorage({
-            collections: { media: { disablePayloadAccessControl: true } },
-            token: process.env.BLOB_READ_WRITE_TOKEN,
-          }),
-        ]
-      : []),
+    // Always registered (enabled flag decides at runtime) so that
+    // generate:importmap emits the same map with or without the token —
+    // a conditional plugin here twice shipped an importMap missing
+    // VercelBlobClientUploadHandler, which blanks the whole admin panel.
+    vercelBlobStorage({
+      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      collections: { media: { disablePayloadAccessControl: true } },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
   ],
 })
