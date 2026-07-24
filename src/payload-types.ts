@@ -743,6 +743,10 @@ export interface Homepage {
           }
         | {
             heading?: string | null;
+            /**
+             * Large statement above the tiles — words light up while scrolling.
+             */
+            statement?: string | null;
             items?:
               | {
                   value: string;
@@ -1084,6 +1088,7 @@ export interface HomepageSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
+              statement?: T;
               items?:
                 | T
                 | {

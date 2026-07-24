@@ -1,9 +1,18 @@
 import { CountUp } from '@/components/sections/CountUp'
+import { WordReveal } from '@/components/sections/WordReveal'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 
 type Stat = { id?: string | null; value: string; label: string }
 
-export function StatsTiles({ heading, items }: { heading?: string | null; items: Stat[] }) {
+export function StatsTiles({
+  heading,
+  statement,
+  items,
+}: {
+  heading?: string | null
+  statement?: string | null
+  items: Stat[]
+}) {
   if (items.length === 0) return null
 
   return (
@@ -13,6 +22,12 @@ export function StatsTiles({ heading, items }: { heading?: string | null; items:
           <div className="text-center" data-reveal="up">
             <SectionLabel>{heading}</SectionLabel>
           </div>
+        )}
+        {statement && (
+          <WordReveal
+            text={statement}
+            className="ka-heading mx-auto mt-10 max-w-4xl text-center text-[clamp(1.5rem,3.2vw,2.5rem)] font-medium leading-snug tracking-tight"
+          />
         )}
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
           {items.map((stat, i) => (

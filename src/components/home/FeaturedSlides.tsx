@@ -25,7 +25,7 @@ export function FeaturedSlides({ slides }: { slides: Slide[] }) {
           const href =
             article && typeof article === 'object' && article.slug ? `/blog/${article.slug}` : null
           const heading = (
-            <h3 className="max-w-3xl text-[clamp(1.9rem,4.5vw,3.5rem)] font-medium uppercase leading-[1.05] tracking-tight text-shell-fg">
+            <h3 className="ka-heading max-w-3xl text-[clamp(1.9rem,4.5vw,3.5rem)] font-medium uppercase leading-[1.05] tracking-tight text-shell-fg">
               {slide.title}
             </h3>
           )
@@ -48,10 +48,10 @@ export function FeaturedSlides({ slides }: { slides: Slide[] }) {
                 {href ? <Link href={href}>{heading}</Link> : heading}
                 {slide.caption && (
                   <div className="max-w-sm border-l-2 border-accent pl-4 md:border-l-0 md:border-r-2 md:pl-0 md:pr-4 md:text-right">
-                    <p className="caps text-xs font-semibold tracking-widest text-accent-soft">
+                    <p className="caps text-sm font-semibold tracking-widest text-accent-soft">
                       /{String(i + 1).padStart(2, '0')}
                     </p>
-                    <p className="mt-2 text-base leading-relaxed text-shell-fg/85">{slide.caption}</p>
+                    <p className="mt-2 text-lg leading-relaxed text-shell-fg/90">{slide.caption}</p>
                   </div>
                 )}
               </div>

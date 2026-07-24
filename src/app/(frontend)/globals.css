@@ -97,11 +97,15 @@ summary {
 }
 html[lang='ka'] .caps {
   text-transform: none;
-  font-family: var(--font-ka-caps), var(--font-cormorant), serif;
+  font-family: var(--font-cormorant), var(--font-ka-caps), serif;
 }
 
 html[lang='ka'] .newsletter-giant {
   font-size: clamp(1.5rem, 4.5vw, 3.75rem);
+}
+
+html[lang='ka'] .ka-heading {
+  line-height: 1.25;
 }
 
 .vertical-next {

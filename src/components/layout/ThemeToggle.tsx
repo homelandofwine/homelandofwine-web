@@ -26,20 +26,30 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={dark}
       onClick={toggle}
       aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-      className="grid h-8 w-8 place-items-center rounded-full text-shell-fg/70 transition-colors hover:text-shell-fg"
+      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 ${
+        dark ? 'bg-shell-soft' : 'bg-shell-fg/25'
+      }`}
     >
-      {dark ? (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
-          <circle cx="12" cy="12" r="4.2" />
-          <path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7" strokeLinecap="round" />
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
-          <path d="M20.4 14.2A8.4 8.4 0 0 1 9.8 3.6a8.4 8.4 0 1 0 10.6 10.6Z" strokeLinejoin="round" />
-        </svg>
-      )}
+      <span
+        className={`absolute grid h-5 w-5 place-items-center rounded-full bg-shell-fg shadow transition-transform duration-200 ${
+          dark ? 'translate-x-[22px]' : 'translate-x-0.5'
+        }`}
+      >
+        {dark ? (
+          <svg viewBox="0 0 24 24" fill="none" stroke="#141110" strokeWidth="2" className="h-3 w-3">
+            <path d="M20.4 14.2A8.4 8.4 0 0 1 9.8 3.6a8.4 8.4 0 1 0 10.6 10.6Z" strokeLinejoin="round" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" fill="none" stroke="#141110" strokeWidth="2" className="h-3 w-3">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" strokeLinecap="round" />
+          </svg>
+        )}
+      </span>
     </button>
   )
 }

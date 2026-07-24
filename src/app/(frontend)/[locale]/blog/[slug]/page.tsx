@@ -274,7 +274,7 @@ export default async function ArticlePage({
               )}
             </div>
             <h1
-              className="anim-rise mt-8 text-[clamp(2.25rem,5.5vw,4.25rem)] font-medium leading-[1.05] tracking-tight text-ink"
+              className="ka-heading anim-rise mt-8 text-[clamp(2.25rem,5.5vw,4.25rem)] font-medium leading-[1.05] tracking-tight text-ink"
               style={{ '--anim-delay': '0.12s' } as React.CSSProperties}
             >
               {article.title}
@@ -363,7 +363,7 @@ export default async function ArticlePage({
           {related.length > 0 && (
             <aside className="hidden py-20 lg:block">
               <div className="sticky top-36 space-y-6">
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted">
+                <p className="caps text-xs font-semibold text-muted">
                   {t('common.readMore')}
                 </p>
                 {related.map((a) => (
@@ -401,7 +401,7 @@ export default async function ArticlePage({
       {related.length > 0 && (
         <section className="border-t border-line">
           <div className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:py-20">
-            <h2 className="text-3xl tracking-tight text-ink">{t('common.readMore')}</h2>
+            <h2 className="caps text-3xl tracking-tight text-ink">{t('common.readMore')}</h2>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((a, i) => (
                 <ArticleCard key={a.id} article={a} locale={locale} index={i} reveal />

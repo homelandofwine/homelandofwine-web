@@ -72,7 +72,7 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
             </SubscribeButton>
           </div>
           <div className="flex flex-col gap-12 sm:flex-row sm:gap-20">
-            <nav className="grid grid-cols-2 content-start gap-x-12 gap-y-3" aria-label="Footer">
+            <nav className="grid grid-flow-col grid-cols-2 grid-rows-4 content-start gap-x-12 gap-y-3" aria-label="Footer">
               {navLinks.map(([href, label]) => (
                 <Link
                   key={href}

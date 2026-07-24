@@ -78,6 +78,14 @@ const Stats: Block = {
   fields: [
     { name: 'heading', type: 'text', localized: true },
     {
+      name: 'statement',
+      type: 'textarea',
+      localized: true,
+      admin: {
+        description: 'Large statement above the tiles — words light up while scrolling.',
+      },
+    },
+    {
       name: 'items',
       type: 'array',
       minRows: 2,

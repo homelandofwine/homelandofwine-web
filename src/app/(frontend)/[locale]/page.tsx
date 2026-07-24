@@ -86,7 +86,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <span>{t('common.latest')}</span>
             </div>
             <h1
-              className="anim-rise mt-6 max-w-5xl text-[clamp(2.5rem,7vw,5.5rem)] font-medium uppercase leading-[1.02] tracking-tight"
+              className="ka-heading anim-rise mt-6 max-w-5xl text-[clamp(2.5rem,7vw,5.5rem)] font-medium uppercase leading-[1.02] tracking-tight"
               style={{ '--anim-delay': '0.3s' } as React.CSSProperties}
             >
               <Link href={`/blog/${latest.slug}`}>{latest.title}</Link>

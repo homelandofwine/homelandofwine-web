@@ -32,8 +32,20 @@ export function MotionProvider() {
     targets.forEach((el) => io.observe(el))
 
     const slideSections = Array.from(document.querySelectorAll<HTMLElement>('[data-slides]'))
+    const hscrollSections = Array.from(document.querySelectorAll<HTMLElement>('[data-hscroll]'))
     const parallaxItems = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'))
     let raf = 0
+    const applyHscroll = () => {
+      for (const section of hscrollSections) {
+        const track = section.querySelector<HTMLElement>('[data-hscroll-track]')
+        if (!track || track.children.length < 2) continue
+        const rect = section.getBoundingClientRect()
+        const scrollable = rect.height - window.innerHeight
+        const progress = scrollable > 0 ? Math.min(1, Math.max(0, -rect.top / scrollable)) : 0
+        const panels = track.children.length
+        track.style.transform = `translateX(${(-progress * (panels - 1) * 100).toFixed(3)}vw)`
+      }
+    }
     const applyParallax = () => {
       for (const el of parallaxItems) {
         const rect = el.getBoundingClientRect()
@@ -45,6 +57,7 @@ export function MotionProvider() {
     const applySlides = () => {
       raf = 0
       applyParallax()
+      applyHscroll()
       for (const section of slideSections) {
         const slides = section.querySelectorAll<HTMLElement>('[data-slide]')
         if (slides.length === 0) continue
@@ -58,7 +71,7 @@ export function MotionProvider() {
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(applySlides)
     }
-    if (slideSections.length > 0 || parallaxItems.length > 0) {
+    if (slideSections.length > 0 || parallaxItems.length > 0 || hscrollSections.length > 0) {
       window.addEventListener('scroll', onScroll, { passive: true })
       applySlides()
     }

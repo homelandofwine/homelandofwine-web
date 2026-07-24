@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Link, usePathname } from '@/i18n/navigation'
 
@@ -49,13 +49,32 @@ export function Header() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [mobileCats, setMobileCats] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const lastY = useRef(0)
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY
+      const goingDown = y > lastY.current
+      if (y < 120) setHidden(false)
+      else if (goingDown && y - lastY.current > 4) setHidden(true)
+      else if (!goingDown && lastY.current - y > 4) setHidden(false)
+      lastY.current = y
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <div className="mx-auto flex max-w-[1760px] items-start justify-between gap-2 px-4 pt-4 sm:px-6 sm:pt-6">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
+        hidden && !open ? '-translate-y-[130%]' : 'translate-y-0'
+      }`}
+    >
+      <div className="mx-auto flex max-w-[1760px] items-stretch justify-between gap-2 px-4 pt-4 sm:px-6 sm:pt-6">
         <div className="flex items-center rounded-lg bg-accent px-2.5 py-2.5 shadow-lg">
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center px-2 py-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -127,7 +146,7 @@ export function Header() {
           </button>
         </div>
 
-        <SubscribeButton className="caps hidden rounded-md bg-accent px-5 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft sm:block xl:px-7 xl:py-4 xl:text-lg">
+        <SubscribeButton className="caps hidden items-center rounded-lg bg-accent px-5 text-sm font-semibold text-shell-fg shadow-lg transition-colors hover:bg-accent-soft sm:flex 2xl:px-7 2xl:text-base">
           {t('newsletter.subscribe')}
         </SubscribeButton>
       </div>

@@ -18,7 +18,8 @@
     "category": "Category",
     "publishedOn": "Published on",
     "author": "Author",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "next": "NEXT"
   },
   "home": {
     "articlesTitle": "Articles",

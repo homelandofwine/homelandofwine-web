@@ -25,7 +25,7 @@ export async function AboutStrip({
           <SectionLabel>{t('nav.about')}</SectionLabel>
         </div>
         <h2
-          className="mt-8 max-w-3xl text-[clamp(2.25rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight text-ink"
+          className="ka-heading mt-8 max-w-3xl text-[clamp(2.25rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight text-ink"
           data-reveal="up"
           style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}
         >

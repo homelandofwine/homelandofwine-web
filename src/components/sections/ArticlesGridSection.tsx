@@ -28,9 +28,6 @@ export async function ArticlesGridSection({
         data-reveal="up"
         style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}
       >
-        <h2 className="max-w-2xl text-[clamp(2.25rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight text-ink">
-          {heading || t('home.articlesTitle')}
-        </h2>
         <Link
           href="/blog"
           className="caps rounded-md bg-accent px-5 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft"

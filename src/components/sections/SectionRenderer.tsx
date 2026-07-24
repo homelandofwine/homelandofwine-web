@@ -55,7 +55,14 @@ export function SectionRenderer({
       case 'magazineCovers':
         return <MagazineCovers key={key} heading={block.heading} covers={block.covers ?? []} />
       case 'stats':
-        return <StatsTiles key={key} heading={block.heading} items={block.items ?? []} />
+        return (
+          <StatsTiles
+            key={key}
+            heading={block.heading}
+            statement={block.statement}
+            items={block.items ?? []}
+          />
+        )
       case 'articlesGrid':
         return (
           <ArticlesGridSection

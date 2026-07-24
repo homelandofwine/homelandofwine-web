@@ -115,7 +115,7 @@ export function NewsletterForm({
   return (
     <form onSubmit={onSubmit} className="w-full" noValidate>
       <div
-        className={`flex w-full ${compact ? 'max-w-md' : 'max-w-xl'} rounded-lg bg-shell-fg/10 p-1.5 backdrop-blur focus-within:bg-shell-fg/15`}
+        className={`flex w-full flex-col gap-2 sm:flex-row sm:gap-0 ${compact ? 'max-w-md' : 'max-w-xl'} rounded-lg bg-shell-fg/10 p-1.5 backdrop-blur focus-within:bg-shell-fg/15`}
       >
         <label className="sr-only" htmlFor={`newsletter-email-${compact}`}>
           {t('emailPlaceholder')}
@@ -132,7 +132,7 @@ export function NewsletterForm({
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="caps shrink-0 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft disabled:opacity-60"
+          className="caps w-full shrink-0 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft disabled:opacity-60 sm:w-auto"
         >
           {status === 'loading' ? '…' : t('subscribe')}
         </button>
