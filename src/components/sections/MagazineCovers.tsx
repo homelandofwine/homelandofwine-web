@@ -40,16 +40,16 @@ export function MagazineCovers({ heading, covers }: { heading?: string | null; c
 
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute left-2 top-1/2 z-0 -translate-y-1/2 text-[clamp(8rem,24vw,22rem)] font-medium leading-none text-shell-fg/10 sm:left-8"
+                  className="pointer-events-none absolute left-1/2 top-[10vh] z-0 -translate-x-1/2 text-[clamp(7rem,26vw,22rem)] font-medium leading-none text-shell-fg/15 sm:left-8 sm:top-1/2 sm:-translate-x-0 sm:-translate-y-1/2 sm:text-shell-fg/10"
                 >
                   {pad(i + 1)}
                 </span>
 
-                <div className="relative z-10 flex flex-col items-center px-4 pt-14">
+                <div className="relative z-10 flex flex-col items-center px-4 pt-[24vh] sm:pt-14">
                   <Img
                     media={cover.image}
                     sizes="(min-width: 1024px) 66vh, 92vw"
-                    className="max-h-[82vh] w-auto max-w-[92vw] rounded-sm object-contain shadow-2xl"
+                    className="max-h-[62vh] w-auto max-w-[92vw] rounded-sm object-contain shadow-2xl sm:max-h-[82vh]"
                   />
                 </div>
               </div>

@@ -170,7 +170,7 @@ export function Header() {
                       aria-label="Categories"
                       aria-expanded={mobileCats}
                       onClick={() => setMobileCats((v) => !v)}
-                      className="grid h-9 w-9 place-items-center rounded-full border border-shell-line text-shell-fg"
+                      className="grid h-12 w-12 scale-[2] place-items-center text-shell-fg"
                     >
                       <Chevron open={mobileCats} />
                     </button>

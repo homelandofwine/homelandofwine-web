@@ -88,6 +88,20 @@ summary {
   cursor: pointer;
 }
 
+:root {
+  interpolate-size: allow-keywords;
+}
+.faq-item::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+    content-visibility 0.45s allow-discrete;
+}
+.faq-item[open]::details-content {
+  block-size: auto;
+}
+
 /* Caps system: English gets a case transform; Georgian gets the Mtavruli-form
    font instead (BPG caps fonts draw capital letterforms at normal codepoints,
    and case-mapping to U+1C90 would fall out of the font). */

@@ -65,7 +65,7 @@ export function NewsletterModal() {
         onClick={() => setOpen(false)}
         className="absolute inset-0 cursor-default bg-black/60 backdrop-blur-sm"
       />
-      <div className="relative w-full max-w-md rounded-lg bg-shell p-8 text-shell-fg shadow-2xl sm:p-10">
+      <div className="relative w-full max-w-[calc(100vw-2rem)] rounded-lg bg-shell p-6 text-shell-fg shadow-2xl sm:max-w-md sm:p-10">
         <button
           type="button"
           onClick={() => setOpen(false)}

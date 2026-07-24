@@ -14,7 +14,7 @@ export function Faq({ heading, items }: { heading: string; items: FaqItem[] }) {
           </div>
           <div data-reveal="up" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
             {items.map((item, i) => (
-              <details key={item.id ?? i} className="group border-b border-line py-6">
+              <details key={item.id ?? i} className="faq-item group border-b border-line py-6">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-xl tracking-tight text-ink sm:text-2xl [&::-webkit-details-marker]:hidden">
                   {item.question}
                   <span

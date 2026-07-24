@@ -39,6 +39,7 @@ export function DigitRoll({ value, className }: { value: string; className?: str
           )
         }
         const delay = digitOrdinals[i] * 90
+        const fromBottom = digitOrdinals[i] % 2 === 1
         return (
           <span
             key={i}
@@ -49,16 +50,23 @@ export function DigitRoll({ value, className }: { value: string; className?: str
             <span
               className="flex flex-col motion-reduce:!transform-none"
               style={{
-                transform: on ? 'translateY(0)' : 'translateY(-90.9091%)',
+                transform: on
+                  ? fromBottom
+                    ? 'translateY(-90.9091%)'
+                    : 'translateY(0)'
+                  : fromBottom
+                    ? 'translateY(0)'
+                    : 'translateY(-90.9091%)',
                 transition: `transform 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms`,
               }}
             >
-              <span style={{ height: '1.1em', lineHeight: '1.1em' }}>{ch}</span>
+              {!fromBottom && <span style={{ height: '1.1em', lineHeight: '1.1em' }}>{ch}</span>}
               {REEL.map((d) => (
                 <span key={d} style={{ height: '1.1em', lineHeight: '1.1em' }}>
                   {d}
                 </span>
               ))}
+              {fromBottom && <span style={{ height: '1.1em', lineHeight: '1.1em' }}>{ch}</span>}
             </span>
           </span>
         )
