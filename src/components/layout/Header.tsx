@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, usePathname } from '@/i18n/navigation'
 
 import { SubscribeButton } from '@/components/newsletter/SubscribeButton'
+import { SearchOverlay } from '@/components/search/SearchOverlay'
 
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { ThemeToggle } from './ThemeToggle'
@@ -49,6 +50,7 @@ export function Header() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [mobileCats, setMobileCats] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
   const lastY = useRef(0)
 
@@ -69,12 +71,13 @@ export function Header() {
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
         hidden && !open ? '-translate-y-[130%]' : 'translate-y-0'
       }`}
     >
-      <div className="mx-auto flex max-w-[1760px] items-stretch justify-between gap-2 px-4 pt-4 sm:px-6 sm:pt-6">
+      <div className="mx-auto flex max-w-[1760px] items-center justify-between gap-2 px-4 pt-4 sm:px-6 sm:pt-6">
         <div className="flex items-center rounded-lg bg-accent px-2.5 py-2.5 shadow-lg">
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center px-2 py-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -146,9 +149,32 @@ export function Header() {
           </button>
         </div>
 
-        <SubscribeButton className="caps hidden items-center rounded-lg bg-accent px-5 text-sm font-semibold text-shell-fg shadow-lg transition-colors hover:bg-accent-soft sm:flex 2xl:px-7 2xl:text-base">
-          {t('newsletter.subscribe')}
-        </SubscribeButton>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            aria-label={t('search.title')}
+            onClick={() => {
+              setOpen(false)
+              setSearchOpen(true)
+            }}
+            className="grid h-11 w-11 place-items-center rounded-lg bg-accent text-shell-fg shadow-lg transition-colors hover:bg-accent-soft 2xl:h-[3.25rem] 2xl:w-[3.25rem]"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              aria-hidden="true"
+              className="h-5 w-5"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+            </svg>
+          </button>
+          <SubscribeButton className="caps hidden h-11 items-center rounded-lg bg-accent px-5 text-sm font-semibold text-shell-fg shadow-lg transition-colors hover:bg-accent-soft sm:flex 2xl:h-[3.25rem] 2xl:px-7 2xl:text-base">
+            {t('newsletter.subscribe')}
+          </SubscribeButton>
+        </div>
       </div>
 
       {open && (
@@ -209,5 +235,7 @@ export function Header() {
         </div>
       )}
     </header>
+    <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+    </>
   )
 }

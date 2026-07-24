@@ -88,6 +88,13 @@ summary {
   cursor: pointer;
 }
 
+/* The search overlay has its own styled close button */
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 /* Caps system: English gets a case transform; Georgian gets the Mtavruli-form
    font instead (BPG caps fonts draw capital letterforms at normal codepoints,
    and case-mapping to U+1C90 would fall out of the font). */

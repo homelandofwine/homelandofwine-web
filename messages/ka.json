@@ -21,6 +21,13 @@
     "gallery": "გალერეა",
     "next": "შემდეგი სტატია"
   },
+  "search": {
+    "title": "ძებნა",
+    "placeholder": "მოძებნეთ სტატიები…",
+    "noResults": "სტატია ვერ მოიძებნა.",
+    "resultsFor": "ძიების შედეგები:",
+    "viewAll": "ყველა შედეგის ნახვა"
+  },
   "home": {
     "articlesTitle": "სტატიები",
     "partnersTitle": "პარტნიორები",

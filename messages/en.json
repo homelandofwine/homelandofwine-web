@@ -21,6 +21,13 @@
     "gallery": "Gallery",
     "next": "NEXT ARTICLE"
   },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search articles…",
+    "noResults": "No articles found.",
+    "resultsFor": "Results for",
+    "viewAll": "VIEW ALL RESULTS"
+  },
   "home": {
     "articlesTitle": "Articles",
     "partnersTitle": "Partners",

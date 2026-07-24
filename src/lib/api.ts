@@ -111,6 +111,52 @@ export const getArticles = (
     { revalidate: 600, tags: [TAGS.articles] },
   )()
 
+// Uncached on purpose: the query space is unbounded, so caching would only
+// pollute the data cache. Matches titles in BOTH locales so an English-only
+// article is still found from the ka site (where it renders via fallback).
+export async function searchArticles(locale: Locale, query: string, limit = 24) {
+  const payload = await payloadClient()
+  const other: Locale = locale === 'ka' ? 'en' : 'ka'
+  const [native, foreign] = await Promise.all([
+    payload.find({
+      collection: 'articles',
+      locale,
+      depth: 1,
+      limit,
+      sort: '-publishedAt',
+      where: { _status: { equals: 'published' }, title: { like: query } },
+    }),
+    payload.find({
+      collection: 'articles',
+      locale: other,
+      fallbackLocale: false,
+      depth: 0,
+      limit,
+      select: { slug: true },
+      where: { _status: { equals: 'published' }, title: { like: query } },
+    }),
+  ])
+  const seen = new Set(native.docs.map((d) => d.id))
+  const extraIds = foreign.docs.map((d) => d.id).filter((id) => !seen.has(id))
+  const extras = extraIds.length
+    ? (
+        await payload.find({
+          collection: 'articles',
+          locale,
+          depth: 1,
+          limit,
+          where: { id: { in: extraIds }, _status: { equals: 'published' } },
+        })
+      ).docs
+    : []
+  return [...native.docs, ...extras]
+    .filter((d) => Boolean(d.slug && d.title))
+    .sort(
+      (a, b) => new Date(b.publishedAt ?? 0).getTime() - new Date(a.publishedAt ?? 0).getTime(),
+    )
+    .slice(0, limit)
+}
+
 export const getArticleBySlug = (locale: Locale, slug: string) =>
   unstable_cache(
     async () => {
