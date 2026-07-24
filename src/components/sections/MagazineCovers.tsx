@@ -40,7 +40,7 @@ export function MagazineCovers({ heading, covers }: { heading?: string | null; c
 
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute left-1/2 top-[10vh] z-0 -translate-x-1/2 text-[clamp(7rem,26vw,22rem)] font-medium leading-none text-shell-fg/15 sm:left-8 sm:top-1/2 sm:-translate-x-0 sm:-translate-y-1/2 sm:text-shell-fg/10"
+                  className="pointer-events-none absolute left-1/2 top-[36vh] z-0 -translate-x-1/2 -translate-y-1/2 text-[clamp(7rem,26vw,22rem)] font-medium leading-none text-shell-fg/15 sm:left-8 sm:top-1/2 sm:-translate-x-0 sm:text-shell-fg/10"
                 >
                   {pad(i + 1)}
                 </span>

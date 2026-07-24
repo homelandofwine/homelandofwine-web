@@ -10,7 +10,6 @@ import { ShareButtons } from '@/components/article/ShareButtons'
 import { SetAlternates } from '@/components/layout/AlternateLinks'
 import { DraftBanner } from '@/components/layout/DraftBanner'
 import { Img } from '@/components/media/Img'
-import { NewsletterForm } from '@/components/newsletter/NewsletterForm'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { Link } from '@/i18n/navigation'
 import { type Locale } from '@/i18n/routing'
@@ -412,16 +411,6 @@ export default async function ArticlePage({
         </section>
       )}
 
-      <section id="newsletter" className="bg-shell text-shell-fg">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-start gap-8 px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h2 className="text-3xl font-medium uppercase tracking-tight">
-              {t('newsletter.title')}
-            </h2>
-          </div>
-          <NewsletterForm compact />
-        </div>
-      </section>
     </main>
   )
 }

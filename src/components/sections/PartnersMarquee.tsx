@@ -40,12 +40,12 @@ export async function PartnersMarquee({
             {[0, 1].map((copy) => (
               <div
                 key={copy}
-                className="flex shrink-0 items-center gap-24 pr-24"
+                className="flex shrink-0 items-center gap-10 pr-10 sm:gap-24 sm:pr-24"
                 aria-hidden={copy === 1 ? 'true' : undefined}
               >
                 {row.map((p, i) => {
                   const logo = (
-                    <span className="flex h-32 w-80 items-center justify-center">
+                    <span className="flex h-20 w-44 items-center justify-center sm:h-32 sm:w-80">
                       <Img
                         media={p.logo}
                         sizes="320px"
