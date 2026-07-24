@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     articles: Article;
+    authors: Author;
     categories: Category;
     media: Media;
     subscribers: Subscriber;
@@ -80,6 +81,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
@@ -169,7 +171,7 @@ export interface Article {
   } | null;
   coverImage: number | Media;
   category: number | Category;
-  author?: (number | null) | User;
+  author?: (number | null) | Author;
   publishedAt: string;
   /**
    * URL name. Leave empty to generate from the title.
@@ -293,6 +295,52 @@ export interface Category {
   createdAt: string;
 }
 /**
+ * Article authors — no account or login needed, just a name and photo.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  /**
+   * Public author name shown with articles.
+   */
+  name: string;
+  /**
+   * Public title shown next to the name, e.g. "Wine writer", "Master of Oenology".
+   */
+  role?: string | null;
+  /**
+   * Author photo — shown in bylines. Square images work best.
+   */
+  avatar?: (number | null) | Media;
+  /**
+   * Short author bio shown under articles — mention wine credentials if any (builds trust with readers and Google).
+   */
+  bio?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * People subscribed to the newsletter. Managed automatically by the website forms.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers".
+ */
+export interface Subscriber {
+  id: number;
+  email: string;
+  status: 'active' | 'unsubscribed' | 'bounced';
+  /**
+   * Language of the site when they subscribed.
+   */
+  locale?: ('ka' | 'en') | null;
+  subscribedAt?: string | null;
+  unsubscribedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -334,25 +382,6 @@ export interface User {
   collection: 'users';
 }
 /**
- * People subscribed to the newsletter. Managed automatically by the website forms.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "subscribers".
- */
-export interface Subscriber {
-  id: number;
-  email: string;
-  status: 'active' | 'unsubscribed' | 'bounced';
-  /**
-   * Language of the site when they subscribed.
-   */
-  locale?: ('ka' | 'en') | null;
-  subscribedAt?: string | null;
-  unsubscribedAt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -379,6 +408,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'articles';
         value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'authors';
+        value: number | Author;
       } | null)
     | ({
         relationTo: 'categories';
@@ -477,6 +510,18 @@ export interface ArticlesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  avatar?: T;
+  bio?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

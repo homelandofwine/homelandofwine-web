@@ -50,11 +50,12 @@ export function FaqItem({ question, answer }: { question: string; answer: string
   }
 
   return (
-    <details ref={detailsRef} className="border-b border-line py-6">
-      <summary
-        onClick={toggle}
-        className="flex cursor-pointer list-none items-center justify-between gap-6 text-xl tracking-tight text-ink sm:text-2xl [&::-webkit-details-marker]:hidden"
-      >
+    <details
+      ref={detailsRef}
+      onClick={toggle}
+      className="cursor-pointer select-none border-b border-line py-6"
+    >
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-xl tracking-tight text-ink sm:text-2xl [&::-webkit-details-marker]:hidden">
         {question}
         <span
           aria-hidden="true"

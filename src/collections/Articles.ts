@@ -81,7 +81,7 @@ export const Articles: CollectionConfig = {
     {
       name: 'author',
       type: 'relationship',
-      relationTo: 'users',
+      relationTo: 'authors',
       admin: {
         position: 'sidebar',
       },

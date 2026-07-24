@@ -30,9 +30,11 @@ export async function PartnersMarquee({
 
   return (
     <section className="border-b border-line">
-      <div className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6" data-reveal="fade">
-        <h2 className="caps text-center text-3xl tracking-tight text-ink sm:text-4xl">{title}</h2>
-        <div className="marquee mt-12" aria-label={title}>
+      <div className="py-16" data-reveal="fade">
+        <h2 className="caps px-4 text-center text-3xl tracking-tight text-ink sm:px-6 sm:text-4xl">
+          {title}
+        </h2>
+        <div className="marquee mt-12 w-full" aria-label={title}>
           <div
             className="marquee-track"
             style={{ '--marquee-duration': duration } as React.CSSProperties}

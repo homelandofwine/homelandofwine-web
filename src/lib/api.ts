@@ -111,6 +111,23 @@ export const getArticles = (
     { revalidate: 600, tags: [TAGS.articles] },
   )()
 
+// Every query word must match the title, but each word also matches on its
+// stem (progressively shortened prefixes, down to 4 characters) so that
+// "Wines" finds "Wine", and Georgian case endings ("ღვინის") still find
+// "ღვინო…" titles.
+function titleWhere(query: string) {
+  const words = query.split(/\s+/).filter(Boolean).slice(0, 6)
+  return {
+    and: words.map((word) => {
+      const variants = [word]
+      for (let len = word.length - 1; len >= Math.max(4, word.length - 3); len--) {
+        variants.push(word.slice(0, len))
+      }
+      return { or: variants.map((v) => ({ title: { like: v } })) }
+    }),
+  }
+}
+
 // Uncached on purpose: the query space is unbounded, so caching would only
 // pollute the data cache. Matches titles in BOTH locales so an English-only
 // article is still found from the ka site (where it renders via fallback).
@@ -124,7 +141,7 @@ export async function searchArticles(locale: Locale, query: string, limit = 24) 
       depth: 1,
       limit,
       sort: '-publishedAt',
-      where: { _status: { equals: 'published' }, title: { like: query } },
+      where: { _status: { equals: 'published' }, ...titleWhere(query) },
     }),
     payload.find({
       collection: 'articles',
@@ -133,7 +150,7 @@ export async function searchArticles(locale: Locale, query: string, limit = 24) 
       depth: 0,
       limit,
       select: { slug: true },
-      where: { _status: { equals: 'published' }, title: { like: query } },
+      where: { _status: { equals: 'published' }, ...titleWhere(query) },
     }),
   ])
   const seen = new Set(native.docs.map((d) => d.id))
@@ -162,10 +179,11 @@ export const getArticleBySlug = (locale: Locale, slug: string) =>
     async () => {
       const payload = await payloadClient()
       const otherLocale: Locale = locale === 'ka' ? 'en' : 'ka'
+      // depth 2 so author.avatar (a relation on a relation) is populated
       const { docs } = await payload.find({
         collection: 'articles',
         locale,
-        depth: 1,
+        depth: 2,
         limit: 1,
         where: { slug: { equals: slug }, _status: { equals: 'published' } },
       })
@@ -186,7 +204,7 @@ export const getArticleBySlug = (locale: Locale, slug: string) =>
             collection: 'articles',
             id: byOtherSlug[0].id,
             locale,
-            depth: 1,
+            depth: 2,
           })
           if (doc?.title) article = doc
         }

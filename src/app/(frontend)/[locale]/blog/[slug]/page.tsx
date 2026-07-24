@@ -29,7 +29,7 @@ import {
   SITE_URL,
   categoryPath,
 } from '@/lib/seo'
-import type { Category, Media, User } from '@/payload-types'
+import type { Author, Category, Media } from '@/payload-types'
 
 export async function generateMetadata({
   params,
@@ -110,7 +110,7 @@ export default async function ArticlePage({
 
   const settings = await getSettings(locale)
   const cover = article.coverImage as Media | null
-  const author = article.author as User | null
+  const author = article.author as Author | null
 
   const categoryId = category && typeof category === 'object' ? category.id : undefined
   const related = categoryId
@@ -254,12 +254,12 @@ export default async function ArticlePage({
                 {formatDate(article.publishedAt, locale)}
               </time>
               {authorName && (
-                <span className="flex items-center gap-2 text-muted">
+                <span className="flex items-center gap-3 text-muted">
                   {authorAvatar && (
                     <Img
                       media={authorAvatar}
-                      sizes="24px"
-                      className="h-6 w-6 rounded-full object-cover"
+                      sizes="48px"
+                      className="h-12 w-12 rounded-full object-cover"
                     />
                   )}
                   {authorName}
@@ -331,8 +331,8 @@ export default async function ArticlePage({
                 {authorAvatar && (
                   <Img
                     media={authorAvatar}
-                    sizes="56px"
-                    className="h-14 w-14 shrink-0 rounded-full object-cover"
+                    sizes="100px"
+                    className="h-20 w-20 shrink-0 rounded-full object-cover sm:h-[100px] sm:w-[100px]"
                   />
                 )}
                 <div>

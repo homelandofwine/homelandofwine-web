@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Articles } from './collections/Articles'
+import { Authors } from './collections/Authors'
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Subscribers } from './collections/Subscribers'
@@ -40,7 +41,7 @@ export default buildConfig({
     defaultLocale: 'en',
     fallback: true,
   },
-  collections: [Articles, Categories, Media, Subscribers, Users],
+  collections: [Articles, Authors, Categories, Media, Subscribers, Users],
   globals: [
     SiteSettings,
     Homepage,

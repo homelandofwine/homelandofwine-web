@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
 
 import type { Locale } from '@/i18n/routing'
 import { getContactPage } from '@/lib/api'
@@ -31,7 +31,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   const locale = l as Locale
   setRequestLocale(locale)
 
-  const [contact, t] = await Promise.all([getContactPage(locale), getTranslations({ locale })])
+  const contact = await getContactPage(locale)
 
   const instagramUrl = contact.instagram
     ? contact.instagram.startsWith('http')
@@ -110,7 +110,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
     <main>
       <header>
         <div className="mx-auto max-w-3xl px-4 pb-14 pt-40 text-center sm:px-6">
-          <h1 className="anim-rise text-[clamp(3rem,8vw,5.5rem)] font-medium leading-none tracking-tight text-ink">
+          <h1 className="anim-rise break-words text-[clamp(2rem,9.5vw,5.5rem)] font-medium leading-none tracking-tight text-ink">
             {contact.heading}
           </h1>
           {contact.intro && (

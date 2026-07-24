@@ -24,6 +24,12 @@ export const revalidateArticlesDelete: CollectionAfterDeleteHook = ({ doc }) => 
   return doc
 }
 
+// Author edits (name, photo, role) surface inside cached article pages
+export const revalidateArticlesAll: CollectionAfterChangeHook = ({ doc }) => {
+  safeRevalidate(['articles'])
+  return doc
+}
+
 export const revalidateCategories: CollectionAfterChangeHook = ({ doc }) => {
   safeRevalidate(['categories', 'articles'])
   return doc
