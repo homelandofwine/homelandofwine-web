@@ -77,7 +77,10 @@ export const getContactPage = (locale: Locale) =>
     { revalidate: 600, tags: [TAGS.contact] },
   )()
 
-export const getArticles = (locale: Locale, opts?: { limit?: number; categoryId?: string | number }) =>
+export const getArticles = (
+  locale: Locale,
+  opts?: { limit?: number; categoryId?: string | number; nativeOnly?: boolean },
+) =>
   unstable_cache(
     async () => {
       const payload = await payloadClient()
@@ -87,15 +90,24 @@ export const getArticles = (locale: Locale, opts?: { limit?: number; categoryId?
         depth: 1,
         limit: opts?.limit ?? 100,
         sort: '-publishedAt',
+        ...(opts?.nativeOnly ? { fallbackLocale: false as const } : {}),
         where: {
           _status: { equals: 'published' },
           ...(opts?.categoryId ? { category: { equals: opts.categoryId } } : {}),
         },
       })
-      result.docs = result.docs.filter((d) => Boolean(d.slug))
+      result.docs = result.docs.filter((d) =>
+        opts?.nativeOnly ? Boolean(d.slug && d.title && d.excerpt) : Boolean(d.slug),
+      )
       return result
     },
-    ['articles', locale, String(opts?.limit ?? 100), String(opts?.categoryId ?? 'all')],
+    [
+      'articles',
+      locale,
+      String(opts?.limit ?? 100),
+      String(opts?.categoryId ?? 'all'),
+      opts?.nativeOnly ? 'native' : 'any',
+    ],
     { revalidate: 600, tags: [TAGS.articles] },
   )()
 

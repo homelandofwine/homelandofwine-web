@@ -111,6 +111,7 @@ async function linkSteps(payload: Payload) {
   const bySlug: Record<string, string> = {
     shaverde: 'shaverde-heritage-continued',
     argvani: 'from-dream-to-wine-argvani-cellar',
+    'dream to wine': 'from-dream-to-wine-argvani-cellar',
   }
   let changed = false
   for (const item of stepsBlock.items) {

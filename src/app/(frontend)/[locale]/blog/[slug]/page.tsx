@@ -22,7 +22,14 @@ import {
   getSettings,
 } from '@/lib/api'
 import { formatDate } from '@/lib/format'
-import { absoluteUrl, localePath, ogLocale, pageAlternates, SITE_URL, categoryPath } from '@/lib/seo'
+import {
+  absoluteUrl,
+  localePath,
+  ogLocale,
+  pageAlternates,
+  SITE_URL,
+  categoryPath,
+} from '@/lib/seo'
 import type { Category, Media, User } from '@/payload-types'
 
 export async function generateMetadata({
@@ -37,8 +44,7 @@ export async function generateMetadata({
 
   const { article, alternateSlug, otherLocale } = result
   const cover = article.coverImage as Media | null
-  const ogImage =
-    (typeof cover === 'object' && (cover?.sizes?.og?.url ?? cover?.url)) || undefined
+  const ogImage = (typeof cover === 'object' && (cover?.sizes?.og?.url ?? cover?.url)) || undefined
 
   const paths: { ka?: string; en?: string } = { [locale]: `/blog/${slug}` }
   if (alternateSlug) paths[otherLocale] = `/blog/${alternateSlug}`
@@ -69,11 +75,7 @@ export async function generateMetadata({
 
 export const dynamicParams = true
 
-export async function generateStaticParams({
-  params: { locale },
-}: {
-  params: { locale: string }
-}) {
+export async function generateStaticParams({ params: { locale } }: { params: { locale: string } }) {
   const docs = await getAllArticleSlugs()
   return docs
     .map((d) => d.slug?.[locale as Locale] ?? (locale === 'ka' ? d.slug?.en : undefined))
@@ -113,7 +115,7 @@ export default async function ArticlePage({
 
   const categoryId = category && typeof category === 'object' ? category.id : undefined
   const related = categoryId
-    ? (await getArticles(locale, { limit: 4, categoryId })).docs
+    ? (await getArticles(locale, { limit: 6, categoryId, nativeOnly: true })).docs
         .filter((a) => a.id !== article.id)
         .slice(0, 3)
     : []
@@ -205,8 +207,18 @@ export default async function ArticlePage({
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: t('nav.home'), item: absoluteUrl(locale, '/') },
-            { '@type': 'ListItem', position: 2, name: t('nav.blog'), item: absoluteUrl(locale, '/blog') },
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: t('nav.home'),
+              item: absoluteUrl(locale, '/'),
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: t('nav.blog'),
+              item: absoluteUrl(locale, '/blog'),
+            },
             ...(category && typeof category === 'object'
               ? [
                   {
@@ -277,7 +289,10 @@ export default async function ArticlePage({
               className="anim-rise mt-8 flex justify-center"
               style={{ '--anim-delay': '0.3s' } as React.CSSProperties}
             >
-              <ShareButtons url={absoluteUrl(locale, `/blog/${slug}`)} title={article.title ?? ''} />
+              <ShareButtons
+                url={absoluteUrl(locale, `/blog/${slug}`)}
+                title={article.title ?? ''}
+              />
             </div>
           </div>
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
@@ -370,7 +385,11 @@ export default async function ArticlePage({
       </article>
 
       {related[0]?.slug && (
-        <Link href={`/blog/${related[0].slug}`} className="vertical-next caps" title={related[0].title ?? ''}>
+        <Link
+          href={`/blog/${related[0].slug}`}
+          className="vertical-next caps"
+          title={related[0].title ?? ''}
+        >
           {related[0].title}
         </Link>
       )}
@@ -394,7 +413,6 @@ export default async function ArticlePage({
             <h2 className="text-3xl font-medium uppercase tracking-tight">
               {t('newsletter.title')}
             </h2>
-            <p className="mt-3 text-sm text-shell-dim">{t('newsletter.description')}</p>
           </div>
           <NewsletterForm compact />
         </div>

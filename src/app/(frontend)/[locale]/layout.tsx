@@ -48,7 +48,7 @@ const georgianDisplay = localFont({
 })
 
 const georgianCaps = localFont({
-  src: '../../../fonts/BPGNinoMedium.ttf',
+  src: '../../../fonts/BPGNinoMtavruli.ttf',
   variable: '--font-ka-caps',
   display: 'swap',
 })

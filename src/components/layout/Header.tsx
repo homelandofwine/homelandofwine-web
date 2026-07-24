@@ -55,14 +55,14 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className="mx-auto flex max-w-[1400px] items-start justify-between gap-4 px-4 pt-4 sm:px-6 sm:pt-6">
+      <div className="mx-auto flex max-w-[1760px] items-start justify-between gap-2 px-4 pt-4 sm:px-6 sm:pt-6">
         <div className="flex items-center rounded-lg bg-accent px-2.5 py-2.5 shadow-lg">
-          <Link href="/" onClick={() => setOpen(false)} className="flex items-center px-3 py-1">
+          <Link href="/" onClick={() => setOpen(false)} className="flex items-center px-2 py-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/logo-cream.png"
               alt="Homeland of Wine Magazine"
-              className="h-11 w-auto xl:h-[3.25rem]"
+              className="h-9 w-auto 2xl:h-[3.25rem]"
             />
           </Link>
 
@@ -72,7 +72,7 @@ export function Header() {
                 <div key={item.key} className="group relative">
                   <Link
                     href={item.href}
-                    className={`caps inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors hover:text-shell-fg xl:text-base ${
+                    className={`caps inline-flex items-center gap-1 whitespace-nowrap px-2 py-2 text-sm font-medium transition-colors hover:text-shell-fg 2xl:px-4 2xl:text-base ${
                       isActive(item.href) ? 'text-shell-fg' : 'text-shell-fg/80'
                     }`}
                   >
@@ -97,7 +97,7 @@ export function Header() {
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={`caps px-4 py-2 text-sm font-medium transition-colors hover:text-shell-fg xl:text-base ${
+                  className={`caps whitespace-nowrap px-2 py-2 text-sm font-medium transition-colors hover:text-shell-fg 2xl:px-4 2xl:text-base ${
                     isActive(item.href) ? 'text-shell-fg' : 'text-shell-fg/80'
                   }`}
                 >
@@ -105,7 +105,7 @@ export function Header() {
                 </Link>
               ),
             )}
-            <span className="ml-2 flex items-center gap-1.5 border-l border-shell-fg/25 pl-4 pr-2">
+            <span className="ml-1 flex items-center gap-1 border-l border-shell-fg/25 pl-2 pr-1">
               <LocaleSwitcher />
               <ThemeToggle />
             </span>
@@ -127,7 +127,7 @@ export function Header() {
           </button>
         </div>
 
-        <SubscribeButton className="caps hidden rounded-md bg-accent px-6 py-3.5 text-base font-semibold text-shell-fg transition-colors hover:bg-accent-soft sm:block xl:px-7 xl:py-4 xl:text-lg">
+        <SubscribeButton className="caps hidden rounded-md bg-accent px-5 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft sm:block xl:px-7 xl:py-4 xl:text-lg">
           {t('newsletter.subscribe')}
         </SubscribeButton>
       </div>
