@@ -1,6 +1,6 @@
 import { Resend } from 'resend'
 
-export const EMAIL_FROM = process.env.EMAIL_FROM ?? 'Homeland of Wine <onboarding@resend.dev>'
+export const EMAIL_FROM = process.env.EMAIL_FROM ?? 'Homeland of Wine Magazine <onboarding@resend.dev>'
 const EMAIL_REPLY_TO = process.env.EMAIL_REPLY_TO || undefined
 
 export type OutgoingEmail = {

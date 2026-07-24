@@ -11,13 +11,13 @@ import { LocaleSwitcher } from './LocaleSwitcher'
 import { ThemeToggle } from './ThemeToggle'
 
 const CATEGORY_MENU = [
-  ['main-feature', 'Main Feature'],
-  ['grape-varieties', 'Grape Varieties'],
-  ['wine-regions', 'Wine Regions'],
-  ['producers', 'Producers'],
-  ['georgian-wine-in-foreign-market', 'Georgian Wine in Foreign Market'],
-  ['food-and-wine', 'Food and Wine'],
-  ['food-and-travel', 'Food and Travel'],
+  ['main-feature', 'MAIN FEATURE'],
+  ['grape-varieties', 'GRAPE VARIETIES'],
+  ['wine-regions', 'WINE REGIONS'],
+  ['producers', 'PRODUCERS'],
+  ['georgian-wine-in-foreign-market', 'GEORGIAN WINE IN FOREIGN MARKET'],
+  ['food-and-wine', 'FOOD AND WINE'],
+  ['food-and-travel', 'FOOD AND TRAVEL'],
 ] as const
 
 const NAV = [

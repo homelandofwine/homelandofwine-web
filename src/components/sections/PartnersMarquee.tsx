@@ -31,7 +31,7 @@ export async function PartnersMarquee({
   return (
     <section className="border-b border-line">
       <div className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6" data-reveal="fade">
-        <h2 className="text-center text-3xl tracking-tight text-ink sm:text-4xl">{title}</h2>
+        <h2 className="caps text-center text-3xl tracking-tight text-ink sm:text-4xl">{title}</h2>
         <div className="marquee mt-12" aria-label={title}>
           <div
             className="marquee-track"

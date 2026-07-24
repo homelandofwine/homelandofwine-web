@@ -32,7 +32,7 @@ export function LocaleSwitcher() {
             type="button"
             onClick={() => switchTo(l)}
             aria-current={l === locale ? 'true' : undefined}
-            style={l === 'ka' ? { fontFamily: 'var(--font-ka-caps)' } : undefined}
+            style={l === 'ka' ? { fontFamily: 'var(--font-ka-caps)', textTransform: 'none' } : undefined}
             className={
               l === locale
                 ? 'cursor-default text-shell-fg'
