@@ -47,8 +47,8 @@ export async function generateMetadata({
     ? pageAlternates(locale, `/blog/${slug}`, paths)
     : { canonical: absoluteUrl(otherLocale, `/blog/${alternateSlug ?? slug}`) }
 
-  const title = article.seo?.metaTitle || article.title
-  const description = article.seo?.metaDescription || article.excerpt
+  const title = article.seo?.metaTitle || article.title || undefined
+  const description = article.seo?.metaDescription || article.excerpt || undefined
 
   return {
     title,
@@ -123,6 +123,11 @@ export default async function ArticlePage({
   const facts = (article.facts ?? []).filter((f) => f.label && f.value)
   const authorName = author && typeof author === 'object' ? author.name : null
   const authorBio = author && typeof author === 'object' ? author.bio : null
+  const authorRole = author && typeof author === 'object' ? author.role : null
+  const authorAvatar =
+    author && typeof author === 'object' && author.avatar && typeof author.avatar === 'object'
+      ? author.avatar
+      : null
 
   return (
     <main>
@@ -237,7 +242,19 @@ export default async function ArticlePage({
               <time dateTime={article.publishedAt} className="text-muted">
                 {formatDate(article.publishedAt, locale)}
               </time>
-              {authorName && <span className="text-muted">— {authorName}</span>}
+              {authorName && (
+                <span className="flex items-center gap-2 text-muted">
+                  {authorAvatar && (
+                    <Img
+                      media={authorAvatar}
+                      sizes="24px"
+                      className="h-6 w-6 rounded-full object-cover"
+                    />
+                  )}
+                  {authorName}
+                  {authorRole ? ` — ${authorRole}` : ''}
+                </span>
+              )}
               {isReview && (
                 <span className="rounded bg-accent px-2.5 py-1 font-semibold text-shell-fg">
                   {review!.rating} / {review!.bestRating ?? 100}
@@ -260,7 +277,7 @@ export default async function ArticlePage({
               className="anim-rise mt-8 flex justify-center"
               style={{ '--anim-delay': '0.3s' } as React.CSSProperties}
             >
-              <ShareButtons url={absoluteUrl(locale, `/blog/${slug}`)} title={article.title} />
+              <ShareButtons url={absoluteUrl(locale, `/blog/${slug}`)} title={article.title ?? ''} />
             </div>
           </div>
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
@@ -275,8 +292,8 @@ export default async function ArticlePage({
           </div>
         </header>
 
-        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:grid lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16">
-          <div className="mx-auto w-full max-w-3xl py-14 lg:py-20" data-reveal="up">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:grid lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-12">
+          <div className="w-full py-14 lg:py-20" data-reveal="up">
             <ArticleBody data={article.body as SerializedEditorState} />
             {facts.length > 0 && (
               <div className="mt-12 flex flex-wrap gap-2.5 border-t border-line pt-8">
@@ -292,20 +309,32 @@ export default async function ArticlePage({
               </div>
             )}
             {authorName && (
-              <div className="mt-14 rounded-lg bg-paper p-6 sm:p-8">
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-                  {t('common.author')}
-                </p>
-                <p className="mt-2 text-xl tracking-tight text-ink">{authorName}</p>
-                {authorBio && (
-                  <p className="mt-3 text-sm leading-relaxed text-muted">{authorBio}</p>
+              <div className="mt-14 flex items-start gap-5 rounded-lg bg-paper p-6 sm:p-8">
+                {authorAvatar && (
+                  <Img
+                    media={authorAvatar}
+                    sizes="56px"
+                    className="h-14 w-14 shrink-0 rounded-full object-cover"
+                  />
                 )}
+                <div>
+                  <p className="caps text-xs font-semibold tracking-widest text-muted">
+                    {t('common.author')}
+                  </p>
+                  <p className="mt-2 text-xl tracking-tight text-ink">
+                    {authorName}
+                    {authorRole ? <span className="text-muted"> — {authorRole}</span> : null}
+                  </p>
+                  {authorBio && (
+                    <p className="mt-3 text-sm leading-relaxed text-muted">{authorBio}</p>
+                  )}
+                </div>
               </div>
             )}
             <div className="mt-14 border-t border-line pt-8">
               <Link
                 href="/blog"
-                className="inline-block rounded-md bg-ink px-5 py-3 text-sm font-semibold text-page transition-colors hover:bg-ink-soft"
+                className="caps inline-block rounded-md bg-accent px-5 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft"
               >
                 {t('common.backToBlog')}
               </Link>
@@ -339,6 +368,12 @@ export default async function ArticlePage({
           )}
         </div>
       </article>
+
+      {related[0]?.slug && (
+        <Link href={`/blog/${related[0].slug}`} className="vertical-next caps" title={related[0].title ?? ''}>
+          {related[0].title}
+        </Link>
+      )}
 
       {related.length > 0 && (
         <section className="border-t border-line">

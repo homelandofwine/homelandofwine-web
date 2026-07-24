@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Head,
-  Hr,
   Html,
   Link,
   Preview,
@@ -11,36 +10,51 @@ import {
   Text,
 } from '@react-email/components'
 
+import { BRAND, CREAM, INK, LINE, MagazineFooter, MagazineHeader, MUTED, SERIF, WINE } from './brand'
+
 export function WelcomeEmail({
-  siteName,
   siteUrl,
   unsubscribeUrl,
 }: {
-  siteName: string
   siteUrl: string
   unsubscribeUrl: string
 }) {
+  const sectionLink = {
+    color: WINE,
+    fontFamily: SERIF,
+    fontSize: 14,
+    fontWeight: 700,
+    textDecoration: 'none',
+  }
   return (
     <Html lang="en">
       <Head />
-      <Preview>Welcome to {siteName} — the story of Georgian wine, in your inbox.</Preview>
-      <Body style={{ backgroundColor: '#f5f2ef', fontFamily: 'Georgia, serif', margin: 0, padding: '24px 0' }}>
-        <Container style={{ backgroundColor: '#ffffff', borderRadius: 8, overflow: 'hidden', maxWidth: 560 }}>
-          <Section style={{ backgroundColor: '#1b1717', padding: '28px 32px', textAlign: 'center' as const }}>
-            <Text style={{ color: '#f5f1ef', fontSize: 22, fontWeight: 700, margin: 0 }}>
-              {siteName}
-            </Text>
-          </Section>
-          <Section style={{ padding: '36px 32px' }}>
-            <Text style={{ color: '#141110', fontSize: 26, fontWeight: 700, margin: '0 0 14px', textAlign: 'center' as const }}>
+      <Preview>Welcome to {BRAND} — the story of Georgian wine, in your inbox.</Preview>
+      <Body style={{ backgroundColor: CREAM, fontFamily: SERIF, margin: 0, padding: '28px 0' }}>
+        <Container
+          style={{ backgroundColor: '#ffffff', borderRadius: 8, maxWidth: 600, overflow: 'hidden' }}
+        >
+          <MagazineHeader />
+          <Section style={{ padding: '40px 40px 24px' }}>
+            <Text
+              style={{
+                color: INK,
+                fontFamily: SERIF,
+                fontSize: 30,
+                fontWeight: 700,
+                lineHeight: 1.2,
+                margin: '0 0 16px',
+                textAlign: 'center' as const,
+              }}
+            >
               Gaumarjos — you’re in!
             </Text>
-            <Text style={{ color: '#6b6462', fontSize: 15, lineHeight: 1.7, margin: '0 0 10px' }}>
-              Welcome — we’re glad you found us. {siteName} tells the story of Georgian wine:
-              8,000 years of unbroken winemaking, autochthonous grape varieties, and the people
-              who make wine as a cultural act.
+            <Text style={{ color: MUTED, fontSize: 15, lineHeight: 1.7, margin: '0 0 12px' }}>
+              Welcome — we’re glad you found us. {BRAND} tells the story of Georgian wine: 8,000
+              years of unbroken winemaking, autochthonous grape varieties, and the people who make
+              wine as a cultural act.
             </Text>
-            <Text style={{ color: '#6b6462', fontSize: 15, lineHeight: 1.7, margin: '0 0 24px' }}>
+            <Text style={{ color: MUTED, fontSize: 15, lineHeight: 1.7, margin: '0 0 28px' }}>
               Whenever we publish a new feature, you’ll be the first to read it. Here’s a taste of
               what we’ll be pouring.
             </Text>
@@ -48,31 +62,44 @@ export function WelcomeEmail({
               <Button
                 href={`${siteUrl}/blog`}
                 style={{
-                  backgroundColor: '#993334',
+                  backgroundColor: WINE,
                   borderRadius: 6,
                   color: '#ffffff',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  padding: '12px 28px',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: 2,
+                  padding: '14px 28px',
                   textDecoration: 'none',
+                  textTransform: 'uppercase' as const,
                 }}
               >
                 Take a look around
               </Button>
             </Section>
-            <Hr style={{ borderColor: '#eee7e5', margin: '30px 0 16px' }} />
-            <Text style={{ color: '#6b6462', fontSize: 13, margin: '0 0 6px', textAlign: 'center' as const }}>
-              <Link href={`${siteUrl}/blog`} style={{ color: '#993334' }}>Articles</Link>
-              {'   ·   '}
-              <Link href={`${siteUrl}/about`} style={{ color: '#993334' }}>About the magazine</Link>
-            </Text>
-            <Text style={{ color: '#9a938a', fontSize: 12, lineHeight: 1.5, margin: '14px 0 0', textAlign: 'center' as const }}>
-              You are receiving this because you subscribed at {siteName}.{' '}
-              <Link href={unsubscribeUrl} style={{ color: '#9a938a', textDecoration: 'underline' }}>
-                Unsubscribe
-              </Link>
-            </Text>
+            <Section
+              style={{
+                borderTop: `1px solid ${LINE}`,
+                marginTop: 32,
+                paddingTop: 20,
+                textAlign: 'center' as const,
+              }}
+            >
+              <Text style={{ margin: 0 }}>
+                <Link href={`${siteUrl}/blog`} style={sectionLink}>
+                  The Magazine
+                </Link>
+                <span style={{ color: MUTED }}> · </span>
+                <Link href={`${siteUrl}/ambassador`} style={sectionLink}>
+                  Wine Ambassadors
+                </Link>
+                <span style={{ color: MUTED }}> · </span>
+                <Link href={`${siteUrl}/n-line-print`} style={sectionLink}>
+                  N Line Print
+                </Link>
+              </Text>
+            </Section>
           </Section>
+          <MagazineFooter siteUrl={siteUrl} unsubscribeUrl={unsubscribeUrl} />
         </Container>
       </Body>
     </Html>

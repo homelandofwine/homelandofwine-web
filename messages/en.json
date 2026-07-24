@@ -4,23 +4,23 @@
     "blog": "Articles",
     "about": "About",
     "contact": "Contact",
-    "ambassador": "Ambassador",
-    "nlineprint": "N Line Print",
-    "privacy": "Privacy Policy"
+    "ambassador": "Wine Ambassadors",
+    "nlineprint": "N LINE PRINT",
+    "privacy": "Privacy Policy",
+    "magazine": "HOMELAND OF WINE MAGAZINE"
   },
   "common": {
     "readArticle": "Read article",
     "readMore": "Read more",
     "latest": "Latest",
     "allArticles": "All articles",
-    "backToBlog": "Back to blog",
+    "backToBlog": "Back to articles",
     "category": "Category",
     "publishedOn": "Published on",
     "author": "Author",
     "gallery": "Gallery"
   },
   "home": {
-    "heroKicker": "From the homeland of wine",
     "articlesTitle": "Articles",
     "partnersTitle": "Partners",
     "moreFromBlog": "More from the blog",

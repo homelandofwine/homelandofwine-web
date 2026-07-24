@@ -147,12 +147,12 @@ export interface UserAuthOperations {
  */
 export interface Article {
   id: number;
-  title: string;
+  title?: string | null;
   /**
    * Short summary shown on cards, in search results and in the newsletter email.
    */
-  excerpt: string;
-  body: {
+  excerpt?: string | null;
+  body?: {
     root: {
       type: string;
       children: {
@@ -166,7 +166,7 @@ export interface Article {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   coverImage: number | Media;
   category: number | Category;
   author?: (number | null) | User;
@@ -302,6 +302,14 @@ export interface User {
    * Public author name shown with articles (never the email).
    */
   name?: string | null;
+  /**
+   * Public title shown next to the name, e.g. "Wine writer", "Master of Oenology".
+   */
+  role?: string | null;
+  /**
+   * Author photo — shown as a small circle in bylines. Square images work best.
+   */
+  avatar?: (number | null) | Media;
   /**
    * Short author bio shown under articles — mention wine credentials if any (builds trust with readers and Google).
    */
@@ -562,6 +570,8 @@ export interface SubscribersSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
+  avatar?: T;
   bio?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -782,6 +792,10 @@ export interface Homepage {
                   image?: (number | null) | Media;
                   title: string;
                   text: string;
+                  /**
+                   * Optional — clicking the step opens this article.
+                   */
+                  article?: (number | null) | Article;
                   id?: string | null;
                 }[]
               | null;
@@ -1108,6 +1122,7 @@ export interface HomepageSelect<T extends boolean = true> {
                     image?: T;
                     title?: T;
                     text?: T;
+                    article?: T;
                     id?: T;
                   };
               id?: T;

@@ -94,7 +94,7 @@ export function NewsletterForm({
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="mt-8 w-full rounded-md bg-accent px-6 py-4 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft disabled:opacity-60"
+          className="caps mt-8 w-full rounded-md bg-accent px-6 py-4 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft disabled:opacity-60"
         >
           {status === 'loading' ? '…' : t('subscribe')}
         </button>
@@ -132,7 +132,7 @@ export function NewsletterForm({
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="shrink-0 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft disabled:opacity-60"
+          className="caps shrink-0 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft disabled:opacity-60"
         >
           {status === 'loading' ? '…' : t('subscribe')}
         </button>

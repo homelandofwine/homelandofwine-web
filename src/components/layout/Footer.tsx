@@ -44,10 +44,10 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
 
   const navLinks = [
     ['/', t('nav.home')],
-    ['/blog', t('nav.blog')],
-    ['/ambassador', t('nav.ambassador')],
-    ['/n-line-print', t('nav.nlineprint')],
     ['/about', t('nav.about')],
+    ['/blog', t('nav.magazine')],
+    ['/n-line-print', t('nav.nlineprint')],
+    ['/ambassador', t('nav.ambassador')],
     ['/contact', t('nav.contact')],
     ['/privacy', t('nav.privacy')],
   ] as const
@@ -67,7 +67,7 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
             <p className="text-3xl font-medium leading-snug tracking-tight sm:text-4xl">
               {settings.footerTagline || t('footer.tagline')}
             </p>
-            <SubscribeButton className="mt-8 inline-block rounded-md bg-shell-fg px-5 py-3 text-sm font-semibold text-shell transition-colors hover:opacity-90">
+            <SubscribeButton className="caps mt-8 inline-block rounded-md bg-shell-fg px-5 py-3 text-sm font-semibold text-shell transition-colors hover:opacity-90">
               {t('newsletter.subscribe')}
             </SubscribeButton>
           </div>
@@ -77,7 +77,7 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
                 <Link
                   key={href}
                   href={href}
-                  className="text-sm text-shell-dim transition-colors hover:text-shell-fg"
+                  className="caps text-sm text-shell-dim transition-colors hover:text-shell-fg"
                 >
                   {label}
                 </Link>

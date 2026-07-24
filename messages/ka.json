@@ -4,23 +4,23 @@
     "blog": "სტატიები",
     "about": "ჩვენ შესახებ",
     "contact": "კონტაქტი",
-    "ambassador": "ამბასადორი",
-    "nlineprint": "N Line Print",
-    "privacy": "კონფიდენციალურობა"
+    "ambassador": "ღვინის ამბასადორები",
+    "nlineprint": "N LINE PRINT",
+    "privacy": "კონფიდენციალურობა",
+    "magazine": "HOMELAND OF WINE MAGAZINE"
   },
   "common": {
     "readArticle": "წაიკითხე სტატია",
     "readMore": "მეტის ნახვა",
     "latest": "უახლესი",
     "allArticles": "ყველა სტატია",
-    "backToBlog": "ბლოგზე დაბრუნება",
+    "backToBlog": "სტატიებზე დაბრუნება",
     "category": "კატეგორია",
     "publishedOn": "გამოქვეყნდა",
     "author": "ავტორი",
     "gallery": "გალერეა"
   },
   "home": {
-    "heroKicker": "ღვინის სამშობლოდან",
     "articlesTitle": "სტატიები",
     "partnersTitle": "პარტნიორები",
     "moreFromBlog": "მეტი ბლოგიდან",

@@ -42,7 +42,7 @@ export async function AboutStrip({
           </div>
           <Link
             href="/about"
-            className="shrink-0 rounded-md bg-ink px-5 py-3 text-sm font-semibold text-page transition-colors hover:bg-ink-soft"
+            className="caps shrink-0 self-start rounded-md bg-ink px-5 py-3 text-sm font-semibold text-page transition-colors hover:bg-ink-soft md:self-auto"
           >
             {t('home.aboutButton')}
           </Link>

@@ -45,11 +45,13 @@ export async function PartnersMarquee({
               >
                 {row.map((p, i) => {
                   const logo = (
-                    <Img
-                      media={p.logo}
-                      sizes="160px"
-                      className="h-20 w-auto max-w-none object-contain transition-transform hover:scale-105"
-                    />
+                    <span className="flex h-20 w-44 items-center justify-center">
+                      <Img
+                        media={p.logo}
+                        sizes="176px"
+                        className="max-h-full max-w-full object-contain transition-transform hover:scale-105"
+                      />
+                    </span>
                   )
                   return p.url ? (
                     <a

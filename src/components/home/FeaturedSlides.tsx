@@ -40,16 +40,19 @@ export function FeaturedSlides({ slides }: { slides: Slide[] }) {
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-shell via-shell/30 to-shell/40" />
 
-              <span className="absolute left-4 top-24 text-lg font-semibold text-shell-fg sm:left-6">
-                / {String(i + 1).padStart(2, '0')}
+              <span className="absolute left-4 top-28 text-[clamp(1.9rem,4.5vw,3.5rem)] font-medium leading-none text-shell-fg sm:left-6">
+                /{String(i + 1).padStart(2, '0')}
               </span>
 
               <div className="absolute bottom-10 left-4 right-4 flex flex-col gap-6 sm:left-6 sm:right-6 md:flex-row md:items-end md:justify-between">
                 {href ? <Link href={href}>{heading}</Link> : heading}
                 {slide.caption && (
-                  <p className="max-w-sm text-base leading-relaxed text-shell-dim md:text-right">
-                    {slide.caption}
-                  </p>
+                  <div className="max-w-sm border-l-2 border-accent pl-4 md:border-l-0 md:border-r-2 md:pl-0 md:pr-4 md:text-right">
+                    <p className="caps text-xs font-semibold tracking-widest text-accent-soft">
+                      /{String(i + 1).padStart(2, '0')}
+                    </p>
+                    <p className="mt-2 text-base leading-relaxed text-shell-fg/85">{slide.caption}</p>
+                  </div>
                 )}
               </div>
             </article>

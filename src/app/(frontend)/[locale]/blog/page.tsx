@@ -76,7 +76,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
         <div
           className={`mx-auto max-w-3xl px-4 pb-20 text-center sm:px-6 ${banner ? 'pt-16' : 'pt-40'}`}
         >
-          <h1 className="anim-rise text-[clamp(3rem,8vw,5.5rem)] font-medium leading-none tracking-tight text-ink">
+          <h1 className={banner ? 'sr-only' : 'anim-rise text-[clamp(3rem,8vw,5.5rem)] font-medium leading-none tracking-tight text-ink'}>
             {articlesPage.heading || t('nav.blog')}
           </h1>
           <p

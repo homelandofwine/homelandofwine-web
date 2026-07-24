@@ -3,27 +3,27 @@ import {
   Button,
   Container,
   Head,
-  Hr,
   Html,
   Img,
-  Link,
   Preview,
   Section,
   Text,
 } from '@react-email/components'
 
+import { CREAM, INK, MagazineFooter, MagazineHeader, MUTED, SERIF, WINE } from './brand'
+
 export function NewArticleEmail({
-  siteName,
   title,
   excerpt,
   articleUrl,
+  siteUrl,
   coverUrl,
   unsubscribeUrl,
 }: {
-  siteName: string
   title: string
   excerpt: string
   articleUrl: string
+  siteUrl: string
   coverUrl?: string
   unsubscribeUrl: string
 }) {
@@ -31,45 +31,65 @@ export function NewArticleEmail({
     <Html lang="en">
       <Head />
       <Preview>{excerpt}</Preview>
-      <Body style={{ backgroundColor: '#f5f1eb', fontFamily: 'Helvetica, Arial, sans-serif', margin: 0, padding: '24px 0' }}>
-        <Container style={{ backgroundColor: '#ffffff', borderRadius: 8, overflow: 'hidden', maxWidth: 560 }}>
-          <Section style={{ backgroundColor: '#1b1917', padding: '20px 32px' }}>
-            <Text style={{ color: '#f5f1eb', fontSize: 14, fontWeight: 700, margin: 0 }}>
-              {siteName}
-            </Text>
-          </Section>
+      <Body style={{ backgroundColor: CREAM, fontFamily: SERIF, margin: 0, padding: '28px 0' }}>
+        <Container
+          style={{ backgroundColor: '#ffffff', borderRadius: 8, maxWidth: 600, overflow: 'hidden' }}
+        >
+          <MagazineHeader />
           {coverUrl && (
-            <Img src={coverUrl} alt="" width="560" style={{ width: '100%', height: 'auto', display: 'block' }} />
+            <Img
+              src={coverUrl}
+              alt={title}
+              width="600"
+              style={{ display: 'block', height: 'auto', width: '100%' }}
+            />
           )}
-          <Section style={{ padding: '32px' }}>
-            <Text style={{ color: '#1b1917', fontSize: 26, fontWeight: 700, lineHeight: 1.2, margin: '0 0 16px' }}>
+          <Section style={{ padding: '36px 40px 24px' }}>
+            <Text
+              style={{
+                color: WINE,
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: 3,
+                margin: '0 0 14px',
+                textTransform: 'uppercase' as const,
+              }}
+            >
+              New Article
+            </Text>
+            <Text
+              style={{
+                color: INK,
+                fontFamily: SERIF,
+                fontSize: 30,
+                fontWeight: 700,
+                lineHeight: 1.2,
+                margin: '0 0 16px',
+              }}
+            >
               {title}
             </Text>
-            <Text style={{ color: '#6d675f', fontSize: 15, lineHeight: 1.6, margin: '0 0 24px' }}>
+            <Text style={{ color: MUTED, fontSize: 15, lineHeight: 1.7, margin: '0 0 26px' }}>
               {excerpt}
             </Text>
             <Button
               href={articleUrl}
               style={{
-                backgroundColor: '#993334',
+                backgroundColor: WINE,
                 borderRadius: 6,
                 color: '#ffffff',
-                fontSize: 14,
-                fontWeight: 600,
-                padding: '12px 24px',
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: 2,
+                padding: '14px 28px',
                 textDecoration: 'none',
+                textTransform: 'uppercase' as const,
               }}
             >
               Read More →
             </Button>
-            <Hr style={{ borderColor: '#e4e0d9', margin: '32px 0 16px' }} />
-            <Text style={{ color: '#9a938a', fontSize: 12, lineHeight: 1.5, margin: 0 }}>
-              You are receiving this because you subscribed to the {siteName} newsletter.{' '}
-              <Link href={unsubscribeUrl} style={{ color: '#9a938a', textDecoration: 'underline' }}>
-                Unsubscribe
-              </Link>
-            </Text>
           </Section>
+          <MagazineFooter siteUrl={siteUrl} unsubscribeUrl={unsubscribeUrl} />
         </Container>
       </Body>
     </Html>

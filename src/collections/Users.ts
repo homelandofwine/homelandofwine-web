@@ -16,6 +16,22 @@ export const Users: CollectionConfig = {
       },
     },
     {
+      name: 'role',
+      type: 'text',
+      localized: true,
+      admin: {
+        description: 'Public title shown next to the name, e.g. "Wine writer", "Master of Oenology".',
+      },
+    },
+    {
+      name: 'avatar',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Author photo — shown as a small circle in bylines. Square images work best.',
+      },
+    },
+    {
       name: 'bio',
       type: 'textarea',
       localized: true,

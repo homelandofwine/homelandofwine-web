@@ -79,7 +79,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               style={{ '--anim-delay': '0.15s' } as React.CSSProperties}
             >
               {latestCategory && typeof latestCategory === 'object' && (
-                <span className="rounded bg-shell-fg/10 px-2.5 py-1 font-medium text-shell-fg backdrop-blur">
+                <span className="caps rounded bg-shell-fg/10 px-2.5 py-1 font-medium text-shell-fg backdrop-blur">
                   {latestCategory.name}
                 </span>
               )}
@@ -93,23 +93,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </h1>
 
             <div
-              className="anim-rise mt-10 flex flex-col justify-between gap-8 border-t border-shell-line pt-8 md:flex-row md:items-end"
+              className="anim-rise mt-8 max-w-2xl"
               style={{ '--anim-delay': '0.5s' } as React.CSSProperties}
             >
-              <p className="hidden text-sm text-shell-dim md:block">[ {t('home.heroKicker')} ]</p>
-              <div className="max-w-md">
-                <p className="text-base leading-relaxed text-shell-dim">{latest.excerpt}</p>
-                <div className="mt-6 flex items-center gap-5">
-                  <Link
-                    href={`/blog/${latest.slug}`}
-                    className="rounded-md bg-shell-fg px-5 py-3 text-sm font-semibold text-shell transition-colors hover:opacity-90"
-                  >
-                    {t('common.readArticle')}
-                  </Link>
-                  <time dateTime={latest.publishedAt} className="text-sm text-shell-dim">
-                    {formatDate(latest.publishedAt, locale)}
-                  </time>
-                </div>
+              <p className="text-base leading-relaxed text-shell-dim">{latest.excerpt}</p>
+              <div className="mt-6 flex items-center gap-5">
+                <Link
+                  href={`/blog/${latest.slug}`}
+                  className="caps rounded-md bg-shell-fg px-5 py-3 text-sm font-semibold text-shell transition-colors hover:opacity-90"
+                >
+                  {t('common.readArticle')}
+                </Link>
+                <time dateTime={latest.publishedAt} className="text-sm text-shell-dim">
+                  {formatDate(latest.publishedAt, locale)}
+                </time>
               </div>
             </div>
           </div>

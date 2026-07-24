@@ -33,7 +33,7 @@ export async function ArticlesGridSection({
         </h2>
         <Link
           href="/blog"
-          className="rounded-md bg-ink px-5 py-3 text-sm font-semibold text-page transition-colors hover:bg-ink-soft"
+          className="caps rounded-md bg-accent px-5 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft"
         >
           {t('common.allArticles')}
         </Link>

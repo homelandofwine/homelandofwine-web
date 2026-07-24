@@ -45,12 +45,14 @@ export async function sendArticleNewsletter(
     return { sent: 0 }
   }
 
-  const settings = await payload.findGlobal({ slug: 'site-settings', locale })
   const cover = article.coverImage as Media | null
-  const coverUrl =
-    typeof cover === 'object' && cover?.url
-      ? `${SITE_URL}${cover.sizes?.card?.url ?? cover.url}`
-      : undefined
+  const rawCover =
+    typeof cover === 'object' && cover?.url ? (cover.sizes?.card?.url ?? cover.url) : undefined
+  const coverUrl = rawCover
+    ? rawCover.startsWith('http')
+      ? rawCover
+      : `${SITE_URL}${rawCover}`
+    : undefined
   const articleUrl =
     locale === 'en' ? `${SITE_URL}/blog/${article.slug}` : `${SITE_URL}/ka/blog/${article.slug}`
 
@@ -60,13 +62,13 @@ export async function sendArticleNewsletter(
       return {
         from: EMAIL_FROM,
         to: [sub.email],
-        subject: article.title,
+        subject: article.title!,
         html: await render(
           React.createElement(NewArticleEmail, {
-            siteName: settings.siteName,
-            title: article.title,
-            excerpt: article.excerpt,
+            title: article.title ?? '',
+            excerpt: article.excerpt ?? '',
             articleUrl,
+            siteUrl: SITE_URL,
             coverUrl,
             unsubscribeUrl: unsub,
           }),

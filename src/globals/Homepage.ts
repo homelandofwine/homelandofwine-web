@@ -150,6 +150,12 @@ const Steps: Block = {
         { name: 'image', type: 'upload', relationTo: 'media' },
         { name: 'title', type: 'text', required: true, localized: true },
         { name: 'text', type: 'textarea', required: true, localized: true },
+        {
+          name: 'article',
+          type: 'relationship',
+          relationTo: 'articles',
+          admin: { description: 'Optional — clicking the step opens this article.' },
+        },
       ],
     },
   ],

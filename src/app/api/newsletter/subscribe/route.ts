@@ -67,14 +67,12 @@ export async function POST(req: Request) {
   })
 
   try {
-    const settings = await payload.findGlobal({ slug: 'site-settings', locale: 'en' })
     await mailer.send({
       from: EMAIL_FROM,
       to: [email],
-      subject: `Welcome to ${settings.siteName}`,
+      subject: 'Welcome to Homeland of Wine Magazine',
       html: await render(
         React.createElement(WelcomeEmail, {
-          siteName: settings.siteName,
           siteUrl: SITE_URL,
           unsubscribeUrl: unsubscribeUrl(SITE_URL, email, locale),
         }),

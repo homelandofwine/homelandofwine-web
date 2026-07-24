@@ -22,7 +22,7 @@ export async function NewsletterSticky({
     <section id="newsletter" className="relative border-t border-line">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="sticky top-[20vh] flex items-start justify-between gap-10 pt-16">
-          <h2 className="text-[clamp(3rem,9vw,7.5rem)] font-medium uppercase leading-[0.95] tracking-tight text-ink">
+          <h2 className="newsletter-giant text-[clamp(3rem,9vw,7.5rem)] font-medium uppercase leading-[0.95] tracking-tight text-ink">
             {titleLine1 || t('newsletter.titleLine1')}
             <br />
             {titleLine2 || t('newsletter.titleLine2')}

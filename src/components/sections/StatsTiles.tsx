@@ -1,3 +1,4 @@
+import { CountUp } from '@/components/sections/CountUp'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 
 type Stat = { id?: string | null; value: string; label: string }
@@ -21,9 +22,10 @@ export function StatsTiles({ heading, items }: { heading?: string | null; items:
               data-reveal="up"
               style={{ '--reveal-delay': `${(i % 3) * 0.1}s` } as React.CSSProperties}
             >
-              <p className="text-4xl font-semibold tracking-tight text-accent sm:text-5xl">
-                {stat.value}
-              </p>
+              <CountUp
+                value={stat.value}
+                className="text-4xl font-semibold tracking-tight text-accent sm:text-5xl"
+              />
               <p className="mt-3 text-base text-muted">{stat.label}</p>
             </div>
           ))}

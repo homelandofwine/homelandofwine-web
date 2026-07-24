@@ -36,7 +36,7 @@ const cormorant = Cormorant_Garamond({
 })
 
 const georgianBody = localFont({
-  src: '../../../fonts/BPGNinoRegular.ttf',
+  src: '../../../fonts/BPGDejaVuSans.otf',
   variable: '--font-ka-body',
   display: 'swap',
 })
@@ -44,6 +44,12 @@ const georgianBody = localFont({
 const georgianDisplay = localFont({
   src: '../../../fonts/BPGNinoMedium.ttf',
   variable: '--font-ka-display',
+  display: 'swap',
+})
+
+const georgianCaps = localFont({
+  src: '../../../fonts/BPGNinoMedium.ttf',
+  variable: '--font-ka-caps',
   display: 'swap',
 })
 
@@ -132,7 +138,7 @@ export default async function FrontendLayout({
   return (
     <html
       lang={locale}
-      className={`${garamond.variable} ${cormorant.variable} ${georgianBody.variable} ${georgianDisplay.variable}`}
+      className={`${garamond.variable} ${cormorant.variable} ${georgianBody.variable} ${georgianDisplay.variable} ${georgianCaps.variable}`}
       suppressHydrationWarning
     >
       <head>

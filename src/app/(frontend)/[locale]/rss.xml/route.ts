@@ -35,10 +35,10 @@ export async function GET(
   for (const article of articles) {
     const cover = article.coverImage as Media | null
     feed.addItem({
-      title: article.title,
+      title: article.title ?? '',
       id: absoluteUrl(locale, `/blog/${article.slug}`),
       link: absoluteUrl(locale, `/blog/${article.slug}`),
-      description: article.excerpt,
+      description: article.excerpt ?? undefined,
       date: new Date(article.publishedAt),
       image:
         typeof cover === 'object' && cover?.url
