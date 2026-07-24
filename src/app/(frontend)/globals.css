@@ -110,32 +110,46 @@ html[lang='ka'] .ka-heading {
 
 .vertical-next {
   position: fixed;
-  right: 0.9rem;
+  right: 0;
   top: 50%;
   z-index: 30;
   display: none;
-  max-height: 62vh;
+  max-height: 66vh;
   overflow: hidden;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   transform: translateY(-50%);
   writing-mode: vertical-rl;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
-  color: var(--color-muted);
+  color: var(--color-ink);
   white-space: nowrap;
-  transition: color 0.2s;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-right: none;
+  border-radius: 0.5rem 0 0 0.5rem;
+  padding: 1.4rem 0.55rem;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.08);
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+.vertical-next .vn-label {
+  color: var(--color-accent);
 }
 .vertical-next::before {
   content: '';
   inline-size: 1px;
-  block-size: 2.5rem;
+  block-size: 2rem;
   flex-shrink: 0;
   background: var(--color-accent);
 }
 .vertical-next:hover {
-  color: var(--color-accent);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-shell-fg);
+}
+.vertical-next:hover .vn-label {
+  color: var(--color-shell-fg);
 }
 @media (min-width: 1280px) {
   .vertical-next {

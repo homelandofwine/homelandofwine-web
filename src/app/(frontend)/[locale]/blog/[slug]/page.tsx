@@ -394,6 +394,7 @@ export default async function ArticlePage({
           className="vertical-next caps"
           title={related[0].title ?? ''}
         >
+          <span className="vn-label">{t('common.next')}</span>
           {related[0].title}
         </Link>
       )}

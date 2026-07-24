@@ -20,14 +20,8 @@ export async function ArticlesGridSection({
 
   return (
     <section className="mx-auto max-w-[1400px] px-4 py-20 sm:px-6 lg:py-28">
-      <div data-reveal="up">
+      <div className="flex flex-wrap items-center justify-between gap-6" data-reveal="up">
         <SectionLabel>{t('nav.blog')}</SectionLabel>
-      </div>
-      <div
-        className="mt-6 flex flex-wrap items-end justify-between gap-6"
-        data-reveal="up"
-        style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}
-      >
         <Link
           href="/blog"
           className="caps rounded-md bg-accent px-5 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft"

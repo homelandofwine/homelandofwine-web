@@ -45,10 +45,10 @@ export async function PartnersMarquee({
               >
                 {row.map((p, i) => {
                   const logo = (
-                    <span className="flex h-20 w-44 items-center justify-center">
+                    <span className="flex h-32 w-80 items-center justify-center">
                       <Img
                         media={p.logo}
-                        sizes="176px"
+                        sizes="320px"
                         className="max-h-full max-w-full object-contain transition-transform hover:scale-105"
                       />
                     </span>

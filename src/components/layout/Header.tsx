@@ -124,7 +124,7 @@ export function Header() {
                 </Link>
               ),
             )}
-            <span className="ml-1 flex items-center gap-1 border-l border-shell-fg/25 pl-2 pr-1">
+            <span className="ml-1 flex items-center gap-3 border-l border-shell-fg/25 pl-3 pr-1">
               <LocaleSwitcher />
               <ThemeToggle />
             </span>

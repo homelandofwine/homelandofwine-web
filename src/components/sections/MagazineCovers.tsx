@@ -45,27 +45,12 @@ export function MagazineCovers({ heading, covers }: { heading?: string | null; c
                   {pad(i + 1)}
                 </span>
 
-                <div className="relative z-10 flex flex-col items-center gap-7 px-4 pt-16">
+                <div className="relative z-10 flex flex-col items-center px-4 pt-14">
                   <Img
                     media={cover.image}
-                    sizes="(min-width: 1024px) 52vh, 80vw"
-                    className="max-h-[64vh] w-auto max-w-[85vw] rounded-sm object-contain shadow-2xl"
+                    sizes="(min-width: 1024px) 66vh, 92vw"
+                    className="max-h-[82vh] w-auto max-w-[92vw] rounded-sm object-contain shadow-2xl"
                   />
-                  <div className="flex items-center gap-5">
-                    <span className="caps text-sm font-semibold tracking-widest text-shell-dim">
-                      {pad(i + 1)} / {pad(covers.length)}
-                    </span>
-                    <span className="flex items-center gap-2" aria-hidden="true">
-                      {covers.map((_, d) => (
-                        <span
-                          key={d}
-                          className={`h-1.5 w-1.5 rounded-full ${
-                            d === i ? 'bg-accent-soft' : 'bg-shell-fg/20'
-                          }`}
-                        />
-                      ))}
-                    </span>
-                  </div>
                 </div>
               </div>
             ))}

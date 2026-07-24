@@ -7,6 +7,7 @@ export async function NewsletterSticky({
   locale,
   titleLine1,
   titleLine2,
+  helperTitle,
 }: {
   locale: Locale
   titleLine1?: string | null
@@ -25,6 +26,11 @@ export async function NewsletterSticky({
             <br />
             {titleLine2 || t('newsletter.titleLine2')}
           </h2>
+          <div className="hidden max-w-xs pt-4 lg:block">
+            <p className="text-base font-semibold text-ink">
+              {helperTitle || t('newsletter.helperTitle')}
+            </p>
+          </div>
         </div>
         <div className="relative z-10 mx-auto max-w-xl pb-28 pt-[34vh]">
           <div className="rounded-lg bg-paper p-8 shadow-xl sm:p-12">

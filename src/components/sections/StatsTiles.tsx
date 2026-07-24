@@ -1,4 +1,4 @@
-import { CountUp } from '@/components/sections/CountUp'
+import { DigitRoll } from '@/components/sections/DigitRoll'
 import { WordReveal } from '@/components/sections/WordReveal'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 
@@ -37,7 +37,7 @@ export function StatsTiles({
               data-reveal="up"
               style={{ '--reveal-delay': `${(i % 3) * 0.1}s` } as React.CSSProperties}
             >
-              <CountUp
+              <DigitRoll
                 value={stat.value}
                 className="text-4xl font-semibold tracking-tight text-accent sm:text-5xl"
               />

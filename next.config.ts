@@ -10,6 +10,14 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      { source: '/wine-ambassador', destination: '/ambassador', permanent: true },
+      { source: '/wine-ambassadors', destination: '/ambassador', permanent: true },
+      { source: '/ka/wine-ambassador', destination: '/ka/ambassador', permanent: true },
+      { source: '/ka/wine-ambassadors', destination: '/ka/ambassador', permanent: true },
+    ]
+  },
   images: {
     localPatterns: [
       {
