@@ -111,7 +111,13 @@ html[lang='ka'] .newsletter-giant {
   font-size: clamp(1.5rem, 4.5vw, 3.75rem);
 }
 
+/* Georgian headings use the Mtavruli face. Without this an `uppercase` utility
+   case-maps mkhedruli to U+1C90+, which no shipped font covers, so the text
+   drops to whatever Georgian face the OS happens to have. */
+html[lang='ka'] :is(h1, h2, h3),
 html[lang='ka'] .ka-heading {
+  font-family: var(--font-cormorant), var(--font-ka-caps), serif;
+  text-transform: none;
   line-height: 1.25;
 }
 

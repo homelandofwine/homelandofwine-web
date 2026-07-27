@@ -43,7 +43,7 @@ export async function ArticleCard({
       )}
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         {category && typeof category === 'object' && (
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+          <p className="caps text-xs font-semibold tracking-[0.18em] text-accent">
             {category.name}
           </p>
         )}

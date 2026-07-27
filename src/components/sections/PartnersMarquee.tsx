@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Img } from '@/components/media/Img'
+import { SectionLabel } from '@/components/ui/SectionLabel'
 import type { Locale } from '@/i18n/routing'
 import type { Media } from '@/payload-types'
 
@@ -26,14 +27,14 @@ export async function PartnersMarquee({
 
   const repeats = Math.max(1, Math.ceil(18 / partners.length))
   const row = Array.from({ length: repeats }, () => partners).flat()
-  const duration = `${row.length * 7}s`
+  const duration = `${row.length * 6.2}s`
 
   return (
     <section className="border-b border-line">
       <div className="py-16" data-reveal="fade">
-        <h2 className="caps px-4 text-center text-3xl tracking-tight text-ink sm:px-6 sm:text-4xl">
-          {title}
-        </h2>
+        <div className="px-4 text-center sm:px-6">
+          <SectionLabel>{title}</SectionLabel>
+        </div>
         <div className="marquee mt-12 w-full" aria-label={title}>
           <div
             className="marquee-track"
@@ -42,7 +43,7 @@ export async function PartnersMarquee({
             {[0, 1].map((copy) => (
               <div
                 key={copy}
-                className="flex shrink-0 items-center gap-10 pr-10 sm:gap-24 sm:pr-24"
+                className="flex shrink-0 items-center gap-5 pr-5 sm:gap-12 sm:pr-12"
                 aria-hidden={copy === 1 ? 'true' : undefined}
               >
                 {row.map((p, i) => {

@@ -82,7 +82,7 @@ export function NewsletterModal() {
             <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
           </svg>
         </button>
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-soft">
+        <p className="caps text-xs font-semibold tracking-[0.2em] text-accent-soft">
           {t('title')}
         </p>
         <h2 className="mt-4 text-3xl leading-tight sm:text-4xl">

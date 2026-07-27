@@ -34,7 +34,7 @@ export function WelcomeEmail({
         <Container
           style={{ backgroundColor: '#ffffff', borderRadius: 8, maxWidth: 600, overflow: 'hidden' }}
         >
-          <MagazineHeader />
+          <MagazineHeader siteUrl={siteUrl} />
           <Section style={{ padding: '40px 40px 24px' }}>
             <Text
               style={{

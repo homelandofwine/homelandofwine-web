@@ -1,4 +1,4 @@
-import { Hr, Link, Section, Text } from '@react-email/components'
+import { Hr, Img, Link, Section, Text } from '@react-email/components'
 
 export const BRAND = 'Homeland of Wine Magazine'
 export const WINE = '#993334'
@@ -15,36 +15,15 @@ const SOCIALS: Array<[string, string]> = [
   ['Pinterest', 'https://www.pinterest.com/homelandofwinemagazine/'],
 ]
 
-export function MagazineHeader() {
+export function MagazineHeader({ siteUrl }: { siteUrl: string }) {
   return (
     <Section style={{ backgroundColor: INK, padding: '30px 32px', textAlign: 'center' as const }}>
-      <Text
-        style={{
-          color: CREAM,
-          fontFamily: SERIF,
-          fontSize: 26,
-          fontWeight: 700,
-          letterSpacing: 2,
-          lineHeight: 1.15,
-          margin: 0,
-          textTransform: 'uppercase' as const,
-        }}
-      >
-        Homeland of Wine
-      </Text>
-      <Text
-        style={{
-          color: WINE,
-          fontFamily: SERIF,
-          fontSize: 12,
-          fontWeight: 700,
-          letterSpacing: 6,
-          margin: '6px 0 0',
-          textTransform: 'uppercase' as const,
-        }}
-      >
-        Magazine
-      </Text>
+      <Img
+        src={`${siteUrl}/brand/logo-cream.png`}
+        alt={BRAND}
+        width="200"
+        style={{ display: 'block', height: 'auto', margin: '0 auto' }}
+      />
     </Section>
   )
 }

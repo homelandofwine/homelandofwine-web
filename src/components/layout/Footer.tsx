@@ -64,7 +64,7 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
 
         <div className="mt-16 flex flex-col justify-between gap-12 md:flex-row">
           <div className="max-w-md">
-            <p className="text-3xl font-medium leading-snug tracking-tight sm:text-4xl">
+            <p className="ka-heading text-3xl font-medium leading-snug tracking-tight sm:text-4xl">
               {settings.footerTagline || t('footer.tagline')}
             </p>
             <SubscribeButton className="caps mt-8 inline-block rounded-md bg-shell-fg px-5 py-3 text-sm font-semibold text-shell transition-colors hover:opacity-90">

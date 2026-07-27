@@ -24,15 +24,25 @@ export function LocaleSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider">
+    <div className="flex items-baseline gap-1.5 text-sm font-semibold uppercase tracking-wider">
       {routing.locales.map((l, i) => (
-        <span key={l} className="flex items-center gap-1.5">
+        <span key={l} className="flex items-baseline gap-1.5">
           {i > 0 && <span className="select-none text-shell-fg/30">/</span>}
           <button
             type="button"
             onClick={() => switchTo(l)}
             aria-current={l === locale ? 'true' : undefined}
-            style={l === 'ka' ? { fontFamily: 'var(--font-ka-caps)', textTransform: 'none' } : undefined}
+            style={
+              l === 'ka'
+                ? {
+                    // Mtavruli caps run ~19% taller than EB Garamond at the same
+                    // size; scale down so both labels share a cap height.
+                    fontFamily: 'var(--font-ka-caps)',
+                    fontSize: '0.735rem',
+                    textTransform: 'none',
+                  }
+                : undefined
+            }
             className={
               l === locale
                 ? 'cursor-default text-shell-fg'

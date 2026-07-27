@@ -253,19 +253,6 @@ export default async function ArticlePage({
               <time dateTime={article.publishedAt} className="text-muted">
                 {formatDate(article.publishedAt, locale)}
               </time>
-              {authorName && (
-                <span className="flex items-center gap-3 text-muted">
-                  {authorAvatar && (
-                    <Img
-                      media={authorAvatar}
-                      sizes="48px"
-                      className="h-12 w-12 rounded-full object-cover"
-                    />
-                  )}
-                  {authorName}
-                  {authorRole ? ` — ${authorRole}` : ''}
-                </span>
-              )}
               {isReview && (
                 <span className="rounded bg-accent px-2.5 py-1 font-semibold text-shell-fg">
                   {review!.rating} / {review!.bestRating ?? 100}
@@ -293,6 +280,24 @@ export default async function ArticlePage({
                 title={article.title ?? ''}
               />
             </div>
+            {authorName && (
+              <div
+                className="anim-rise mt-10 flex items-center justify-center gap-3 text-sm text-muted"
+                style={{ '--anim-delay': '0.36s' } as React.CSSProperties}
+              >
+                {authorAvatar && (
+                  <Img
+                    media={authorAvatar}
+                    sizes="64px"
+                    className="h-16 w-16 rounded-full object-cover"
+                  />
+                )}
+                <span>
+                  {authorName}
+                  {authorRole ? ` — ${authorRole}` : ''}
+                </span>
+              </div>
+            )}
           </div>
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
             <Img
@@ -311,7 +316,7 @@ export default async function ArticlePage({
             related.length > 0 ? 'lg:grid lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-12' : ''
           }`}
         >
-          <div className="w-full py-14 lg:py-20" data-reveal="up">
+          <div className="mx-auto w-full max-w-[44rem] py-14 lg:py-20" data-reveal="up">
             <ArticleBody data={article.body as SerializedEditorState} />
             {facts.length > 0 && (
               <div className="mt-12 flex flex-wrap gap-2.5 border-t border-line pt-8">

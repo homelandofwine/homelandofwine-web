@@ -97,7 +97,7 @@ export default async function CategoryPage({
       />
       <header className="border-b border-line">
         <div className="mx-auto max-w-3xl px-4 pb-20 pt-40 text-center sm:px-6">
-          <p className="anim-rise text-sm font-medium uppercase tracking-widest text-accent">
+          <p className="anim-rise caps text-sm font-medium tracking-widest text-accent">
             {t('common.category')}
           </p>
           <h1

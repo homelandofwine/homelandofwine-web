@@ -27,12 +27,12 @@ export function Testimonials({ heading, quotes }: { heading?: string | null; quo
     <section className="bg-shell text-shell-fg">
       <div className="mx-auto max-w-[1400px] px-4 py-20 sm:px-6 lg:py-28" data-reveal="fade">
         {heading && (
-          <p className="text-sm font-semibold uppercase tracking-widest text-shell-dim">
+          <p className="caps text-sm font-semibold tracking-widest text-shell-dim">
             {heading}
           </p>
         )}
         <blockquote className="mt-10 min-h-40">
-          <p className="max-w-4xl text-2xl leading-snug tracking-tight sm:text-3xl lg:text-4xl">
+          <p className="ka-heading max-w-4xl text-2xl leading-snug tracking-tight sm:text-3xl lg:text-4xl">
             “{active.quote}”
           </p>
         </blockquote>

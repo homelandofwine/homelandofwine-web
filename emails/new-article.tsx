@@ -35,11 +35,11 @@ export function NewArticleEmail({
         <Container
           style={{ backgroundColor: '#ffffff', borderRadius: 8, maxWidth: 600, overflow: 'hidden' }}
         >
-          <MagazineHeader />
+          <MagazineHeader siteUrl={siteUrl} />
           {coverUrl && (
             <Img
               src={coverUrl}
-              alt={title}
+              alt=""
               width="600"
               style={{ display: 'block', height: 'auto', width: '100%' }}
             />
