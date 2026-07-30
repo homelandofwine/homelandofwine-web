@@ -3,9 +3,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound, permanentRedirect } from 'next/navigation'
 
 import { ArticleCard } from '@/components/article/ArticleCard'
+import { CategoryTabs } from '@/components/article/CategoryTabs'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { SectionLabel } from '@/components/ui/SectionLabel'
-import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getArticles, getCategories, getCategoryBySlug, getSettings } from '@/lib/api'
 import { absoluteUrl, categoryPath, localePath, ogLocale, pageAlternates } from '@/lib/seo'
@@ -65,7 +64,10 @@ export default async function CategoryPage({
   if (!category) notFound()
 
   const t = await getTranslations({ locale })
-  const { docs: articles } = await getArticles(locale, { categoryId: category.id })
+  const [{ docs: articles }, { docs: categories }] = await Promise.all([
+    getArticles(locale, { categoryId: category.id }),
+    getCategories(locale),
+  ])
 
   return (
     <main>
@@ -95,39 +97,40 @@ export default async function CategoryPage({
           ],
         }}
       />
-      <header className="border-b border-line">
-        <div className="mx-auto max-w-3xl px-4 pb-20 pt-40 text-center sm:px-6">
-          <p className="anim-rise caps text-sm font-medium tracking-widest text-accent">
-            {t('common.category')}
-          </p>
-          <h1
-            className="anim-rise mt-4 text-[clamp(2.5rem,7vw,5rem)] font-medium leading-none tracking-tight text-ink"
-            style={{ '--anim-delay': '0.12s' } as React.CSSProperties}
-          >
-            {category.name}
-          </h1>
-          {category.description && (
-            <p
-              className="anim-rise mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted"
-              style={{ '--anim-delay': '0.24s' } as React.CSSProperties}
-            >
-              {category.description}
+      <header>
+        <div className="mx-auto flex max-w-[1400px] flex-col gap-6 px-4 pb-12 pt-36 sm:px-6 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <p className="anim-rise caps text-sm font-medium tracking-widest text-accent">
+              {t('common.category')}
             </p>
-          )}
+            <h1
+              className="anim-rise mt-4 text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-none tracking-tight text-ink"
+              style={{ '--anim-delay': '0.12s' } as React.CSSProperties}
+            >
+              {category.name}
+            </h1>
+            {category.description && (
+              <p
+                className="anim-rise mt-5 max-w-xl text-base leading-relaxed text-muted"
+                style={{ '--anim-delay': '0.24s' } as React.CSSProperties}
+              >
+                {category.description}
+              </p>
+            )}
+          </div>
+          <p
+            className="anim-rise caps shrink-0 text-sm font-semibold tracking-[0.14em] text-muted"
+            style={{ '--anim-delay': '0.3s' } as React.CSSProperties}
+          >
+            {t('common.articlesCount', { count: articles.length })}
+          </p>
         </div>
       </header>
 
-      <section className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:py-20">
-        <div className="flex flex-wrap items-center justify-between gap-6">
-          <SectionLabel>{category.name}</SectionLabel>
-          <Link
-            href="/blog"
-            className="caps rounded-md bg-accent px-5 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft"
-          >
-            {t('common.allArticles')}
-          </Link>
-        </div>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <CategoryTabs categories={categories} active={slug} allLabel={t('common.allArticles')} />
+
+      <section className="mx-auto max-w-[1400px] px-4 pb-20 pt-12 sm:px-6 lg:pb-24 lg:pt-16">
+        <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {articles.map((article, i) => (
             <ArticleCard key={article.id} article={article} locale={locale} index={i} reveal />
           ))}

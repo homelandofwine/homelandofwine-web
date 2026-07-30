@@ -19,7 +19,8 @@
     "publishedOn": "გამოქვეყნდა",
     "author": "ავტორი",
     "gallery": "გალერეა",
-    "next": "შემდეგი სტატია"
+    "next": "შემდეგი სტატია",
+    "articlesCount": "{count} სტატია"
   },
   "search": {
     "title": "ძებნა",

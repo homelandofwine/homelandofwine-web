@@ -95,6 +95,13 @@ input[type='search']::-webkit-search-decoration {
   appearance: none;
 }
 
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* Caps system: English gets a case transform; Georgian gets the Mtavruli-form
    font instead (BPG caps fonts draw capital letterforms at normal codepoints,
    and case-mapping to U+1C90 would fall out of the font). */

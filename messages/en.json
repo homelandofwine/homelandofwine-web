@@ -19,7 +19,8 @@
     "publishedOn": "Published on",
     "author": "Author",
     "gallery": "Gallery",
-    "next": "NEXT ARTICLE"
+    "next": "NEXT ARTICLE",
+    "articlesCount": "{count} articles"
   },
   "search": {
     "title": "Search",

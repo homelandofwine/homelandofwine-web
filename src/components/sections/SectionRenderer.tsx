@@ -61,6 +61,7 @@ export function SectionRenderer({
             heading={block.heading}
             statement={block.statement}
             items={block.items ?? []}
+            locale={locale}
           />
         )
       case 'articlesGrid':

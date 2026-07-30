@@ -2,13 +2,13 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { ArticleCard } from '@/components/article/ArticleCard'
+import { CategoryTabs } from '@/components/article/CategoryTabs'
+import { LeadArticleCard } from '@/components/article/LeadArticleCard'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { SectionLabel } from '@/components/ui/SectionLabel'
-import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { Img } from '@/components/media/Img'
 import { getArticles, getArticlesPage, getCategories, getSettings } from '@/lib/api'
-import { absoluteUrl, ogLocale, pageAlternates, categoryPath } from '@/lib/seo'
+import { absoluteUrl, ogLocale, pageAlternates } from '@/lib/seo'
 
 export async function generateMetadata({
   params,
@@ -45,6 +45,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   ])
   const banner =
     articlesPage.banner && typeof articlesPage.banner === 'object' ? articlesPage.banner : null
+  const [lead, ...rest] = articles
 
   return (
     <main>
@@ -59,7 +60,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       />
       {banner && (
         <div className="mx-auto max-w-[1400px] px-4 pt-28 sm:px-6">
-          <div className="anim-settle relative h-[300px] w-full overflow-hidden rounded-lg sm:h-[380px]">
+          <div className="anim-settle relative h-[260px] w-full overflow-hidden rounded-lg sm:h-[340px]">
             <div className="absolute inset-0" data-parallax>
               <Img
                 media={banner}
@@ -72,52 +73,51 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
       )}
-      <header className="border-b border-line">
+
+      <header>
         <div
-          className={`mx-auto max-w-3xl px-4 pb-20 text-center sm:px-6 ${banner ? 'pt-16' : 'pt-40'}`}
+          className={`mx-auto flex max-w-[1400px] flex-col gap-6 px-4 pb-12 sm:px-6 md:flex-row md:items-end md:justify-between ${
+            banner ? 'pt-14' : 'pt-36'
+          }`}
         >
-          <h1 className={banner ? 'sr-only' : 'anim-rise text-[clamp(3rem,8vw,5.5rem)] font-medium leading-none tracking-tight text-ink'}>
-            {articlesPage.heading || t('nav.blog')}
-          </h1>
+          <div className="max-w-2xl">
+            <h1 className="anim-rise text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-none tracking-tight text-ink">
+              {articlesPage.heading || t('nav.blog')}
+            </h1>
+            <p
+              className="anim-rise mt-5 max-w-xl text-base leading-relaxed text-muted"
+              style={{ '--anim-delay': '0.15s' } as React.CSSProperties}
+            >
+              {settings.siteDescription}
+            </p>
+          </div>
           <p
-            className="anim-rise mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted"
-            style={{ '--anim-delay': '0.15s' } as React.CSSProperties}
+            className="anim-rise caps shrink-0 text-sm font-semibold tracking-[0.14em] text-muted"
+            style={{ '--anim-delay': '0.2s' } as React.CSSProperties}
           >
-            {settings.siteDescription}
+            {t('common.articlesCount', { count: articles.length })}
           </p>
         </div>
       </header>
 
-      <section className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:py-20">
-        <div data-reveal="up">
-          <SectionLabel>{t('common.allArticles')}</SectionLabel>
-        </div>
+      <CategoryTabs categories={categories} active="all" allLabel={t('common.allArticles')} />
 
-        {categories.length > 0 && (
-          <nav
-            className="mt-8 flex flex-wrap gap-3"
-            aria-label={t('common.category')}
-            data-reveal="up"
-            style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}
-          >
-            {categories.map((c) => (
-              <Link
-                key={c.id}
-                href={categoryPath(c.slug ?? '')}
-                className="rounded-md border border-line bg-paper px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
-              >
-                {c.name}
-              </Link>
+      {lead && (
+        <section className="mx-auto max-w-[1400px] px-4 pt-12 sm:px-6 lg:pt-16" data-reveal="up">
+          <LeadArticleCard article={lead} locale={locale} />
+        </section>
+      )}
+
+      {rest.length > 0 && (
+        <section className="mx-auto max-w-[1400px] px-4 pb-20 pt-14 sm:px-6 lg:pb-24 lg:pt-16">
+          <div className="grid gap-x-6 gap-y-12 border-t border-line pt-14 sm:grid-cols-2 lg:grid-cols-3">
+            {rest.map((article, i) => (
+              <ArticleCard key={article.id} article={article} locale={locale} index={i} reveal />
             ))}
-          </nav>
-        )}
-
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article, i) => (
-            <ArticleCard key={article.id} article={article} locale={locale} index={i} reveal />
-          ))}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
+      {rest.length === 0 && <div className="pb-20" />}
     </main>
   )
 }

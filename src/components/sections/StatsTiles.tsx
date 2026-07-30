@@ -1,6 +1,7 @@
 import { DigitRoll } from '@/components/sections/DigitRoll'
 import { WordReveal } from '@/components/sections/WordReveal'
 import { SectionLabel } from '@/components/ui/SectionLabel'
+import type { Locale } from '@/i18n/routing'
 
 type Stat = { id?: string | null; value: string; label: string }
 
@@ -8,12 +9,15 @@ export function StatsTiles({
   heading,
   statement,
   items,
+  locale,
 }: {
   heading?: string | null
   statement?: string | null
   items: Stat[]
+  locale?: Locale
 }) {
   if (items.length === 0) return null
+  const showStatement = Boolean(statement) && locale !== 'ka'
 
   return (
     <section className="border-b border-line">
@@ -23,7 +27,7 @@ export function StatsTiles({
             <SectionLabel>{heading}</SectionLabel>
           </div>
         )}
-        {statement && (
+        {showStatement && statement && (
           <WordReveal
             text={statement}
             className="ka-heading mx-auto mt-10 max-w-4xl text-center text-[clamp(1.5rem,3.2vw,2.5rem)] font-medium leading-snug tracking-tight"
