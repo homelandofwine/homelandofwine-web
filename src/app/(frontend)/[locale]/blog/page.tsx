@@ -103,21 +103,26 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       <CategoryTabs categories={categories} active="all" allLabel={t('common.allArticles')} />
 
       {lead && (
-        <section className="mx-auto max-w-[1400px] px-4 pt-12 sm:px-6 lg:pt-16" data-reveal="up">
-          <LeadArticleCard article={lead} locale={locale} />
+        <section className="mx-auto max-w-[1400px] px-4 pt-12 sm:px-6 lg:pt-14">
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-2" data-reveal="up">
+              <LeadArticleCard article={lead} locale={locale} />
+            </div>
+            {rest[0] && <ArticleCard article={rest[0]} locale={locale} index={1} reveal />}
+          </div>
         </section>
       )}
 
-      {rest.length > 0 && (
-        <section className="mx-auto max-w-[1400px] px-4 pb-20 pt-14 sm:px-6 lg:pb-24 lg:pt-16">
-          <div className="grid gap-x-6 gap-y-12 border-t border-line pt-14 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.map((article, i) => (
+      {rest.length > 1 && (
+        <section className="mx-auto max-w-[1400px] px-4 pb-20 pt-12 sm:px-6 lg:pb-24 lg:pt-14">
+          <div className="grid gap-x-6 gap-y-12 border-t border-line pt-12 sm:grid-cols-2 lg:grid-cols-3">
+            {rest.slice(1).map((article, i) => (
               <ArticleCard key={article.id} article={article} locale={locale} index={i} reveal />
             ))}
           </div>
         </section>
       )}
-      {rest.length === 0 && <div className="pb-20" />}
+      {rest.length <= 1 && <div className="pb-20" />}
     </main>
   )
 }

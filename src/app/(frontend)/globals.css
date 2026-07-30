@@ -231,6 +231,16 @@ html:not(.motion-ready) [data-slide]:first-of-type {
   pointer-events: auto;
 }
 
+.mag-slide {
+  transform: scale(0.94) translateY(20px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.mag-slide.is-active {
+  transform: none;
+}
+
 .cover-slide {
   transition: opacity 1s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -257,6 +267,10 @@ html:not(.motion-ready) [data-slide]:first-of-type {
   }
   [data-reveal],
   [data-slide] {
+    transition: none;
+  }
+  .mag-slide {
+    transform: none;
     transition: none;
   }
   [data-parallax],
