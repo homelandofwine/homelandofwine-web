@@ -27,14 +27,12 @@ export function MagazineCovers({ heading, covers }: { heading?: string | null; c
               data-slide
               className="mag-slide absolute inset-0 flex items-center justify-center px-4"
             >
-              <div className="aspect-[210/297] max-h-[80vh] w-[85vw] max-w-[420px] rounded-sm bg-white p-2 shadow-2xl sm:h-[80vh] sm:w-auto sm:max-w-none sm:p-3">
-                <div className="h-full w-full overflow-hidden">
-                  <Img
-                    media={cover.image}
-                    sizes="(min-width: 640px) 60vh, 85vw"
-                    className="h-full w-full scale-[1.07] object-cover object-right"
-                  />
-                </div>
+              <div className="rounded-sm bg-white p-2 shadow-2xl sm:p-3">
+                <Img
+                  media={cover.image}
+                  sizes="(min-width: 640px) 60vh, 85vw"
+                  className="max-h-[70vh] w-auto max-w-[86vw] object-contain sm:max-h-[77vh]"
+                />
               </div>
             </div>
           ))}
