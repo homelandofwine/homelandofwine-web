@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Img } from '@/components/media/Img'
+import { PartnersRow } from '@/components/sections/PartnersRow'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import type { Locale } from '@/i18n/routing'
 import type { Media } from '@/payload-types'
@@ -27,7 +28,6 @@ export async function PartnersMarquee({
 
   const repeats = Math.max(1, Math.ceil(18 / partners.length))
   const row = Array.from({ length: repeats }, () => partners).flat()
-  const duration = `${row.length * 6.2}s`
 
   return (
     <section className="border-b border-line">
@@ -35,12 +35,10 @@ export async function PartnersMarquee({
         <div className="px-4 text-center sm:px-6">
           <SectionLabel>{title}</SectionLabel>
         </div>
-        <div className="marquee mt-12 w-full" aria-label={title}>
-          <div
-            className="marquee-track"
-            style={{ '--marquee-duration': duration } as React.CSSProperties}
-          >
-            {[0, 1].map((copy) => (
+        <div className="mt-12 w-full" aria-label={title}>
+          <PartnersRow>
+            <div className="flex w-max items-center">
+              {[0, 1].map((copy) => (
               <div
                 key={copy}
                 className="flex shrink-0 items-center gap-5 pr-5 sm:gap-12 sm:pr-12"
@@ -72,8 +70,9 @@ export async function PartnersMarquee({
                   )
                 })}
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </PartnersRow>
         </div>
       </div>
     </section>

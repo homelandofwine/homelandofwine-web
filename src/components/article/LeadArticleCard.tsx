@@ -39,14 +39,12 @@ export async function LeadArticleCard({ article, locale }: { article: Article; l
             {article.excerpt}
           </p>
         )}
-        <div className="mt-auto flex items-center gap-5 border-t border-line pt-4">
-          <span className="caps mt-2 text-sm font-semibold text-accent">
-            {t('common.readArticle')}
-          </span>
-          <time dateTime={article.publishedAt} className="mt-2 text-sm text-muted">
-            {formatDate(article.publishedAt, locale)}
-          </time>
-        </div>
+      </div>
+      <div className="mt-auto flex items-center gap-5 bg-stone px-6 py-4 sm:px-8">
+        <span className="caps text-sm font-semibold text-accent">{t('common.readArticle')}</span>
+        <time dateTime={article.publishedAt} className="text-sm text-ink">
+          {formatDate(article.publishedAt, locale)}
+        </time>
       </div>
     </article>
   )

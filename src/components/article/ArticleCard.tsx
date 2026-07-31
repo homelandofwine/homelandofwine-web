@@ -52,11 +52,11 @@ export async function ArticleCard({
             {article.title}
           </Link>
         </h3>
-        <div className="mt-auto border-t border-line pt-3">
-          <time dateTime={article.publishedAt} className="mt-4 block pt-1 text-sm text-muted">
-            {formatDate(article.publishedAt, locale)}
-          </time>
-        </div>
+      </div>
+      <div className="bg-stone px-5 py-3.5 sm:px-6">
+        <time dateTime={article.publishedAt} className="block text-sm text-ink">
+          {formatDate(article.publishedAt, locale)}
+        </time>
       </div>
     </article>
   )
