@@ -32,8 +32,8 @@ export function PartnersRow({ children }: { children: React.ReactNode }) {
       const dt = Math.min(now - last, 100)
       last = now
       const half = el.scrollWidth / 2
-      if (half > 0) {
-        if (!hovering.current && now > pauseUntil.current) el.scrollLeft += dt * 0.04
+      if (half > 0 && !hovering.current && now > pauseUntil.current) {
+        el.scrollLeft += dt * 0.04
         if (el.scrollLeft >= half) el.scrollLeft -= half
       }
       raf = requestAnimationFrame(tick)
@@ -57,11 +57,12 @@ export function PartnersRow({ children }: { children: React.ReactNode }) {
   const nudge = (dir: 1 | -1) => {
     const el = ref.current
     if (!el) return
-    const half = el.scrollWidth / 2
-    if (dir === -1 && el.scrollLeft < el.clientWidth) el.scrollLeft += half
-    if (dir === 1 && el.scrollLeft > half) el.scrollLeft -= half
     pauseUntil.current = performance.now() + 1800
-    el.scrollBy({ left: dir * el.clientWidth * 0.7, behavior: 'smooth' })
+    const half = el.scrollWidth / 2
+    const step = el.clientWidth * 0.7
+    if (dir === -1 && el.scrollLeft - step < 0) el.scrollLeft += half
+    if (dir === 1 && el.scrollLeft + step > el.scrollWidth - el.clientWidth) el.scrollLeft -= half
+    el.scrollBy({ left: dir * step, behavior: 'smooth' })
   }
 
   return (
