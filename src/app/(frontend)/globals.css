@@ -291,6 +291,9 @@ html:not(.motion-ready) [data-slide]:first-of-type {
 .article-body > * + * {
   margin-top: 1.25em;
 }
+.article-body > :first-child {
+  margin-top: 0;
+}
 .article-body h2 {
   margin-top: 1.9em;
   font-size: 2.1rem;

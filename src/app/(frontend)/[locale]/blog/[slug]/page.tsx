@@ -318,7 +318,7 @@ export default async function ArticlePage({
             related.length > 0 ? 'lg:grid lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-12' : ''
           }`}
         >
-          <div className="mx-auto w-full max-w-[48rem] py-14 lg:py-20" data-reveal="up">
+          <div className="mx-auto w-full max-w-[48rem] pb-14 pt-8 sm:pt-12 lg:pb-20 lg:pt-16" data-reveal="up">
             <ArticleBody data={article.body as SerializedEditorState} />
             {facts.length > 0 && (
               <div className="mt-12 flex flex-wrap gap-2.5 border-t border-line pt-8">
