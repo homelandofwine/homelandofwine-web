@@ -302,10 +302,8 @@ export interface Category {
  */
 export interface Author {
   id: number;
-  /**
-   * Public author name shown with articles.
-   */
   name: string;
+  nameKa?: string | null;
   /**
    * e.g. "Wine writer", "Master of Oenology".
    */
@@ -519,6 +517,7 @@ export interface ArticlesSelect<T extends boolean = true> {
  */
 export interface AuthorsSelect<T extends boolean = true> {
   name?: T;
+  nameKa?: T;
   role?: T;
   roleKa?: T;
   avatar?: T;

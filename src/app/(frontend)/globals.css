@@ -351,15 +351,23 @@ html:not(.motion-ready) [data-slide]:first-of-type {
   display: block;
   width: 100%;
   height: auto;
-  margin: 2rem 0;
   border-radius: 0.5rem;
 }
-.article-body p:empty {
+.article-body > picture,
+.article-body > img {
+  display: block;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.article-body p:empty,
+.article-body p:has(> br:only-child) {
   display: none;
 }
 @media (min-width: 640px) {
-  .article-body img {
-    margin: 2.75rem 0;
+  .article-body > picture,
+  .article-body > img {
+    margin-top: 2.25rem;
+    margin-bottom: 2.25rem;
   }
 }
 @media (max-width: 639px) {

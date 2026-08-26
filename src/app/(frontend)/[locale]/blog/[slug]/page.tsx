@@ -122,7 +122,8 @@ export default async function ArticlePage({
   const review = article.review
   const isReview = Boolean(review?.isReview && review?.rating != null && review?.wineName)
   const facts = (article.facts ?? []).filter((f) => f.label && f.value)
-  const authorName = author && typeof author === 'object' ? author.name : null
+  const authorName =
+    author && typeof author === 'object' ? (locale === 'ka' && author.nameKa) || author.name : null
   const authorBio =
     author && typeof author === 'object' ? (locale === 'ka' && author.bioKa) || author.bio : null
   const authorRole =
@@ -149,10 +150,9 @@ export default async function ArticlePage({
           datePublished: article.publishedAt,
           dateModified: article.updatedAt,
           inLanguage: locale,
-          author:
-            author && typeof author === 'object' && author.name
-              ? { '@type': 'Person', name: author.name }
-              : { '@type': 'Organization', name: settings.siteName },
+          author: authorName
+            ? { '@type': 'Person', name: authorName }
+            : { '@type': 'Organization', name: settings.siteName },
           publisher: {
             '@type': 'Organization',
             name: settings.siteName,

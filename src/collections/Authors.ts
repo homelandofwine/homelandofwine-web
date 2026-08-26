@@ -19,12 +19,20 @@ export const Authors: CollectionConfig = {
   },
   fields: [
     {
-      name: 'name',
-      type: 'text',
-      required: true,
-      admin: {
-        description: 'Public author name shown with articles.',
-      },
+      type: 'row',
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          label: 'Name (English)',
+          required: true,
+        },
+        {
+          name: 'nameKa',
+          type: 'text',
+          label: 'Name (Georgian)',
+        },
+      ],
     },
     {
       type: 'row',
