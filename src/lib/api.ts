@@ -1,5 +1,7 @@
+import { sql } from '@payloadcms/db-postgres'
 import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
+import { cache } from 'react'
 
 import type { Locale } from '@/i18n/routing'
 import config from '@/payload.config'
@@ -18,8 +20,49 @@ async function payloadClient() {
   return getPayload({ config })
 }
 
+const STAMP_TABLES = [
+  'articles',
+  'authors',
+  'categories',
+  'media',
+  'site_settings',
+  'homepage',
+  'about_page',
+  'contact_page',
+  'articles_page',
+  'ambassador_page',
+  'n_line_print_page',
+  'privacy_page',
+]
+
+type StampRows = { rows: Array<{ stamp: string | null; articles: string; categories: string }> }
+
+const getContentStamp = cache(async () => {
+  const payload = await payloadClient()
+  const db = payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<StampRows> } }
+  const latest = STAMP_TABLES.map((t) => `(SELECT max(updated_at) FROM "${t}")`).join(', ')
+  const { rows } = await db.drizzle.execute(
+    sql.raw(
+      `SELECT GREATEST(${latest})::text AS stamp, (SELECT count(*) FROM "articles")::text AS articles, (SELECT count(*) FROM "categories")::text AS categories`,
+    ),
+  )
+  const r = rows[0]
+  return `${r?.stamp ?? '0'}|${r?.articles ?? '0'}|${r?.categories ?? '0'}`
+})
+
+function stampedCache<A extends unknown[], R>(
+  fn: (...args: A) => Promise<R>,
+  keys: string[],
+  opts: { revalidate?: number | false; tags?: string[] },
+) {
+  return async (...args: A): Promise<R> => {
+    const stamp = await getContentStamp()
+    return unstable_cache(fn, [...keys, stamp], opts)(...args)
+  }
+}
+
 export const getSettings = (locale: Locale) =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       return payload.findGlobal({ slug: 'site-settings', locale, depth: 1 })
@@ -29,7 +72,7 @@ export const getSettings = (locale: Locale) =>
   )()
 
 export const getHomepage = (locale: Locale) =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       return payload.findGlobal({ slug: 'homepage', locale, depth: 1 })
@@ -42,7 +85,7 @@ function globalGetter<S extends 'articles-page' | 'ambassador-page' | 'n-line-pr
   slug: S,
 ) {
   return (locale: Locale) =>
-    unstable_cache(
+    stampedCache(
       async () => {
         const payload = await payloadClient()
         return payload.findGlobal({ slug, locale, depth: 1 })
@@ -58,7 +101,7 @@ export const getNLinePrintPage = globalGetter('n-line-print-page')
 export const getPrivacyPage = globalGetter('privacy-page')
 
 export const getAboutPage = (locale: Locale) =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       return payload.findGlobal({ slug: 'about-page', locale, depth: 1 })
@@ -68,7 +111,7 @@ export const getAboutPage = (locale: Locale) =>
   )()
 
 export const getContactPage = (locale: Locale) =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       return payload.findGlobal({ slug: 'contact-page', locale, depth: 1 })
@@ -81,7 +124,7 @@ export const getArticles = (
   locale: Locale,
   opts?: { limit?: number; categoryId?: string | number; nativeOnly?: boolean },
 ) =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       const result = await payload.find({
@@ -111,10 +154,6 @@ export const getArticles = (
     { revalidate: 600, tags: [TAGS.articles] },
   )()
 
-// Every query word must match the title, but each word also matches on its
-// stem (progressively shortened prefixes, down to 4 characters) so that
-// "Wines" finds "Wine", and Georgian case endings ("ღვინის") still find
-// "ღვინო…" titles.
 function titleWhere(query: string) {
   const words = query.split(/\s+/).filter(Boolean).slice(0, 6)
   return {
@@ -128,9 +167,6 @@ function titleWhere(query: string) {
   }
 }
 
-// Uncached on purpose: the query space is unbounded, so caching would only
-// pollute the data cache. Matches titles in BOTH locales so an English-only
-// article is still found from the ka site (where it renders via fallback).
 export async function searchArticles(locale: Locale, query: string, limit = 24) {
   const payload = await payloadClient()
   const other: Locale = locale === 'ka' ? 'en' : 'ka'
@@ -175,11 +211,10 @@ export async function searchArticles(locale: Locale, query: string, limit = 24) 
 }
 
 export const getArticleBySlug = (locale: Locale, slug: string) =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       const otherLocale: Locale = locale === 'ka' ? 'en' : 'ka'
-      // depth 2 so author.avatar (a relation on a relation) is populated
       const { docs } = await payload.find({
         collection: 'articles',
         locale,
@@ -256,7 +291,7 @@ export async function getDraftArticleBySlug(locale: Locale, slug: string) {
 }
 
 export const getRecentArticlesForNews = () =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       const cutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
@@ -284,7 +319,7 @@ export const getRecentArticlesForNews = () =>
   )()
 
 export const getAllArticleSlugs = () =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       const { docs } = await payload.find({
@@ -306,7 +341,7 @@ export const getAllArticleSlugs = () =>
   )()
 
 export const getCategories = (locale: Locale) =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       return payload.find({ collection: 'categories', locale, limit: 100, sort: 'slug' })
@@ -316,7 +351,7 @@ export const getCategories = (locale: Locale) =>
   )()
 
 export const getCategoryBySlug = (locale: Locale, slug: string) =>
-  unstable_cache(
+  stampedCache(
     async () => {
       const payload = await payloadClient()
       const { docs } = await payload.find({

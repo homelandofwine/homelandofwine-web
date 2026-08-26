@@ -123,8 +123,10 @@ export default async function ArticlePage({
   const isReview = Boolean(review?.isReview && review?.rating != null && review?.wineName)
   const facts = (article.facts ?? []).filter((f) => f.label && f.value)
   const authorName = author && typeof author === 'object' ? author.name : null
-  const authorBio = author && typeof author === 'object' ? author.bio : null
-  const authorRole = author && typeof author === 'object' ? author.role : null
+  const authorBio =
+    author && typeof author === 'object' ? (locale === 'ka' && author.bioKa) || author.bio : null
+  const authorRole =
+    author && typeof author === 'object' ? (locale === 'ka' && author.roleKa) || author.role : null
   const authorAvatar =
     author && typeof author === 'object' && author.avatar && typeof author.avatar === 'object'
       ? author.avatar

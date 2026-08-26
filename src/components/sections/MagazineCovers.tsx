@@ -12,7 +12,7 @@ export function MagazineCovers({ heading, covers }: { heading?: string | null; c
       <div
         data-slides
         className="relative"
-        style={{ height: `${(covers.length + 1) * 100}vh` }}
+        style={{ height: `${100 + covers.length * 50}vh` }}
       >
         <div className="sticky top-0 h-screen overflow-hidden">
           {heading && (

@@ -34,7 +34,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <main id="top">
       {latest && (
-        <section className="sticky top-0 flex min-h-screen flex-col justify-end overflow-hidden bg-shell text-shell-fg">
+        <section className="relative top-0 flex min-h-[100svh] flex-col justify-end overflow-hidden bg-shell text-shell-fg lg:sticky">
           <div className="absolute inset-0" data-parallax>
             {heroVideo?.url ? (
               <>
@@ -73,7 +73,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <div className="absolute inset-0 bg-gradient-to-t from-shell via-shell/40 to-shell/20" />
           </div>
 
-          <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-10 pt-40 sm:px-6">
+          <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-10 pt-32 sm:px-6 sm:pt-40">
             <div
               className="anim-rise flex items-center gap-3 text-sm text-shell-dim"
               style={{ '--anim-delay': '0.15s' } as React.CSSProperties}
@@ -96,7 +96,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               className="anim-rise mt-8 max-w-2xl"
               style={{ '--anim-delay': '0.5s' } as React.CSSProperties}
             >
-              <p className="text-base leading-relaxed text-shell-dim">{latest.excerpt}</p>
+              <p className="line-clamp-4 text-base leading-relaxed text-shell-dim sm:line-clamp-none">{latest.excerpt}</p>
               <div className="mt-6 flex items-center gap-5">
                 <Link
                   href={`/blog/${latest.slug}`}

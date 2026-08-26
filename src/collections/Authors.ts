@@ -8,7 +8,8 @@ export const Authors: CollectionConfig = {
     group: 'Content',
     useAsTitle: 'name',
     defaultColumns: ['name', 'role'],
-    description: 'Article authors — no account or login needed, just a name and photo.',
+    description:
+      'Article authors — no account or login needed. English and Georgian fields sit side by side; Georgian falls back to English when empty.',
   },
   hooks: {
     afterChange: [revalidateArticlesAll],
@@ -26,13 +27,22 @@ export const Authors: CollectionConfig = {
       },
     },
     {
-      name: 'role',
-      type: 'text',
-      localized: true,
-      admin: {
-        description:
-          'Public title shown next to the name, e.g. "Wine writer", "Master of Oenology".',
-      },
+      type: 'row',
+      fields: [
+        {
+          name: 'role',
+          type: 'text',
+          label: 'Role (English)',
+          admin: {
+            description: 'e.g. "Wine writer", "Master of Oenology".',
+          },
+        },
+        {
+          name: 'roleKa',
+          type: 'text',
+          label: 'Role (Georgian)',
+        },
+      ],
     },
     {
       name: 'avatar',
@@ -45,11 +55,15 @@ export const Authors: CollectionConfig = {
     {
       name: 'bio',
       type: 'textarea',
-      localized: true,
+      label: 'Bio (English)',
       admin: {
-        description:
-          'Short author bio shown under articles — mention wine credentials if any (builds trust with readers and Google).',
+        description: 'Short author bio shown under articles.',
       },
+    },
+    {
+      name: 'bioKa',
+      type: 'textarea',
+      label: 'Bio (Georgian)',
     },
   ],
 }

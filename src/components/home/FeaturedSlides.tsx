@@ -17,7 +17,7 @@ export function FeaturedSlides({ slides }: { slides: Slide[] }) {
     <section
       className="relative bg-shell"
       data-slides
-      style={{ height: `${(slides.length + 1) * 100}vh` }}
+      style={{ height: `${100 + slides.length * 50}vh` }}
     >
       <div className="sticky top-0 h-screen overflow-hidden">
         {slides.map((slide, i) => {

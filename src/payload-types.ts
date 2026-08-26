@@ -295,7 +295,7 @@ export interface Category {
   createdAt: string;
 }
 /**
- * Article authors — no account or login needed, just a name and photo.
+ * Article authors — no account or login needed. English and Georgian fields sit side by side; Georgian falls back to English when empty.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "authors".
@@ -307,17 +307,19 @@ export interface Author {
    */
   name: string;
   /**
-   * Public title shown next to the name, e.g. "Wine writer", "Master of Oenology".
+   * e.g. "Wine writer", "Master of Oenology".
    */
   role?: string | null;
+  roleKa?: string | null;
   /**
    * Author photo — shown in bylines. Square images work best.
    */
   avatar?: (number | null) | Media;
   /**
-   * Short author bio shown under articles — mention wine credentials if any (builds trust with readers and Google).
+   * Short author bio shown under articles.
    */
   bio?: string | null;
+  bioKa?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -518,8 +520,10 @@ export interface ArticlesSelect<T extends boolean = true> {
 export interface AuthorsSelect<T extends boolean = true> {
   name?: T;
   role?: T;
+  roleKa?: T;
   avatar?: T;
   bio?: T;
+  bioKa?: T;
   updatedAt?: T;
   createdAt?: T;
 }

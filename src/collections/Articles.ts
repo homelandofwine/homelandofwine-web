@@ -30,7 +30,7 @@ export const Articles: CollectionConfig = {
   versions: {
     drafts: {
       autosave: {
-        interval: 800,
+        interval: 10000,
       },
     },
     maxPerDoc: 25,

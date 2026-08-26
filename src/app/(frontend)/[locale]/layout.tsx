@@ -22,6 +22,8 @@ import { absoluteUrl, ogLocale, pageAlternates, SITE_URL } from '@/lib/seo'
 
 import '../globals.css'
 
+export const dynamic = 'force-dynamic'
+
 const garamond = EB_Garamond({
   subsets: ['latin'],
   variable: '--font-garamond',
