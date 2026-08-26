@@ -28,29 +28,46 @@ export function PartnersRow({ children }: { children: React.ReactNode }) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let raf = 0
     let last = performance.now()
+    let pos = el.scrollLeft
     const tick = (now: number) => {
       const dt = Math.min(now - last, 100)
       last = now
       const half = el.scrollWidth / 2
       if (half > 0 && !hovering.current && now > pauseUntil.current) {
-        el.scrollLeft += dt * 0.04
-        if (el.scrollLeft >= half) el.scrollLeft -= half
+        if (Math.abs(el.scrollLeft - pos) > 1.5) pos = el.scrollLeft
+        pos += dt * 0.04
+        if (pos >= half) pos -= half
+        el.scrollLeft = pos
+      } else {
+        pos = el.scrollLeft
       }
       raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
-    const over = () => {
-      hovering.current = true
+    const over = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse') hovering.current = true
     }
     const out = () => {
       hovering.current = false
     }
+    const touchStart = () => {
+      pauseUntil.current = Number.POSITIVE_INFINITY
+    }
+    const touchEnd = () => {
+      pauseUntil.current = performance.now() + 2500
+    }
     el.addEventListener('pointerenter', over)
     el.addEventListener('pointerleave', out)
+    el.addEventListener('touchstart', touchStart, { passive: true })
+    el.addEventListener('touchend', touchEnd, { passive: true })
+    el.addEventListener('touchcancel', touchEnd, { passive: true })
     return () => {
       cancelAnimationFrame(raf)
       el.removeEventListener('pointerenter', over)
       el.removeEventListener('pointerleave', out)
+      el.removeEventListener('touchstart', touchStart)
+      el.removeEventListener('touchend', touchEnd)
+      el.removeEventListener('touchcancel', touchEnd)
     }
   }, [])
 
