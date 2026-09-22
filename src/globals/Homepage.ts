@@ -27,6 +27,28 @@ const Partners: Block = {
   ],
 }
 
+const ProducerPages: Block = {
+  slug: 'producerPages',
+  labels: { singular: 'Producer pages', plural: 'Producer pages' },
+  fields: [
+    headingOverride,
+    {
+      name: 'pages',
+      type: 'array',
+      labels: { singular: 'Page', plural: 'Pages' },
+      admin: {
+        description:
+          'One-page producer ads from the magazine. Upload each page as an image; it is always shown whole, never cropped.',
+      },
+      fields: [
+        { name: 'image', type: 'upload', relationTo: 'media', required: true },
+        { name: 'name', type: 'text' },
+        { name: 'url', type: 'text' },
+      ],
+    },
+  ],
+}
+
 const AboutStrip: Block = {
   slug: 'aboutStrip',
   labels: { singular: 'About strip', plural: 'About strips' },
@@ -275,6 +297,7 @@ export const Homepage: GlobalConfig = {
       type: 'blocks',
       blocks: [
         Partners,
+        ProducerPages,
         AboutStrip,
         FeaturedSlides,
         MagazineCovers,

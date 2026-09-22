@@ -37,10 +37,9 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale)
 
   const t = await getTranslations({ locale })
-  const [{ docs: articles }, { docs: categories }, settings, articlesPage] = await Promise.all([
+  const [{ docs: articles }, { docs: categories }, articlesPage] = await Promise.all([
     getArticles(locale),
     getCategories(locale),
-    getSettings(locale),
     getArticlesPage(locale),
   ])
   const banner =
@@ -60,43 +59,23 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       />
       {banner && (
         <div className="mx-auto max-w-[1400px] px-4 pt-28 sm:px-6">
-          <div className="anim-settle relative h-[260px] w-full overflow-hidden rounded-lg sm:h-[340px]">
-            <div className="absolute inset-0" data-parallax>
-              <Img
-                media={banner}
-                sizes="(min-width: 1400px) 1400px, 100vw"
-                loading="eager"
-                fetchPriority="high"
-                className="h-full w-full object-cover"
-              />
-            </div>
+          <div className="anim-settle mx-auto max-w-[1100px] overflow-hidden rounded-lg">
+            <Img
+              media={banner}
+              sizes="(min-width: 1100px) 1100px, 100vw"
+              loading="eager"
+              fetchPriority="high"
+              className="h-auto w-full"
+            />
           </div>
         </div>
       )}
 
       <header>
-        <div
-          className={`mx-auto flex max-w-[1400px] flex-col gap-6 px-4 pb-12 sm:px-6 md:flex-row md:items-end md:justify-between ${
-            banner ? 'pt-14' : 'pt-36'
-          }`}
-        >
-          <div className="max-w-2xl">
-            <h1 className="anim-rise text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-none tracking-tight text-ink">
-              {articlesPage.heading || t('nav.blog')}
-            </h1>
-            <p
-              className="anim-rise mt-5 max-w-xl text-base leading-relaxed text-muted"
-              style={{ '--anim-delay': '0.15s' } as React.CSSProperties}
-            >
-              {settings.siteDescription}
-            </p>
-          </div>
-          <p
-            className="anim-rise caps shrink-0 text-sm font-semibold tracking-[0.14em] text-muted"
-            style={{ '--anim-delay': '0.2s' } as React.CSSProperties}
-          >
-            {t('common.articlesCount', { count: articles.length })}
-          </p>
+        <div className={`mx-auto max-w-[1400px] px-4 pb-10 sm:px-6 ${banner ? 'pt-12' : 'pt-36'}`}>
+          <h1 className="anim-rise text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-none tracking-tight text-ink">
+            {articlesPage.heading || t('nav.blog')}
+          </h1>
         </div>
       </header>
 

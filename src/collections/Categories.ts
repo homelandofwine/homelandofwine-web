@@ -44,6 +44,15 @@ export const Categories: CollectionConfig = {
       },
     },
     {
+      name: 'banner',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description:
+          'Category cover shown at the top of the category page. Wide images work best, about 2000x700.',
+      },
+    },
+    {
       name: 'description',
       type: 'textarea',
       localized: true,

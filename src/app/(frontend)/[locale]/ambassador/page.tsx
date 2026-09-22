@@ -36,5 +36,5 @@ export default async function AmbassadorRoute({
   const locale = l as Locale
   setRequestLocale(locale)
   const page = await getAmbassadorPage(locale)
-  return <SpecialPage locale={locale} page={page} categorySlug="ambassador" />
+  return <SpecialPage locale={locale} page={page} categorySlug="wine-ambassadors" />
 }

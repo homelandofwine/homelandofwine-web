@@ -13,12 +13,13 @@ import { ThemeToggle } from './ThemeToggle'
 
 const CATEGORY_MENU = [
   ['main-feature', 'MAIN FEATURE'],
-  ['grape-varieties', 'GRAPE VARIETIES'],
   ['wine-regions', 'WINE REGIONS'],
+  ['grape-varieties', 'GEORGIAN GRAPE VARIETIES'],
   ['producers', 'PRODUCERS'],
-  ['georgian-wine-in-foreign-market', 'GEORGIAN WINE IN FOREIGN MARKET'],
+  ['wines', 'WINES'],
   ['food-and-wine', 'FOOD AND WINE'],
   ['food-and-travel', 'FOOD AND TRAVEL'],
+  ['georgian-wine-in-foreign-market', 'GEORGIAN WINE IN FOREIGN MARKET'],
 ] as const
 
 const NAV = [

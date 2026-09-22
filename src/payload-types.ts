@@ -288,6 +288,10 @@ export interface Category {
    */
   slug?: string | null;
   /**
+   * Category cover shown at the top of the category page. Wide images work best, about 2000x700.
+   */
+  banner?: (number | null) | Media;
+  /**
    * Optional intro shown on the category page (also used as its meta description).
    */
   description?: string | null;
@@ -533,6 +537,7 @@ export interface AuthorsSelect<T extends boolean = true> {
 export interface CategoriesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  banner?: T;
   description?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -750,6 +755,26 @@ export interface Homepage {
             id?: string | null;
             blockName?: string | null;
             blockType: 'partners';
+          }
+        | {
+            /**
+             * Optional. Leave empty to use the default heading.
+             */
+            heading?: string | null;
+            /**
+             * One-page producer ads from the magazine. Upload each page as an image; it is always shown whole, never cropped.
+             */
+            pages?:
+              | {
+                  image: number | Media;
+                  name?: string | null;
+                  url?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'producerPages';
           }
         | {
             /**
@@ -1091,6 +1116,21 @@ export interface HomepageSelect<T extends boolean = true> {
                 | {
                     name?: T;
                     logo?: T;
+                    url?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        producerPages?:
+          | T
+          | {
+              heading?: T;
+              pages?:
+                | T
+                | {
+                    image?: T;
+                    name?: T;
                     url?: T;
                     id?: T;
                   };

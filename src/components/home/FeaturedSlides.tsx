@@ -35,10 +35,21 @@ export function FeaturedSlides({ slides }: { slides: Slide[] }) {
               data-slide
               className={`absolute inset-0 ${i === 0 ? 'is-active' : ''}`}
             >
-              <div className="absolute inset-0" data-parallax>
-                <Img media={slide.image} sizes="100vw" className="h-full w-full object-cover opacity-70" />
+              <div className="absolute inset-0" aria-hidden="true" data-parallax>
+                <Img
+                  media={slide.image}
+                  sizes="60vw"
+                  className="h-full w-full scale-110 object-cover opacity-30 blur-2xl"
+                />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-shell via-shell/30 to-shell/40" />
+              <div className="absolute inset-0 flex items-center justify-center px-4 pb-40 pt-24 sm:px-10 sm:pb-36">
+                <Img
+                  media={slide.image}
+                  sizes="100vw"
+                  className="max-h-full max-w-full rounded-sm object-contain shadow-2xl"
+                />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-shell to-transparent" />
 
               <span className="absolute left-4 top-28 text-[clamp(1.9rem,4.5vw,3.5rem)] font-medium leading-none text-shell-fg sm:left-6">
                 /{String(i + 1).padStart(2, '0')}

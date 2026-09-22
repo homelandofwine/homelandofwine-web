@@ -6,6 +6,7 @@ import { FeaturedSlides } from '@/components/home/FeaturedSlides'
 import { InfoCards } from '@/components/sections/InfoCards'
 import { MagazineCovers } from '@/components/sections/MagazineCovers'
 import { NewsletterSticky } from '@/components/sections/NewsletterSticky'
+import { ProducerPages } from '@/components/sections/ProducerPages'
 import { PartnersMarquee } from '@/components/sections/PartnersMarquee'
 import { StatsTiles } from '@/components/sections/StatsTiles'
 import { Steps } from '@/components/sections/Steps'
@@ -54,6 +55,8 @@ export function SectionRenderer({
         return <FeaturedSlides key={key} slides={block.slides ?? []} />
       case 'magazineCovers':
         return <MagazineCovers key={key} heading={block.heading} covers={block.covers ?? []} />
+      case 'producerPages':
+        return <ProducerPages key={key} heading={block.heading} pages={block.pages ?? []} />
       case 'stats':
         return (
           <StatsTiles

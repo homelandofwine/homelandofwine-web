@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound, permanentRedirect } from 'next/navigation'
 
 import { ArticleCard } from '@/components/article/ArticleCard'
+import { Img } from '@/components/media/Img'
 import { CategoryTabs } from '@/components/article/CategoryTabs'
 import { JsonLd } from '@/components/seo/JsonLd'
 import type { Locale } from '@/i18n/routing'
@@ -97,8 +98,23 @@ export default async function CategoryPage({
           ],
         }}
       />
+      {category.banner && typeof category.banner === 'object' && (
+        <div className="mx-auto max-w-[1400px] px-4 pt-28 sm:px-6">
+          <div className="anim-settle relative h-[200px] w-full overflow-hidden rounded-lg sm:h-[280px] lg:h-[340px]">
+            <div className="absolute inset-0" data-parallax>
+              <Img
+                media={category.banner}
+                sizes="(min-width: 1400px) 1400px, 100vw"
+                loading="eager"
+                fetchPriority="high"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      )}
       <header>
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-6 px-4 pb-12 pt-36 sm:px-6 md:flex-row md:items-end md:justify-between">
+        <div className={`mx-auto flex max-w-[1400px] flex-col gap-6 px-4 pb-12 sm:px-6 md:flex-row md:items-end md:justify-between ${category.banner && typeof category.banner === 'object' ? 'pt-12' : 'pt-36'}`}>
           <div className="max-w-2xl">
             <p className="anim-rise caps text-sm font-medium tracking-widest text-accent">
               {t('common.category')}
@@ -118,12 +134,6 @@ export default async function CategoryPage({
               </p>
             )}
           </div>
-          <p
-            className="anim-rise caps shrink-0 text-sm font-semibold tracking-[0.14em] text-muted"
-            style={{ '--anim-delay': '0.3s' } as React.CSSProperties}
-          >
-            {t('common.articlesCount', { count: articles.length })}
-          </p>
         </div>
       </header>
 
