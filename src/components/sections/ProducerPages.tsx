@@ -27,7 +27,7 @@ export function ProducerPages({
         </div>
         <div className="mt-12">
           <HScroll>
-            <div className="flex items-stretch gap-5 px-4 sm:gap-8 sm:px-6">
+            <div className="mx-auto flex w-max items-stretch gap-5 px-4 sm:gap-8 sm:px-6">
               {pages.map((p, i) => {
                 const card = (
                   <span className="block h-[420px] rounded-sm bg-white p-2 shadow-lg sm:h-[540px] sm:p-2.5">
