@@ -47,7 +47,7 @@ export function Steps({ heading, items }: { heading: string; items: StepItem[] }
                   <Img
                     media={step.image}
                     sizes="(min-width: 768px) 40vw, 100vw"
-                    className="aspect-[16/9] w-full rounded-lg object-cover"
+                    className="h-auto w-full rounded-lg"
                   />
                 )}
               </div>
