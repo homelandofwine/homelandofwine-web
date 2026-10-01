@@ -307,7 +307,20 @@ export const getRecentArticlesForNews = () =>
           publishedAt: { greater_than_equal: cutoff },
         },
       })
-      return docs as Array<{
+      const result = docs.length
+        ? docs
+        : (
+            await payload.find({
+              collection: 'articles',
+              locale: 'all',
+              depth: 0,
+              limit: 1,
+              sort: '-publishedAt',
+              select: { slug: true, title: true, publishedAt: true },
+              where: { _status: { equals: 'published' } },
+            })
+          ).docs
+      return result as Array<{
         id: string | number
         slug?: { ka?: string | null; en?: string | null } | null
         title?: { ka?: string | null; en?: string | null } | null
