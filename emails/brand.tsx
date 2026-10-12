@@ -18,12 +18,14 @@ const SOCIALS: Array<[string, string]> = [
 export function MagazineHeader({ siteUrl }: { siteUrl: string }) {
   return (
     <Section style={{ backgroundColor: INK, padding: '30px 32px', textAlign: 'center' as const }}>
-      <Img
-        src={`${siteUrl}/brand/logo-cream.png`}
-        alt={BRAND}
-        width="200"
-        style={{ display: 'block', height: 'auto', margin: '0 auto' }}
-      />
+      <Link href={siteUrl} style={{ display: 'block' }}>
+        <Img
+          src={`${siteUrl}/brand/logo-cream.png`}
+          alt={BRAND}
+          width="200"
+          style={{ display: 'block', height: 'auto', margin: '0 auto' }}
+        />
+      </Link>
     </Section>
   )
 }

@@ -5,6 +5,7 @@ import {
   Head,
   Html,
   Img,
+  Link,
   Preview,
   Section,
   Text,
@@ -37,12 +38,14 @@ export function NewArticleEmail({
         >
           <MagazineHeader siteUrl={siteUrl} />
           {coverUrl && (
-            <Img
-              src={coverUrl}
-              alt=""
-              width="600"
-              style={{ display: 'block', height: 'auto', width: '100%' }}
-            />
+            <Link href={articleUrl} style={{ display: 'block' }}>
+              <Img
+                src={coverUrl}
+                alt=""
+                width="600"
+                style={{ display: 'block', height: 'auto', width: '100%' }}
+              />
+            </Link>
           )}
           <Section style={{ padding: '36px 40px 24px' }}>
             <Text
