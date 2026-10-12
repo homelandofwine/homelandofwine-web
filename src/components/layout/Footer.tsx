@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
+import { getContactPage } from '@/lib/api'
+
 import { Img } from '@/components/media/Img'
 import { SubscribeButton } from '@/components/newsletter/SubscribeButton'
 import { Link } from '@/i18n/navigation'
@@ -7,9 +9,16 @@ import type { Locale } from '@/i18n/routing'
 import type { SiteSetting } from '@/payload-types'
 
 const SOCIAL_ICONS: Record<string, React.ReactNode> = {
-  'Twitter / X': (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px]">
-      <path d="M17.8 3h3l-6.6 7.6L22 21h-6.1l-4.8-6.2L5.6 21h-3l7.1-8.1L2 3h6.3l4.3 5.7Zm-1.1 16.2h1.7L7.4 4.7H5.6Z" />
+  Email: (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      className="h-[18px] w-[18px]"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2.5" />
+      <path d="m4 7 8 6 8-6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   Instagram: (
@@ -35,10 +44,11 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
 export async function Footer({ locale, settings }: { locale: Locale; settings: SiteSetting }) {
   const t = await getTranslations({ locale })
 
+  const contact = await getContactPage(locale)
   const socials: Array<[string, string | null | undefined]> = [
-    ['Twitter / X', settings.socialLinks?.twitter],
     ['Instagram', settings.socialLinks?.instagram],
     ['Pinterest', settings.socialLinks?.pinterest],
+    ['Email', contact.email ? `mailto:${contact.email}` : null],
   ]
   const activeSocials = socials.filter((s): s is [string, string] => Boolean(s[1]))
 
@@ -88,8 +98,8 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
                 <a
                   key={name}
                   href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={url.startsWith('mailto:') ? undefined : '_blank'}
+                  rel={url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
                   aria-label={name}
                   className="grid h-10 w-10 place-items-center rounded-full border border-shell-line text-shell-fg transition-colors hover:border-accent hover:bg-accent"
                 >

@@ -365,10 +365,46 @@ html:not(.motion-ready) [data-slide]:first-of-type {
   border-radius: 0.5rem;
 }
 .article-body > picture,
-.article-body > img {
+.article-body > img,
+.article-body > .pin-wrap {
   display: block;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+}
+.pin-wrap {
+  position: relative;
+}
+.pin-btn {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 9999px;
+  background: #e60023;
+  color: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.3);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+.pin-btn:hover {
+  transform: scale(1.1);
+}
+@media (hover: hover) {
+  .pin-wrap .pin-btn,
+  .pin-group .pin-btn {
+    opacity: 0;
+  }
+  .pin-wrap:hover .pin-btn,
+  .pin-group:hover .pin-btn,
+  .pin-wrap:focus-within .pin-btn,
+  .pin-group:focus-within .pin-btn {
+    opacity: 1;
+  }
 }
 .article-body p:empty,
 .article-body p:has(> br:only-child) {
@@ -376,7 +412,8 @@ html:not(.motion-ready) [data-slide]:first-of-type {
 }
 @media (min-width: 640px) {
   .article-body > picture,
-  .article-body > img {
+  .article-body > img,
+  .article-body > .pin-wrap {
     margin-top: 2.25rem;
     margin-bottom: 2.25rem;
   }

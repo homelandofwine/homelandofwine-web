@@ -5,6 +5,7 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 
 import { ArticleBody } from '@/components/article/ArticleBody'
+import { PinItButtons } from '@/components/article/PinItButtons'
 import { ArticleCard } from '@/components/article/ArticleCard'
 import { ShareButtons } from '@/components/article/ShareButtons'
 import { SetAlternates } from '@/components/layout/AlternateLinks'
@@ -128,6 +129,16 @@ export default async function ArticlePage({
     author && typeof author === 'object' ? (locale === 'ka' && author.bioKa) || author.bio : null
   const authorRole =
     author && typeof author === 'object' ? (locale === 'ka' && author.roleKa) || author.role : null
+  const coverMediaUrl =
+    typeof cover === 'object' && cover?.url
+      ? cover.url.startsWith('http')
+        ? cover.url
+        : `${SITE_URL}${cover.url}`
+      : null
+  const coverPinUrl = coverMediaUrl
+    ? `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(absoluteUrl(locale, `/blog/${slug}`))}&media=${encodeURIComponent(coverMediaUrl)}&description=${encodeURIComponent(article.title ?? '')}`
+    : null
+
   const authorAvatar =
     author && typeof author === 'object' && author.avatar && typeof author.avatar === 'object'
       ? author.avatar
@@ -302,14 +313,29 @@ export default async function ArticlePage({
             )}
           </div>
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <Img
-              media={article.coverImage}
-              sizes="(min-width: 1024px) 960px, 100vw"
-              loading="eager"
-              fetchPriority="high"
-              className="anim-settle aspect-[2/1] w-full rounded-lg object-cover"
-              style={{ '--anim-delay': '0.2s' } as React.CSSProperties}
-            />
+            <div className="pin-group relative">
+              <Img
+                media={article.coverImage}
+                sizes="(min-width: 1024px) 960px, 100vw"
+                loading="eager"
+                fetchPriority="high"
+                className="anim-settle aspect-[2/1] w-full rounded-lg object-cover"
+                style={{ '--anim-delay': '0.2s' } as React.CSSProperties}
+              />
+              {coverPinUrl && (
+                <a
+                  href={coverPinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Save to Pinterest"
+                  className="pin-btn"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+                    <path d="M12 2a10 10 0 0 0-3.6 19.3 9 9 0 0 1 0-2.7l1.2-5s-.3-.6-.3-1.5c0-1.4.8-2.4 1.8-2.4.9 0 1.3.6 1.3 1.4 0 .9-.6 2.2-.9 3.4-.2 1 .5 1.9 1.5 1.9 1.9 0 3.3-2 3.3-4.8 0-2.5-1.8-4.3-4.4-4.3a4.5 4.5 0 0 0-4.7 4.5c0 .9.3 1.9.8 2.4a.3.3 0 0 1 .1.3l-.3 1.1c0 .2-.1.2-.3.1-1.2-.6-2-2.4-2-3.9 0-3.2 2.3-6.1 6.7-6.1 3.5 0 6.2 2.5 6.2 5.8 0 3.5-2.2 6.3-5.2 6.3-1 0-2-.5-2.3-1.1l-.6 2.4c-.2.9-.8 2-1.2 2.6A10 10 0 1 0 12 2Z" />
+                  </svg>
+                </a>
+              )}
+            </div>
           </div>
         </header>
 
@@ -320,6 +346,7 @@ export default async function ArticlePage({
         >
           <div className="mx-auto w-full max-w-[48rem] pb-14 pt-8 sm:pt-12 lg:pb-20 lg:pt-16" data-reveal="up">
             <ArticleBody data={article.body as SerializedEditorState} />
+            <PinItButtons />
             {facts.length > 0 && (
               <div className="mt-12 flex flex-wrap gap-2.5 border-t border-line pt-8">
                 {facts.map((f, i) => (
