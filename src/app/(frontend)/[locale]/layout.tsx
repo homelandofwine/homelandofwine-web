@@ -14,6 +14,7 @@ import { CookieConsent } from '@/components/layout/CookieConsent'
 import { NewsletterModal } from '@/components/newsletter/NewsletterModal'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { ImageProtection } from '@/components/layout/ImageProtection'
 import { MotionProvider } from '@/components/motion/MotionProvider'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { routing, type Locale } from '@/i18n/routing'
@@ -188,6 +189,7 @@ export default async function FrontendLayout({
             <Footer locale={locale as Locale} settings={settings} />
             <CookieConsent />
             <NewsletterModal />
+            <ImageProtection />
             <Analytics />
             <SpeedInsights />
           </AlternateLinksProvider>
