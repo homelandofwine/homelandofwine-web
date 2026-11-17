@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import { Link, usePathname } from '@/i18n/navigation'
+import { categoryPath } from '@/lib/seo'
 
 import { SubscribeButton } from '@/components/newsletter/SubscribeButton'
 import { SearchOverlay } from '@/components/search/SearchOverlay'
@@ -107,7 +108,7 @@ export function Header() {
                       {CATEGORY_MENU.map(([slug, label]) => (
                         <Link
                           key={slug}
-                          href={`/blog/category/${slug}`}
+                          href={categoryPath(slug)}
                           className="caps block rounded px-4 py-2.5 text-sm text-shell-fg/80 transition-colors hover:bg-accent hover:text-shell-fg"
                         >
                           {label}
@@ -207,7 +208,7 @@ export function Header() {
                       {CATEGORY_MENU.map(([slug, label]) => (
                         <Link
                           key={slug}
-                          href={`/blog/category/${slug}`}
+                          href={categoryPath(slug)}
                           onClick={() => setOpen(false)}
                           className="caps py-1 text-sm text-shell-dim transition-colors hover:text-shell-fg"
                         >

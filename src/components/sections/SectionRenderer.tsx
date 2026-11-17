@@ -22,12 +22,14 @@ export function SectionRenderer({
   articles,
   settings,
   about,
+  catMap,
 }: {
   sections: Section[]
   locale: Locale
   articles: Article[]
   settings: SiteSetting
   about: AboutPage
+  catMap?: Record<string, string>
 }) {
   return sections.map((block, i) => {
     const key = block.id ?? `${block.blockType}-${i}`
@@ -52,7 +54,7 @@ export function SectionRenderer({
           />
         )
       case 'featuredSlides':
-        return <FeaturedSlides key={key} slides={block.slides ?? []} />
+        return <FeaturedSlides key={key} slides={block.slides ?? []} catMap={catMap} />
       case 'magazineCovers':
         return <MagazineCovers key={key} heading={block.heading} covers={block.covers ?? []} />
       case 'producerPages':
@@ -88,7 +90,7 @@ export function SectionRenderer({
           />
         )
       case 'steps':
-        return <Steps key={key} heading={block.heading} items={block.items ?? []} />
+        return <Steps key={key} heading={block.heading} items={block.items ?? []} catMap={catMap} />
       case 'testimonials':
         return <Testimonials key={key} heading={block.heading} quotes={block.quotes ?? []} />
       case 'faq':

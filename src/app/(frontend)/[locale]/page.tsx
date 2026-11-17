@@ -4,8 +4,15 @@ import { Img } from '@/components/media/Img'
 import { DEFAULT_SECTIONS, SectionRenderer } from '@/components/sections/SectionRenderer'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { getAboutPage, getArticles, getHomepage, getSettings } from '@/lib/api'
+import {
+  getAboutPage,
+  getArticles,
+  getCategorySlugMap,
+  getHomepage,
+  getSettings,
+} from '@/lib/api'
 import { formatDate } from '@/lib/format'
+import { articlePath } from '@/lib/seo'
 import type { Category } from '@/payload-types'
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
@@ -14,11 +21,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale)
 
   const t = await getTranslations({ locale })
-  const [{ docs: articles }, settings, about, homepage] = await Promise.all([
+  const [{ docs: articles }, settings, about, homepage, catMap] = await Promise.all([
     getArticles(locale, { limit: 13 }),
     getSettings(locale),
     getAboutPage(locale),
     getHomepage(locale),
+    getCategorySlugMap(),
   ])
 
   const [latest, ...rest] = articles
@@ -89,7 +97,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               className="ka-heading anim-rise mt-6 max-w-5xl text-[clamp(2.5rem,7vw,5.5rem)] font-medium uppercase leading-[1.02] tracking-tight"
               style={{ '--anim-delay': '0.3s' } as React.CSSProperties}
             >
-              <Link href={`/blog/${latest.slug}`}>{latest.title}</Link>
+              <Link href={articlePath(latest)}>{latest.title}</Link>
             </h1>
 
             <div
@@ -99,7 +107,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <p className="line-clamp-4 text-base leading-relaxed text-shell-dim sm:line-clamp-none">{latest.excerpt}</p>
               <div className="mt-6 flex items-center gap-5">
                 <Link
-                  href={`/blog/${latest.slug}`}
+                  href={articlePath(latest)}
                   className="caps rounded-md bg-shell-fg px-5 py-3 text-sm font-semibold text-shell transition-colors hover:opacity-90"
                 >
                   {t('common.readArticle')}
@@ -117,6 +125,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <SectionRenderer
           sections={sections}
           locale={locale}
+          catMap={catMap}
           articles={rest}
           settings={settings}
           about={about}

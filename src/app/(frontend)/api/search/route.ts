@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 import { routing, type Locale } from '@/i18n/routing'
 import { searchArticles } from '@/lib/api'
+import { articlePath } from '@/lib/seo'
 
 export async function GET(req: NextRequest) {
   const q = (req.nextUrl.searchParams.get('q') ?? '').trim()
@@ -13,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   const docs = await searchArticles(locale, q, 6)
   return NextResponse.json(
-    docs.map((d) => ({ id: d.id, title: d.title, slug: d.slug })),
+    docs.map((d) => ({ id: d.id, title: d.title, slug: d.slug, path: articlePath(d) })),
     { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' } },
   )
 }

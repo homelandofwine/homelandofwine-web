@@ -1,0 +1,476 @@
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import type { Metadata } from 'next'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { draftMode } from 'next/headers'
+import { notFound, permanentRedirect, redirect } from 'next/navigation'
+
+import { ArticleBody } from '@/components/article/ArticleBody'
+import { PinItButtons } from '@/components/article/PinItButtons'
+import { ArticleCard } from '@/components/article/ArticleCard'
+import { ShareButtons } from '@/components/article/ShareButtons'
+import { SetAlternates } from '@/components/layout/AlternateLinks'
+import { DraftBanner } from '@/components/layout/DraftBanner'
+import { Img } from '@/components/media/Img'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { Link } from '@/i18n/navigation'
+import { type Locale } from '@/i18n/routing'
+import {
+  getAllArticleSlugs,
+  getArticleBySlug,
+  getArticles,
+  getCategorySlugMap,
+  getDraftArticleBySlug,
+  getSettings,
+} from '@/lib/api'
+import { formatDate } from '@/lib/format'
+import {
+  absoluteUrl,
+  articlePath,
+  localePath,
+  ogLocale,
+  pageAlternates,
+  SITE_URL,
+  categoryPath,
+} from '@/lib/seo'
+import type { Author, Category, Media } from '@/payload-types'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; category: string; slug: string }>
+}): Promise<Metadata> {
+  const { locale: l, category: categoryParam, slug } = await params
+  const locale = l as Locale
+  if (!SLUG_SHAPE.test(categoryParam) || !SLUG_SHAPE.test(slug)) return {}
+  const catMap = await getCategorySlugMap()
+  if (!Object.values(catMap).includes(categoryParam)) return {}
+  const result = await getArticleBySlug(locale, slug)
+  if (!result) return {}
+
+  const { article, alternateSlug, otherLocale } = result
+  const cover = article.coverImage as Media | null
+  const ogImage = (typeof cover === 'object' && (cover?.sizes?.og?.url ?? cover?.url)) || undefined
+
+  const path = articlePath({ ...article, slug })
+  const paths: { ka?: string; en?: string } = { [locale]: path }
+  if (alternateSlug) paths[otherLocale] = articlePath({ ...article, slug: alternateSlug })
+
+  const alternates = result.native
+    ? pageAlternates(locale, path, paths)
+    : { canonical: absoluteUrl(otherLocale, articlePath({ ...article, slug: alternateSlug ?? slug })) }
+
+  const title = article.seo?.metaTitle || article.title || undefined
+  const description = article.seo?.metaDescription || article.excerpt || undefined
+
+  return {
+    title,
+    description,
+    alternates,
+    openGraph: {
+      type: 'article',
+      title,
+      description,
+      url: absoluteUrl(locale, path),
+      locale: ogLocale(locale),
+      publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt,
+      images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : undefined,
+    },
+  }
+}
+
+const SLUG_SHAPE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+
+export const dynamicParams = true
+
+export async function generateStaticParams({ params: { locale } }: { params: { locale: string } }) {
+  const [docs, catMap] = await Promise.all([getAllArticleSlugs(), getCategorySlugMap()])
+  return docs
+    .map((d) => {
+      const slug = d.slug?.[locale as Locale] ?? (locale === 'ka' ? d.slug?.en : undefined)
+      const catId = typeof d.category === 'object' && d.category ? d.category.id : d.category
+      const category = catId != null ? catMap[String(catId)] : undefined
+      return slug && category ? { category, slug } : null
+    })
+    .filter((x): x is { category: string; slug: string } => Boolean(x))
+}
+
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ locale: string; category: string; slug: string }>
+}) {
+  const { locale: l, category: categoryParam, slug } = await params
+  const locale = l as Locale
+  setRequestLocale(locale)
+
+  if (!SLUG_SHAPE.test(categoryParam) || !SLUG_SHAPE.test(slug)) notFound()
+  const catMap = await getCategorySlugMap()
+  if (!Object.values(catMap).includes(categoryParam)) notFound()
+
+  const { isEnabled: isDraft } = await draftMode()
+  const result = isDraft
+    ? await getDraftArticleBySlug(locale, slug)
+    : await getArticleBySlug(locale, slug)
+  if (!result) notFound()
+
+  const t = await getTranslations({ locale })
+  const { article, alternateSlug, otherLocale } = result
+  const category = article.category as Category | null
+  const canonicalCat =
+    category && typeof category === 'object' && category.slug ? category.slug : null
+  if (!canonicalCat) notFound()
+  if (categoryParam !== canonicalCat) {
+    if (isDraft) {
+      redirect(localePath(locale, `/${canonicalCat}/${slug}`))
+    }
+    permanentRedirect(localePath(locale, `/${canonicalCat}/${slug}`))
+  }
+  const base = `/${canonicalCat}`
+
+  const alternates = {
+    [locale]: localePath(locale, `${base}/${slug}`),
+    [otherLocale]: alternateSlug
+      ? localePath(otherLocale, `${base}/${alternateSlug}`)
+      : localePath(otherLocale, '/blog'),
+  }
+
+  const settings = await getSettings(locale)
+  const cover = article.coverImage as Media | null
+  const author = article.author as Author | null
+
+  const categoryId = category && typeof category === 'object' ? category.id : undefined
+  const related = categoryId
+    ? (await getArticles(locale, { limit: 6, categoryId, nativeOnly: true })).docs
+        .filter((a) => a.id !== article.id)
+        .slice(0, 3)
+    : []
+
+  const review = article.review
+  const isReview = Boolean(review?.isReview && review?.rating != null && review?.wineName)
+  const facts = (article.facts ?? []).filter((f) => f.label && f.value)
+  const authorName =
+    author && typeof author === 'object' ? (locale === 'ka' && author.nameKa) || author.name : null
+  const authorBio =
+    author && typeof author === 'object' ? (locale === 'ka' && author.bioKa) || author.bio : null
+  const authorRole =
+    author && typeof author === 'object' ? (locale === 'ka' && author.roleKa) || author.role : null
+  const coverMediaUrl =
+    typeof cover === 'object' && cover?.url
+      ? cover.url.startsWith('http')
+        ? cover.url
+        : `${SITE_URL}${cover.url}`
+      : null
+  const coverPinUrl = coverMediaUrl
+    ? `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(absoluteUrl(locale, `${base}/${slug}`))}&media=${encodeURIComponent(coverMediaUrl)}&description=${encodeURIComponent(article.title ?? '')}`
+    : null
+
+  const authorAvatar =
+    author && typeof author === 'object' && author.avatar && typeof author.avatar === 'object'
+      ? author.avatar
+      : null
+
+  return (
+    <main>
+      {isDraft && <DraftBanner exitPath={alternates[locale] ?? '/'} />}
+      <SetAlternates alternates={alternates} />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: article.title,
+          description: article.excerpt,
+          image:
+            typeof cover === 'object' && cover?.url
+              ? [`${SITE_URL}${cover.sizes?.og?.url ?? cover.url}`]
+              : undefined,
+          datePublished: article.publishedAt,
+          dateModified: article.updatedAt,
+          inLanguage: locale,
+          author: authorName
+            ? { '@type': 'Person', name: authorName }
+            : { '@type': 'Organization', name: settings.siteName },
+          publisher: {
+            '@type': 'Organization',
+            name: settings.siteName,
+            logo: {
+              '@type': 'ImageObject',
+              url: `${SITE_URL}/brand/logo-ink.png`,
+              width: 800,
+              height: 496,
+            },
+          },
+          mainEntityOfPage: absoluteUrl(locale, `${base}/${slug}`),
+        }}
+      />
+      {isReview && (
+        <JsonLd
+          data={{
+            '@context': 'https://schema.org',
+            '@type': 'Review',
+            itemReviewed: {
+              '@type': 'Product',
+              name: review!.wineName,
+              image:
+                typeof cover === 'object' && cover?.url
+                  ? `${SITE_URL}${cover.sizes?.og?.url ?? cover.url}`
+                  : undefined,
+            },
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: review!.rating,
+              bestRating: review!.bestRating ?? 100,
+              worstRating: review!.worstRating ?? 50,
+            },
+            author: authorName
+              ? { '@type': 'Person', name: authorName }
+              : { '@type': 'Organization', name: settings.siteName },
+            publisher: {
+              '@type': 'Organization',
+              name: settings.siteName,
+              logo: {
+                '@type': 'ImageObject',
+                url: `${SITE_URL}/brand/logo-ink.png`,
+                width: 800,
+                height: 496,
+              },
+            },
+            datePublished: article.publishedAt,
+            inLanguage: locale,
+          }}
+        />
+      )}
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: t('nav.home'),
+              item: absoluteUrl(locale, '/'),
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: t('nav.blog'),
+              item: absoluteUrl(locale, '/blog'),
+            },
+            ...(category && typeof category === 'object'
+              ? [
+                  {
+                    '@type': 'ListItem',
+                    position: 3,
+                    name: category.name,
+                    item: absoluteUrl(locale, categoryPath(category.slug ?? '')),
+                  },
+                ]
+              : []),
+            {
+              '@type': 'ListItem',
+              position: category && typeof category === 'object' ? 4 : 3,
+              name: article.title,
+              item: absoluteUrl(locale, `${base}/${slug}`),
+            },
+          ],
+        }}
+      />
+
+      <article>
+        <header>
+          <div className="mx-auto max-w-4xl px-4 pb-14 pt-40 text-center sm:px-6">
+            <div className="anim-rise flex items-center justify-center gap-4 text-sm">
+              {category && typeof category === 'object' && (
+                <Link
+                  href={categoryPath(category.slug ?? '')}
+                  className="rounded bg-stone px-2.5 py-1 font-medium text-ink transition-colors hover:bg-ink hover:text-shell-fg"
+                >
+                  {category.name}
+                </Link>
+              )}
+              <time dateTime={article.publishedAt} className="text-muted">
+                {formatDate(article.publishedAt, locale)}
+              </time>
+              {isReview && (
+                <span className="rounded bg-accent px-2.5 py-1 font-semibold text-shell-fg">
+                  {review!.rating} / {review!.bestRating ?? 100}
+                </span>
+              )}
+            </div>
+            <h1
+              className="ka-heading anim-rise mt-8 text-[clamp(2.25rem,5.5vw,4.25rem)] font-medium leading-[1.05] tracking-tight text-ink"
+              style={{ '--anim-delay': '0.12s' } as React.CSSProperties}
+            >
+              {article.title}
+            </h1>
+            <p
+              className="anim-rise mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted"
+              style={{ '--anim-delay': '0.24s' } as React.CSSProperties}
+            >
+              {article.excerpt}
+            </p>
+            <div
+              className="anim-rise mt-8 flex justify-center"
+              style={{ '--anim-delay': '0.3s' } as React.CSSProperties}
+            >
+              <ShareButtons
+                url={absoluteUrl(locale, `${base}/${slug}`)}
+                title={article.title ?? ''}
+              />
+            </div>
+            {authorName && (
+              <div
+                className="anim-rise mt-10 flex items-center justify-center gap-3 text-sm text-muted"
+                style={{ '--anim-delay': '0.36s' } as React.CSSProperties}
+              >
+                {authorAvatar && (
+                  <Img
+                    media={authorAvatar}
+                    sizes="64px"
+                    className="h-16 w-16 rounded-full object-cover"
+                  />
+                )}
+                <span>
+                  {authorName}
+                  {authorRole ? ` — ${authorRole}` : ''}
+                </span>
+              </div>
+            )}
+          </div>
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <div className="pin-group relative">
+              <Img
+                media={article.coverImage}
+                sizes="(min-width: 1024px) 960px, 100vw"
+                loading="eager"
+                fetchPriority="high"
+                className="anim-settle aspect-[2/1] w-full rounded-lg object-cover"
+                style={{ '--anim-delay': '0.2s' } as React.CSSProperties}
+              />
+              {coverPinUrl && (
+                <a
+                  href={coverPinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Save to Pinterest"
+                  className="pin-btn"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+                    <path d="M12 2a10 10 0 0 0-3.6 19.3 9 9 0 0 1 0-2.7l1.2-5s-.3-.6-.3-1.5c0-1.4.8-2.4 1.8-2.4.9 0 1.3.6 1.3 1.4 0 .9-.6 2.2-.9 3.4-.2 1 .5 1.9 1.5 1.9 1.9 0 3.3-2 3.3-4.8 0-2.5-1.8-4.3-4.4-4.3a4.5 4.5 0 0 0-4.7 4.5c0 .9.3 1.9.8 2.4a.3.3 0 0 1 .1.3l-.3 1.1c0 .2-.1.2-.3.1-1.2-.6-2-2.4-2-3.9 0-3.2 2.3-6.1 6.7-6.1 3.5 0 6.2 2.5 6.2 5.8 0 3.5-2.2 6.3-5.2 6.3-1 0-2-.5-2.3-1.1l-.6 2.4c-.2.9-.8 2-1.2 2.6A10 10 0 1 0 12 2Z" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          </div>
+        </header>
+
+        <div
+          className={`mx-auto max-w-5xl px-4 sm:px-6 ${
+            related.length > 0 ? 'lg:grid lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-12' : ''
+          }`}
+        >
+          <div className="mx-auto w-full max-w-[48rem] pb-14 pt-8 sm:pt-12 lg:pb-20 lg:pt-16" data-reveal="up">
+            <ArticleBody data={article.body as SerializedEditorState} />
+            <PinItButtons />
+            {facts.length > 0 && (
+              <div className="mt-12 flex flex-wrap gap-2.5 border-t border-line pt-8">
+                {facts.map((f, i) => (
+                  <span
+                    key={f.id ?? i}
+                    className="rounded-full border border-line bg-paper px-4 py-2 text-sm"
+                  >
+                    <span className="font-semibold text-ink">{f.label}: </span>
+                    <span className="text-muted">{f.value}</span>
+                  </span>
+                ))}
+              </div>
+            )}
+            {authorName && (
+              <div className="mt-14 flex items-start gap-5 rounded-lg bg-paper p-6 sm:p-8">
+                {authorAvatar && (
+                  <Img
+                    media={authorAvatar}
+                    sizes="100px"
+                    className="h-20 w-20 shrink-0 rounded-full object-cover sm:h-[100px] sm:w-[100px]"
+                  />
+                )}
+                <div>
+                  <p className="caps text-xs font-semibold tracking-widest text-muted">
+                    {t('common.author')}
+                  </p>
+                  <p className="mt-2 text-xl tracking-tight text-ink">
+                    {authorName}
+                    {authorRole ? <span className="text-muted"> — {authorRole}</span> : null}
+                  </p>
+                  {authorBio && (
+                    <p className="mt-3 text-sm leading-relaxed text-muted">{authorBio}</p>
+                  )}
+                </div>
+              </div>
+            )}
+            <div className="mt-14 border-t border-line pt-8">
+              <Link
+                href="/blog"
+                className="caps inline-block rounded-md bg-accent px-5 py-3 text-sm font-semibold text-shell-fg transition-colors hover:bg-accent-soft"
+              >
+                {t('common.backToBlog')}
+              </Link>
+            </div>
+          </div>
+
+          {related.length > 0 && (
+            <aside className="hidden py-20 lg:block">
+              <div className="sticky top-36 space-y-6">
+                <p className="caps text-xs font-semibold text-muted">
+                  {t('common.readMore')}
+                </p>
+                {related.map((a) => (
+                  <Link
+                    key={a.id}
+                    href={articlePath(a)}
+                    className="group block border-b border-line pb-5"
+                  >
+                    <p className="text-base font-medium leading-snug text-ink transition-colors group-hover:text-accent">
+                      {a.title}
+                    </p>
+                    {a.excerpt && (
+                      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">
+                        {a.excerpt}
+                      </p>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </aside>
+          )}
+        </div>
+      </article>
+
+      {related[0]?.slug && (
+        <Link
+          href={articlePath(related[0])}
+          className="vertical-next caps"
+          title={related[0].title ?? ''}
+        >
+          <span className="vn-label">{t('common.next')}</span>
+          {related[0].title}
+        </Link>
+      )}
+
+      {related.length > 0 && (
+        <section className="border-t border-line">
+          <div className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:py-20">
+            <h2 className="caps text-3xl tracking-tight text-ink">{t('common.readMore')}</h2>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {related.map((a, i) => (
+                <ArticleCard key={a.id} article={a} locale={locale} index={i} reveal />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+    </main>
+  )
+}

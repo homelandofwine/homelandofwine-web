@@ -3,6 +3,21 @@ import type { CollectionConfig } from 'payload'
 import { revalidateCategories, revalidateCategoriesDelete } from '@/hooks/revalidate'
 import { slugify } from '@/lib/slugify'
 
+const RESERVED_SLUGS = [
+  'blog',
+  'about',
+  'contact',
+  'search',
+  'privacy',
+  'unsubscribed',
+  'ambassador',
+  'n-line-print',
+  'ka',
+  'en',
+  'api',
+  'admin',
+]
+
 export const Categories: CollectionConfig = {
   slug: 'categories',
   admin: {
@@ -28,6 +43,10 @@ export const Categories: CollectionConfig = {
       name: 'slug',
       type: 'text',
       unique: true,
+      validate: (value: string | null | undefined) =>
+        value && RESERVED_SLUGS.includes(value)
+          ? `"${value}" is reserved by the site and cannot be a category slug`
+          : true,
       index: true,
       admin: {
         position: 'sidebar',

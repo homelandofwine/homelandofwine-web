@@ -35,11 +35,29 @@ export function pageAlternates(locale: Locale, path: string, paths?: { ka?: stri
 
 const SPECIAL_CATEGORY_PATHS: Record<string, string> = {
   ambassador: '/ambassador',
+  'wine-ambassadors': '/ambassador',
   'n-line-print': '/n-line-print',
 }
 
 export function categoryPath(slug: string): string {
-  return SPECIAL_CATEGORY_PATHS[slug] ?? `/blog/category/${slug}`
+  return SPECIAL_CATEGORY_PATHS[slug] ?? `/${slug}`
+}
+
+export function articlePath(
+  article: {
+    slug?: string | null
+    category?: { slug?: string | null } | string | number | null
+  },
+  catMap?: Record<string, string>,
+): string {
+  const cat = article.category
+  const catSlug =
+    cat && typeof cat === 'object' && cat.slug
+      ? cat.slug
+      : cat != null && typeof cat !== 'object' && catMap
+        ? (catMap[String(cat)] ?? null)
+        : null
+  return catSlug ? `/${catSlug}/${article.slug}` : `/blog/${article.slug}`
 }
 
 export function ogLocale(locale: Locale): string {

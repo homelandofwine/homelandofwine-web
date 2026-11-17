@@ -301,7 +301,7 @@ export const getRecentArticlesForNews = () =>
         depth: 0,
         limit: 100,
         sort: '-publishedAt',
-        select: { slug: true, title: true, publishedAt: true },
+        select: { slug: true, title: true, publishedAt: true, category: true },
         where: {
           _status: { equals: 'published' },
           publishedAt: { greater_than_equal: cutoff },
@@ -316,7 +316,7 @@ export const getRecentArticlesForNews = () =>
               depth: 0,
               limit: 1,
               sort: '-publishedAt',
-              select: { slug: true, title: true, publishedAt: true },
+              select: { slug: true, title: true, publishedAt: true, category: true },
               where: { _status: { equals: 'published' } },
             })
           ).docs
@@ -324,6 +324,7 @@ export const getRecentArticlesForNews = () =>
         id: string | number
         slug?: { ka?: string | null; en?: string | null } | null
         title?: { ka?: string | null; en?: string | null } | null
+        category?: number | { id: number } | null
         publishedAt: string
       }>
     },
@@ -340,18 +341,24 @@ export const getAllArticleSlugs = () =>
         locale: 'all',
         depth: 0,
         limit: 1000,
-        select: { slug: true, updatedAt: true },
+        select: { slug: true, updatedAt: true, category: true },
         where: { _status: { equals: 'published' } },
       })
       return docs as Array<{
         id: string | number
         slug?: { ka?: string | null; en?: string | null } | null
+        category?: number | { id: number } | null
         updatedAt: string
       }>
     },
     ['article-slugs'],
     { revalidate: 600, tags: [TAGS.articles] },
   )()
+
+export async function getCategorySlugMap(): Promise<Record<string, string>> {
+  const { docs } = await getCategories('en')
+  return Object.fromEntries(docs.filter((c) => c.slug).map((c) => [String(c.id), c.slug as string]))
+}
 
 export const getCategories = (locale: Locale) =>
   stampedCache(

@@ -4,7 +4,8 @@ import { getPayload } from 'payload'
 
 import type { Locale } from '@/i18n/routing'
 import config from '@/payload.config'
-import { localePath } from '@/lib/seo'
+import { getDraftArticleBySlug } from '@/lib/api'
+import { articlePath, localePath } from '@/lib/seo'
 
 export async function GET(req: Request) {
   const payload = await getPayload({ config })
@@ -21,5 +22,10 @@ export async function GET(req: Request) {
   const draft = await draftMode()
   draft.enable()
 
-  redirect(localePath(locale, slug ? `/blog/${slug}` : '/'))
+  let target = '/'
+  if (slug) {
+    const found = await getDraftArticleBySlug(locale, slug)
+    target = found ? articlePath({ ...found.article, slug }) : `/blog/${slug}`
+  }
+  redirect(localePath(locale, target))
 }

@@ -4,7 +4,7 @@ import React from 'react'
 
 import { NewArticleEmail } from '../../emails/new-article'
 import { EMAIL_FROM, mailer } from '@/lib/email'
-import { SITE_URL } from '@/lib/seo'
+import { absoluteUrl, articlePath, SITE_URL } from '@/lib/seo'
 import { unsubscribeUrl } from '@/lib/tokens'
 import type { Media } from '@/payload-types'
 
@@ -53,8 +53,7 @@ export async function sendArticleNewsletter(
       ? rawCover
       : `${SITE_URL}${rawCover}`
     : undefined
-  const articleUrl =
-    locale === 'en' ? `${SITE_URL}/blog/${article.slug}` : `${SITE_URL}/ka/blog/${article.slug}`
+  const articleUrl = absoluteUrl(locale, articlePath(article))
 
   const emails = await Promise.all(
     subscribers.map(async (sub) => {

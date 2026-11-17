@@ -1,5 +1,6 @@
 import { Img } from '@/components/media/Img'
 import { Link } from '@/i18n/navigation'
+import { articlePath } from '@/lib/seo'
 import type { Article, Media } from '@/payload-types'
 
 type Slide = {
@@ -10,7 +11,13 @@ type Slide = {
   article?: Article | number | null
 }
 
-export function FeaturedSlides({ slides }: { slides: Slide[] }) {
+export function FeaturedSlides({
+  slides,
+  catMap,
+}: {
+  slides: Slide[]
+  catMap?: Record<string, string>
+}) {
   if (slides.length === 0) return null
 
   return (
@@ -20,7 +27,9 @@ export function FeaturedSlides({ slides }: { slides: Slide[] }) {
         {slides.map((slide, i) => {
           const article = slide.article
           const href =
-            article && typeof article === 'object' && article.slug ? `/blog/${article.slug}` : null
+            article && typeof article === 'object' && article.slug
+              ? articlePath(article, catMap)
+              : null
           const body = (
             <article>
               <p className="text-3xl font-medium leading-none text-shell-fg">
@@ -58,7 +67,9 @@ export function FeaturedSlides({ slides }: { slides: Slide[] }) {
           const portrait = Boolean(media?.width && media?.height && media.height >= media.width)
           const article = slide.article
           const href =
-            article && typeof article === 'object' && article.slug ? `/blog/${article.slug}` : null
+            article && typeof article === 'object' && article.slug
+              ? articlePath(article, catMap)
+              : null
           const heading = (
             <h3 className="ka-heading max-w-3xl text-[clamp(1.9rem,4.5vw,3.5rem)] font-medium uppercase leading-[1.05] tracking-tight text-shell-fg">
               {slide.title}

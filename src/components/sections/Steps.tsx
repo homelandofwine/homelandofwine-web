@@ -1,6 +1,7 @@
 import { Img } from '@/components/media/Img'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Link } from '@/i18n/navigation'
+import { articlePath } from '@/lib/seo'
 import type { Article, Media } from '@/payload-types'
 
 type StepItem = {
@@ -11,7 +12,15 @@ type StepItem = {
   article?: Article | number | null
 }
 
-export function Steps({ heading, items }: { heading: string; items: StepItem[] }) {
+export function Steps({
+  heading,
+  items,
+  catMap,
+}: {
+  heading: string
+  items: StepItem[]
+  catMap?: Record<string, string>
+}) {
   if (items.length === 0) return null
 
   return (
@@ -24,7 +33,7 @@ export function Steps({ heading, items }: { heading: string; items: StepItem[] }
           {items.map((step, i) => {
             const article =
               step.article && typeof step.article === 'object' ? step.article : null
-            const href = article?.slug ? `/blog/${article.slug}` : null
+            const href = article?.slug ? articlePath(article, catMap) : null
             const text = article?.excerpt || step.text
 
             const row = (

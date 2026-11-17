@@ -8,6 +8,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getAllArticleSlugs(),
     getCategories('en'),
   ])
+  const catMap = Object.fromEntries(
+    categories.filter((c) => c.slug).map((c) => [String(c.id), c.slug as string]),
+  )
 
   const staticPaths = ['/', '/blog', '/about', '/contact', '/ambassador', '/n-line-print']
 
@@ -19,9 +22,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   const categoryEntries: MetadataRoute.Sitemap = categories
-    .filter((c) => c.slug && categoryPath(c.slug) === `/blog/category/${c.slug}`)
+    .filter((c) => c.slug && categoryPath(c.slug) === `/${c.slug}`)
     .map((c) => {
-      const path = `/blog/category/${c.slug}`
+      const path = `/${c.slug}`
       return {
         url: absoluteUrl('en', path),
         changeFrequency: 'weekly' as const,
@@ -33,8 +36,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articleEntries: MetadataRoute.Sitemap = articles
     .filter((a) => a.slug?.ka || a.slug?.en)
     .map((a) => {
-      const en = a.slug?.en ? `/blog/${a.slug.en}` : undefined
-      const ka = a.slug?.ka ? `/blog/${a.slug.ka}` : undefined
+      const catId = typeof a.category === 'object' && a.category ? a.category.id : a.category
+      const base = catId != null && catMap[String(catId)] ? `/${catMap[String(catId)]}` : '/blog'
+      const en = a.slug?.en ? `${base}/${a.slug.en}` : undefined
+      const ka = a.slug?.ka ? `${base}/${a.slug.ka}` : undefined
       return {
         url: en ? absoluteUrl('en', en) : absoluteUrl('ka', ka ?? '/'),
         lastModified: new Date(a.updatedAt),

@@ -5,7 +5,12 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Link, useRouter } from '@/i18n/navigation'
 
-type Suggestion = { id: number | string; title: string; slug: string }
+type Suggestion = {
+  id: number | string
+  title: string
+  slug: string
+  path?: string | null
+}
 
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
   const t = useTranslations()
@@ -142,7 +147,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                     {suggestions.map((s) => (
                       <li key={s.id}>
                         <Link
-                          href={`/blog/${s.slug}`}
+                          href={s.path ?? `/blog/${s.slug}`}
                           onClick={onClose}
                           className="block rounded px-3 py-3 text-lg tracking-tight text-ink transition-colors hover:bg-accent hover:text-shell-fg"
                         >

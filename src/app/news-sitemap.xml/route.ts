@@ -1,4 +1,4 @@
-import { getRecentArticlesForNews, getSettings } from '@/lib/api'
+import { getCategorySlugMap, getRecentArticlesForNews, getSettings } from '@/lib/api'
 import { absoluteUrl } from '@/lib/seo'
 
 function escapeXml(value: string): string {
@@ -10,18 +10,27 @@ function escapeXml(value: string): string {
 }
 
 export async function GET() {
-  const [articles, settings] = await Promise.all([getRecentArticlesForNews(), getSettings('en')])
+  const [articles, settings, catMap] = await Promise.all([
+    getRecentArticlesForNews(),
+    getSettings('en'),
+    getCategorySlugMap(),
+  ])
   const publicationName = escapeXml(settings.siteName)
 
   const entries: string[] = []
   for (const article of articles) {
+    const catId =
+      typeof article.category === 'object' && article.category
+        ? article.category.id
+        : article.category
+    const base = catId != null && catMap[String(catId)] ? `/${catMap[String(catId)]}` : '/blog'
     for (const locale of ['ka', 'en'] as const) {
       const slug = article.slug?.[locale]
       const title = article.title?.[locale]
       if (!slug || !title) continue
       entries.push(
         `  <url>
-    <loc>${escapeXml(absoluteUrl(locale, `/blog/${slug}`))}</loc>
+    <loc>${escapeXml(absoluteUrl(locale, `${base}/${slug}`))}</loc>
     <news:news>
       <news:publication>
         <news:name>${publicationName}</news:name>

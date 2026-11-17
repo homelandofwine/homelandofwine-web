@@ -4,6 +4,7 @@ import { Img } from '@/components/media/Img'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { formatDate } from '@/lib/format'
+import { articlePath } from '@/lib/seo'
 import type { Article, Category } from '@/payload-types'
 
 export async function LeadArticleCard({ article, locale }: { article: Article; locale: Locale }) {
@@ -28,7 +29,7 @@ export async function LeadArticleCard({ article, locale }: { article: Article; l
         )}
         <h2 className="mt-3 text-[clamp(1.5rem,2.6vw,2.25rem)] font-medium leading-[1.15] tracking-tight text-ink">
           <Link
-            href={`/blog/${article.slug}`}
+            href={articlePath(article)}
             className="after:absolute after:inset-0 group-hover:underline decoration-1 underline-offset-4"
           >
             {article.title}

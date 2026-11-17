@@ -2,6 +2,7 @@ import { Img } from '@/components/media/Img'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { formatDate } from '@/lib/format'
+import { articlePath } from '@/lib/seo'
 import type { Article, Category } from '@/payload-types'
 
 export async function ArticleCard({
@@ -18,7 +19,7 @@ export async function ArticleCard({
   reveal?: boolean
 }) {
   const category = article.category as Category | null
-  const href = `/blog/${article.slug}`
+  const href = articlePath(article)
 
   return (
     <article

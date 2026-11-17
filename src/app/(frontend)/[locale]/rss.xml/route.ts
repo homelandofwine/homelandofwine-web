@@ -4,7 +4,7 @@ import { hasLocale } from 'next-intl'
 
 import { routing, type Locale } from '@/i18n/routing'
 import { getArticles, getSettings } from '@/lib/api'
-import { absoluteUrl, SITE_URL } from '@/lib/seo'
+import { absoluteUrl, articlePath, SITE_URL } from '@/lib/seo'
 import type { Media } from '@/payload-types'
 
 export async function GET(
@@ -36,8 +36,8 @@ export async function GET(
     const cover = article.coverImage as Media | null
     feed.addItem({
       title: article.title ?? '',
-      id: absoluteUrl(locale, `/blog/${article.slug}`),
-      link: absoluteUrl(locale, `/blog/${article.slug}`),
+      id: absoluteUrl(locale, articlePath(article)),
+      link: absoluteUrl(locale, articlePath(article)),
       description: article.excerpt ?? undefined,
       date: new Date(article.publishedAt),
       image:
